@@ -110,73 +110,30 @@ def main():
 		# intersects method
 		def intersects(self):
 			intersection = False
-			for i in range(4):
-				for j in range(4):
-					if i * 4 + j in self.figure.draw():
-						if i + self.figure.y > self.height - 1 or \
-								j + self.figure.x > self.width - 1 or \
-								j + self.figure.x < 0 or \
-								self.field[i + self.figure.y][j + self.figure.x] > 0:
-							intersection = True
 			return intersection
 
 		# break lines method
 		def break_lines(self):
-			lines = 0
-			for altitude in range(1, self.height):
-				zeros = 0
-				for diameter in range(self.width):
-					if self.field[altitude][diameter] == 0:
-						zeros += 1
-
-				if zeros == 0:
-					lines += 1
-					for lineHeight in range(altitude, 1, -1):
-						for lineWidth in range(self.width):
-							self.field[altitude][diameter] = self.field[lineHeight - 1][lineWidth]
-
-			self.score += lines ** 2
+			pass
 
 		# go space method
 		def go_space(self):
-			while not self.intersects():
-				self.figure.y += 1
-			self.figure.y -= 1
-			self.freeze()
+			pass
 
 		# go down method
 		def go_down(self):
-			self.figure.y += 1
-			if self.intersects():
-				self.figure.y -= 1
-				self.freeze()
+			pass
 
 		# freeze method
 		def freeze(self):
-			for i in range(4):
-				for j in range(4):
-					if i * 4 + j in self.figure.draw():
-						self.field[i + self.figure.y][j + self.figure.x] = self.figure.color
-
-			self.break_lines()
-			self.new_figure()
-
-			if self.intersects():
-				self.state == "gameover"
+			pass
 
 		# go side method
 		def go_side(self, dx):
-			old_x = self.figure.x
-			self.figure.x += dx
-
-			if self.intersects():
-				self.figure.x = old_x
+			pass
 
 		def rotate(self):
-			old_rotation = self.figure.rotation
-			self.figure.rotate()
-			if self.intersects():
-				self.figure.rotation = old_rotation
+			pass
 			
 	# instance
 	game = Tetris(100, 100)
@@ -187,19 +144,19 @@ def main():
 	while running:
 		clock.tick(fps)
 
-		screen.fill(WHITE)
+		screen.fill(BLACK)
 
-		if game.figure is None:
-			game.new_figure()
+		# if game.figure is None:
+		# 	game.new_figure()
 
-		counter += 1
+		# counter += 1
 
-		if counter > 100000:
-			counter = 0
+		# if counter > 100000:
+		# 	counter = 0
 
-		if counter % (fps // game.level // 2) == 0 or pressing_down:
-			if game.state == "start":
-				game.go_down()
+		# if counter % (fps // game.level // 2) == 0 or pressing_down:
+		# 	if game.state == "start":
+		# 		game.go_down()
 		
 		# event handler
 		for event in pygame.event.get():
@@ -223,15 +180,15 @@ def main():
 				if event.key == pygame.K_DOWN:
 					pressing_down = False
 
-		text = font.render("Score: " + str(game.score), True, Black)
-		text_game_over = font2.render("Game Over", True, Grey)
-		press_esc = font2.render("press ESC", True, Grey)
+		# text = font.render("Score: " + str(game.score), True, Black)
+		# text_game_over = font2.render("Game Over", True, Grey)
+		# press_esc = font2.render("press ESC", True, Grey)
 
-		screen.blit(text, (0, 0))
+		# screen.blit(text, (0, 0))
 
-		if game.state == "gameover":
-			screen.blit(text_game_over, (0, 0))
-			screen.blit(press_esc, (0, 0))
+		# if game.state == "gameover":
+		# 	screen.blit(text_game_over, (0, 0))
+		# 	screen.blit(press_esc, (0, 0))
 
 		# pygame update
 		pygame.display.update()

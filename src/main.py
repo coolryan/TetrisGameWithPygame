@@ -56,29 +56,69 @@ def main():
 		x, y = 0, 0
 
 		figures = [
-			"I_TETROMINO"
-		    "O_TETROMINO"
-		    "T_TETROMINO"
-		    "L_TETROMINO"
-		    "J_TETROMINO"
-		    "S_TETROMINO"
+			"I_TETROMINO",
+		    "O_TETROMINO",
+		    "T_TETROMINO",
+		    "L_TETROMINO",
+		    "J_TETROMINO",
+		    "S_TETROMINO",
 		    "Z_TETROMINO"
 		]
 
 		"""docstring for Figure"""
-		def __init__(self, x, y):
+		def __init__(self, x, y, width, height, figureType: str):
 			self.x, self.y = x, y
-			self.type = random.randint(0, len(self.figures) - 1)
+			# self.type = random.randint(0, len(self.figures) - 1)
+			self.type = figureType
 			self.color = random.randint(1, len(COLORS) - 1)
 			self.rotation = 0
+			self.width, self.height = width, height
 
 		# draw method
 		def draw(self):
-			for i in range(x):
-				for j in range(y):
-					rect = pygame.Rect(50, 50, i, j)
+			if self.type == self.figures[0]:
+				for r in range(4):
+					rect = pygame.Rect(self.x, self.y, self.width, self.height)
+					print(f"Rectangle: {rect}")
+					pygame.draw.rect(screen, COLORS[1], rect)
 
-			pygame.draw.rect(screen, BLACK, rect, 2)
+			elif self.type == self.figures[1]:
+				for r in range(4):
+					rect = pygame.Rect(self.x, self.y, self.width, self.height)
+					print(f"Rectangle: {rect}")
+					pygame.draw.rect(screen, COLORS[2], rect)
+
+			elif self.type == self.figures[2]:
+				for r in range(4):
+					rect = pygame.Rect(self.x, self.y, self.width, self.height)
+					print(f"Rectangle: {rect}")
+					pygame.draw.rect(screen, COLORS[3], rect)
+
+			elif self.type == self.figures[3]:
+				for r in range(4):
+					rect = pygame.Rect(self.x, self.y, self.width, self.height)
+					print(f"Rectangle: {rect}")
+					pygame.draw.rect(screen, COLORS[4], rect)
+
+			elif self.type == self.figures[4]:
+				for r in range(4):
+					rect = pygame.Rect(self.x, self.y, self.width, self.height)
+					print(f"Rectangle: {rect}")
+					pygame.draw.rect(screen, COLORS[5], rect)
+
+			elif self.type == self.figures[5]:
+				for r in range(4):
+					rect = pygame.Rect(self.x, self.y, self.width, self.height)
+					print(f"Rectangle: {rect}")
+					pygame.draw.rect(screen, COLORS[6], rect)
+
+			elif self.type == self.figures[6]:
+				for r in range(4):
+					rect = pygame.Rect(self.x, self.y, self.width, self.height)
+					print(f"Rectangle: {rect}")
+					pygame.draw.rect(screen, COLORS[2], rect)
+
+					#rect.move(self.x, self.y)
 
 		# rotate method
 		def rotate(self):
@@ -105,7 +145,21 @@ def main():
 
 		# new figure method
 		def new_figure(self):
-			self.figure = Figure(10, 10)
+			self.figure1 = Figure(100, 100, 120, 120, "I_TETROMINO")
+			self.figure2 = Figure(-100, -100, 120, 120, "O_TETROMINO")
+			self.figure3 = Figure(150, 100, 120, 120, "T_TETROMINO")
+			self.figure4 = Figure(-150, -100, 120, 120, "L_TETROMINO")
+			self.figure5 = Figure(200, 200, 120, 120, "J_TETROMINO")
+			self.figure6 = Figure(-200, -200, 120, 120, "S_TETROMINO")
+			self.figure7 = Figure(250, 150, 120, 120, "Z_TETROMINO")
+
+			self.figure1.draw()
+			self.figure2.draw()
+			self.figure3.draw()
+			self.figure4.draw()
+			self.figure5.draw()
+			self.figure6.draw()
+			self.figure7.draw()
 
 		# intersects method
 		def intersects(self):
@@ -157,6 +211,8 @@ def main():
 		# if counter % (fps // game.level // 2) == 0 or pressing_down:
 		# 	if game.state == "start":
 		# 		game.go_down()
+
+		game.new_figure()
 		
 		# event handler
 		for event in pygame.event.get():

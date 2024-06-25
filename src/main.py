@@ -75,7 +75,8 @@ def main():
 			self.width, self.height = width, height
 
 		# draw method
-		def draw(self):
+		@classmethod
+		def draw(self, self.type):
 			if self.type == self.figures[0]:
 				for r in range(4):
 					rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -118,7 +119,7 @@ def main():
 					print(f"Rectangle: {rect}")
 					pygame.draw.rect(screen, COLORS[2], rect)
 
-					#rect.move(self.x, self.y)
+			return self.type
 
 		# rotate method
 		def rotate(self):
@@ -145,21 +146,17 @@ def main():
 
 		# new figure method
 		def new_figure(self):
-			self.figure1 = Figure(100, 100, 120, 120, "I_TETROMINO")
-			self.figure2 = Figure(-100, -100, 120, 120, "O_TETROMINO")
-			self.figure3 = Figure(150, 100, 120, 120, "T_TETROMINO")
-			self.figure4 = Figure(-150, -100, 120, 120, "L_TETROMINO")
-			self.figure5 = Figure(200, 200, 120, 120, "J_TETROMINO")
-			self.figure6 = Figure(-200, -200, 120, 120, "S_TETROMINO")
-			self.figure7 = Figure(250, 150, 120, 120, "Z_TETROMINO")
-
-			self.figure1.draw()
-			self.figure2.draw()
-			self.figure3.draw()
-			self.figure4.draw()
-			self.figure5.draw()
-			self.figure6.draw()
-			self.figure7.draw()
+			new_figures = (
+				Figure(100, 100, 110, 110, "I_TETROMINO"),
+				Figure(-100, -100, 120, 120, "O_TETROMINO"),
+				Figure(150, 100, 100, 100, "T_TETROMINO"),
+				Figure(-150, -100, 90, 90, "L_TETROMINO"),
+				Figure(200, 200, 60, 60, "J_TETROMINO"),
+				Figure(-200, -200, 20, 20, "S_TETROMINO"),
+				Figure(250, 150, 10, 10, "Z_TETROMINO")
+			)
+			
+			new_figures.Figure.draw(self.type)
 
 		# intersects method
 		def intersects(self):

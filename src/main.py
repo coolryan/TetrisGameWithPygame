@@ -53,7 +53,6 @@ def main():
 
 	# class Figure
 	class Figure:
-		x, y = 0, 0
 
 		figures = [
 			"I_TETROMINO",
@@ -75,51 +74,41 @@ def main():
 			self.width, self.height = width, height
 
 		# draw method
-		@classmethod
-		def draw(self, self.type):
+		def draw(self):
 			if self.type == self.figures[0]:
 				for r in range(4):
-					rect = pygame.Rect(self.x, self.y, self.width, self.height)
-					print(f"Rectangle: {rect}")
+					rect = pygame.Rect(self.x, (self.y+r*self.height), self.width, self.height)
 					pygame.draw.rect(screen, COLORS[1], rect)
 
 			elif self.type == self.figures[1]:
 				for r in range(4):
-					rect = pygame.Rect(self.x, self.y, self.width, self.height)
-					print(f"Rectangle: {rect}")
+					rect = pygame.Rect((self.x+r*self.width), (self.y+r*self.height), self.width, self.height)
 					pygame.draw.rect(screen, COLORS[2], rect)
 
 			elif self.type == self.figures[2]:
 				for r in range(4):
 					rect = pygame.Rect(self.x, self.y, self.width, self.height)
-					print(f"Rectangle: {rect}")
 					pygame.draw.rect(screen, COLORS[3], rect)
 
 			elif self.type == self.figures[3]:
 				for r in range(4):
 					rect = pygame.Rect(self.x, self.y, self.width, self.height)
-					print(f"Rectangle: {rect}")
 					pygame.draw.rect(screen, COLORS[4], rect)
 
 			elif self.type == self.figures[4]:
 				for r in range(4):
 					rect = pygame.Rect(self.x, self.y, self.width, self.height)
-					print(f"Rectangle: {rect}")
 					pygame.draw.rect(screen, COLORS[5], rect)
 
 			elif self.type == self.figures[5]:
 				for r in range(4):
 					rect = pygame.Rect(self.x, self.y, self.width, self.height)
-					print(f"Rectangle: {rect}")
 					pygame.draw.rect(screen, COLORS[6], rect)
 
 			elif self.type == self.figures[6]:
 				for r in range(4):
 					rect = pygame.Rect(self.x, self.y, self.width, self.height)
-					print(f"Rectangle: {rect}")
-					pygame.draw.rect(screen, COLORS[2], rect)
-
-			return self.type
+					pygame.draw.rect(screen, COLORS[1], rect)
 
 		# rotate method
 		def rotate(self):
@@ -146,17 +135,18 @@ def main():
 
 		# new figure method
 		def new_figure(self):
-			new_figures = (
-				Figure(100, 100, 110, 110, "I_TETROMINO"),
-				Figure(-100, -100, 120, 120, "O_TETROMINO"),
-				Figure(150, 100, 100, 100, "T_TETROMINO"),
-				Figure(-150, -100, 90, 90, "L_TETROMINO"),
-				Figure(200, 200, 60, 60, "J_TETROMINO"),
-				Figure(-200, -200, 20, 20, "S_TETROMINO"),
-				Figure(250, 150, 10, 10, "Z_TETROMINO")
-			)
+			new_figures = [
+				Figure(100, 100, 120, 120, "I_TETROMINO"),
+				Figure(200, 400, 120, 120, "O_TETROMINO"),
+				Figure(300, 500, 100, 100, "T_TETROMINO"),
+				Figure(400, 600, 140, 140, "L_TETROMINO"),
+				Figure(-100, -100, 160, 160, "J_TETROMINO"),
+				Figure(-200, -200, 120, 120, "S_TETROMINO"),
+				Figure(-300, -350, 100, 100, "Z_TETROMINO")
+			]
 			
-			new_figures.Figure.draw(self.type)
+			for f in new_figures:
+				f.draw()
 
 		# intersects method
 		def intersects(self):
@@ -196,9 +186,6 @@ def main():
 		clock.tick(fps)
 
 		screen.fill(BLACK)
-
-		# if game.figure is None:
-		# 	game.new_figure()
 
 		# counter += 1
 

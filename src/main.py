@@ -87,26 +87,27 @@ def main():
 
 			elif self.type == self.figures[2]:
 				for r in range(4):
-					rect = pygame.Rect(self.x, self.y, self.width, self.height)
-					pygame.draw.rect(screen, COLORS[3], rect)
+					for i in range(3):
+						rect = pygame.Rect(self.x+i*self.width), (self.y+r*self.height), self.width, self.height)
+						pygame.draw.rect(screen, COLORS[3], rect)
 
 			elif self.type == self.figures[3]:
-				for r in range(4):
+				for r in range(6):
 					rect = pygame.Rect(self.x, self.y, self.width, self.height)
 					pygame.draw.rect(screen, COLORS[4], rect)
 
 			elif self.type == self.figures[4]:
-				for r in range(4):
+				for r in range(5):
 					rect = pygame.Rect(self.x, self.y, self.width, self.height)
 					pygame.draw.rect(screen, COLORS[5], rect)
 
 			elif self.type == self.figures[5]:
-				for r in range(4):
+				for r in range(7):
 					rect = pygame.Rect(self.x, self.y, self.width, self.height)
 					pygame.draw.rect(screen, COLORS[6], rect)
 
 			elif self.type == self.figures[6]:
-				for r in range(4):
+				for r in range(7):
 					rect = pygame.Rect(self.x, self.y, self.width, self.height)
 					pygame.draw.rect(screen, COLORS[1], rect)
 

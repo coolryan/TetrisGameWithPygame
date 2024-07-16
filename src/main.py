@@ -109,13 +109,13 @@ def main():
 					pygame.draw.rect(screen, COLORS[4], rect)
 
 			elif self.type == self.figures[4]:
-				rect = pygame.Rect((self.x+i*self.width), (self.y+r*self.height), self.width, self.height)
-				rect = pygame.Rect((self.x+i*self.width), (self.y+r*self.height), self.width, self.height)
-				rect = pygame.Rect((self.x+i*self.width), (self.y+r*self.height), self.width, self.height)
-				rect = pygame.Rect((self.x+i*self.width), (self.y+r*self.height), self.width, self.height)
-				rect = pygame.Rect((self.x+i*self.width), (self.y+r*self.height), self.width, self.height)
-				rect = pygame.Rect((self.x+i*self.width), (self.y+r*self.height), self.width, self.height)
-				pygame.draw.rect(screen, COLORS[5], rect)
+				rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
+				rect2 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
+				rect3 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
+				rect4 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
+	
+				for rect in [rect1, rect2, rect3, rect4]:
+					pygame.draw.rect(screen, COLORS[5], rect)
 
 			elif self.type == self.figures[5]:
 				rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -127,8 +127,13 @@ def main():
 					pygame.draw.rect(screen, COLORS[6], rect)
 
 			elif self.type == self.figures[6]:
-				rect = pygame.Rect((self.x+i*self.width), (self.y+r*self.height), self.width, self.height)
-				pygame.draw.rect(screen, COLORS[1], rect)
+				rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
+				rect2 = pygame.Rect((self.x-self.width), (self.y-self.height), self.width, self.height)
+				rect3 = pygame.Rect((self.x-self.width), (self.y-self.height), self.width, self.height)
+				rect4 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
+
+				for rect in [rect1, rect2, rect3, rect4]:
+					pygame.draw.rect(screen, COLORS[1], rect)
 
 		# rotate method
 		def rotate(self):

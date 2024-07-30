@@ -36,10 +36,10 @@ def main():
 	BLACK, WHITE, GRAY = (0, 0, 0), (255, 255, 255), (128, 128, 128)
 
 	COLORS = [
-		(0, 0, 0), 
+		(128, 128, 128), 
 		(120, 37, 179),
 		(100, 179, 179),
-		(80, 34, 22),
+		(80, 34, 22),     
 		(80, 134, 22),
 		(180, 34, 22),
 		(180, 34, 122),
@@ -119,20 +119,20 @@ def main():
 			elif self.type == self.figures[5]:
 				rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
 				rect2 = pygame.Rect(self.x+self.width, self.y, self.width, self.height)
-				rect3 = pygame.Rect((self.x-self.width), self.y, self.width, self.height)
-				rect4 = pygame.Rect((self.x-self.width), self.y, self.width, self.height)
+				rect3 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
+				rect4 = pygame.Rect((self.x-self.width), (self.y+self.height), self.width, self.height)
 
 				for rect in [rect1, rect2, rect3, rect4]:
 					pygame.draw.rect(screen, COLORS[6], rect)
 
 			elif self.type == self.figures[6]:
 				rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-				rect2 = pygame.Rect((self.x-self.width), (self.y-self.height), self.width, self.height)
-				rect3 = pygame.Rect((self.x-self.width), (self.y-self.height), self.width, self.height)
+				rect2 = pygame.Rect((self.x-self.width), self.y, self.width, self.height)
+				rect3 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
 				rect4 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
 
 				for rect in [rect1, rect2, rect3, rect4]:
-					pygame.draw.rect(screen, COLORS[1], rect)
+					pygame.draw.rect(screen, COLORS[0], rect)
 
 		# rotate method
 		def rotate(self):
@@ -166,7 +166,7 @@ def main():
 				Figure(100, 400, 60, 60, "L_TETROMINO"),
 				Figure(300, 500, 60, 60, "J_TETROMINO"),
 				Figure(500, 500, 60, 60, "S_TETROMINO"),
-				# Figure(-300, -350, 60, 60, "Z_TETROMINO")
+				Figure(650, 650, 60, 60, "Z_TETROMINO")
 			]
 			
 			for f in new_figures:

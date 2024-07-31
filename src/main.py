@@ -49,7 +49,7 @@ def main():
 	clock = pygame.time.Clock()
 	fps = 60
 	counter = 0
-	pressing_down = False
+	pressing_down = False 
 
 	# class Figure
 	class Figure:
@@ -72,6 +72,7 @@ def main():
 			self.color = random.randint(1, len(COLORS) - 1)
 			self.rotation = 0
 			self.width, self.height = width, height
+			self.state = "start"
 
 		# draw method
 		def draw(self):
@@ -159,7 +160,7 @@ def main():
 
 		# new figure method
 		def new_figure(self):
-			new_figures = [
+			self.figures = [
 				Figure(100, 100, 60, 60, "I_TETROMINO"),
 				Figure(200, 200, 60, 60, "O_TETROMINO"),
 				Figure(300, 300, 60, 60, "T_TETROMINO"),
@@ -168,9 +169,20 @@ def main():
 				Figure(500, 500, 60, 60, "S_TETROMINO"),
 				Figure(650, 650, 60, 60, "Z_TETROMINO")
 			]
-			
-			for f in new_figures:
+	
+		# draw method
+		def draw(self):
+			for f in self.figures:
 				f.draw()
+
+		# move method
+		def move(self):
+			for f in self.figures:
+				if self.state == "start":
+					f.y += 1
+
+				if f.y == self.height - 10:
+					f.state = "stop"
 
 		# intersects method
 		def intersects(self):
@@ -203,6 +215,9 @@ def main():
 	# instance
 	game = Tetris(100, 100)
 
+	# call new figures
+	game.new_figure()
+
 	# game loop
 	running = True
 
@@ -210,6 +225,12 @@ def main():
 		clock.tick(fps)
 
 		screen.fill(BLACK)
+
+		# call draw
+		game.draw()
+
+		# call move
+		game.move()
 
 		# counter += 1
 
@@ -219,8 +240,6 @@ def main():
 		# if counter % (fps // game.level // 2) == 0 or pressing_down:
 		# 	if game.state == "start":
 		# 		game.go_down()
-
-		game.new_figure()
 		
 		# event handler
 		for event in pygame.event.get():
@@ -230,7 +249,7 @@ def main():
 				if event.key == K_UP:
 					game.rotate()
 				if event.key == K_DOWN:
-					pressing_down = True
+					pass
 				if event.key == K_LEFT:
 					game.go_side(-1)
 				if event.key == K_RIGHT:
@@ -242,7 +261,7 @@ def main():
 
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_DOWN:
-					pressing_down = False
+					pass
 
 		# text = font.render("Score: " + str(game.score), True, Black)
 		# text_game_over = font2.render("Game Over", True, Grey)

@@ -20,7 +20,8 @@ class Figure(object):
 		self.x, self.y = x, y
 		# self.type = random.randint(0, len(self.figures) - 1)
 		self.type = figureType
-		self.color = random.randint(1, len(constants.COLORS) - 1)
+		#self.color = random.randint(1, len(COLORS) - 1)
+		self.color = COLORS[0]
 		self.rotation = 0
 		self.width, self.height = width, height
 		self.state = "start"
@@ -38,104 +39,108 @@ class Figure(object):
 				(self.x, self.y),
 				(self.x+self.width, self.y),
 				(self.x, self.y-self.height),
-				(self.x+self.width), (self.y-self.height)
+				(self.x+self.width, self.y-self.height)
 			]
 		elif self.type == T_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
 				(self.x+self.width, self.y),
 				(self.x+self.width*2, self.y),
-				(self.x+self.width), (self.y+self.height)
+				(self.x+self.width, self.y+self.height)
 			]
 		elif self.type == L_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
 				(self.x, self.y+self.height),
 				(self.x, self.y+self.height*2),
-				(self.x+self.width), (self.y+self.height*2)
+				(self.x+self.width, self.y+self.height*2)
 			]
 		elif self.type == J_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
 				(self.x, self.y+self.height),
 				(self.x, self.y+self.height*2),
-				(self.x-self.width), (self.y+self.height*2)
+				(self.x-self.width, self.y+self.height*2)
 			]
 		elif self.type == S_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
 				(self.x+self.width, self.y),
 				(self.x, self.y+self.height),
-				(self.x-self.width), (self.y+self.height)
+				(self.x-self.width, self.y+self.height)
 			]
 		elif self.type == Z_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
 				(self.x-self.width, self.y),
 				(self.x, self.y+self.height),
-				(self.x+self.width), (self.y+self.height)
+				(self.x+self.width, self.y+self.height)
 			]
 
 	# draw method
-	def draw(self):
-		if self.type == I_TETROMINO:
-			for r in range(4):
-				rect = pygame.Rect(self.x, (self.y+r*self.height), self.width, self.height)
-				pygame.draw.rect(screen, self.color, rect)
+	def draw(self, screen):
+		for coord in self.coordList:
+			rect = pygame.Rect(coord[0], coord[1], self.width, self.height)
+			pygame.draw.rect(screen, self.color, rect)
 
-		elif self.type == O_TETROMINO:
-			rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-			rect2 = pygame.Rect((self.x+self.width), self.y, self.width, self.height)
-			rect3 = pygame.Rect(self.x, (self.y-self.height), self.width, self.height)
-			rect4 = pygame.Rect((self.x+self.width), (self.y-self.height), self.width, self.height)
+		# if self.type == I_TETROMINO:
+		# 	for r in range(4):
+		# 		rect = pygame.Rect(self.x, (self.y+r*self.height), self.width, self.height)
+		# 		pygame.draw.rect(screen, self.color, rect)
 
-			for rect in [rect1, rect2, rect3, rect4]:
-				pygame.draw.rect(screen, self.color, rect)
+		# elif self.type == O_TETROMINO:
+		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
+		# 	rect2 = pygame.Rect((self.x+self.width), self.y, self.width, self.height)
+		# 	rect3 = pygame.Rect(self.x, (self.y-self.height), self.width, self.height)
+		# 	rect4 = pygame.Rect((self.x+self.width), (self.y-self.height), self.width, self.height)
 
-		elif self.type == T_TETROMINO:
-			rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-			rect2 = pygame.Rect((self.x+self.width), self.y, self.width, self.height)
-			rect3 = pygame.Rect((self.x+self.width*2), self.y, self.width, self.height)
-			rect4 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
+		# 	for rect in [rect1, rect2, rect3, rect4]:
+		# 		pygame.draw.rect(screen, self.color, rect)
 
-			for rect in [rect1, rect2, rect3, rect4]:
-				pygame.draw.rect(screen, self.color, rect)
+		# elif self.type == T_TETROMINO:
+		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
+		# 	rect2 = pygame.Rect((self.x+self.width), self.y, self.width, self.height)
+		# 	rect3 = pygame.Rect((self.x+self.width*2), self.y, self.width, self.height)
+		# 	rect4 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
 
-		elif self.type == L_TETROMINO:
-			rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-			rect2 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
-			rect3 = pygame.Rect(self.x, (self.y+self.height*2), self.width, self.height)
-			rect4 = pygame.Rect((self.x+self.width), (self.y+self.height*2), self.width, self.height)
+		# 	for rect in [rect1, rect2, rect3, rect4]:
+		# 		pygame.draw.rect(screen, self.color, rect)
 
-			for rect in [rect1, rect2, rect3, rect4]:
-				pygame.draw.rect(screen, self.color, rect)
+		# elif self.type == L_TETROMINO:
+		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
+		# 	rect2 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
+		# 	rect3 = pygame.Rect(self.x, (self.y+self.height*2), self.width, self.height)
+		# 	rect4 = pygame.Rect((self.x+self.width), (self.y+self.height*2), self.width, self.height)
 
-		elif self.type == J_TETROMINO:
-			rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-			rect2 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
-			rect3 = pygame.Rect(self.x, (self.y+self.height*2), self.width, self.height)
-			rect4 = pygame.Rect((self.x-self.width), (self.y+self.height*2), self.width, self.height)
+		# 	for rect in [rect1, rect2, rect3, rect4]:
+		# 		pygame.draw.rect(screen, self.color, rect)
 
-			for rect in [rect1, rect2, rect3, rect4]:
-				pygame.draw.rect(screen, self.color, rect)
+		# elif self.type == J_TETROMINO:
+		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
+		# 	rect2 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
+		# 	rect3 = pygame.Rect(self.x, (self.y+self.height*2), self.width, self.height)
+		# 	rect4 = pygame.Rect((self.x-self.width), (self.y+self.height*2), self.width, self.height)
 
-		elif self.type == S_TETROMINO:
-			rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-			rect2 = pygame.Rect(self.x+self.width, self.y, self.width, self.height)
-			rect3 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
-			rect4 = pygame.Rect((self.x-self.width), (self.y+self.height), self.width, self.height)
+		# 	for rect in [rect1, rect2, rect3, rect4]:
+		# 		pygame.draw.rect(screen, self.color, rect)
 
-			for rect in [rect1, rect2, rect3, rect4]:
-				pygame.draw.rect(screen, self.color, rect)
+		# elif self.type == S_TETROMINO:
+		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
+		# 	rect2 = pygame.Rect(self.x+self.width, self.y, self.width, self.height)
+		# 	rect3 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
+		# 	rect4 = pygame.Rect((self.x-self.width), (self.y+self.height), self.width, self.height)
 
-		elif self.type == Z_TETROMINO:
-			rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-			rect2 = pygame.Rect((self.x-self.width), self.y, self.width, self.height)
-			rect3 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
-			rect4 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
+		# 	for rect in [rect1, rect2, rect3, rect4]:
+		# 		pygame.draw.rect(screen, self.color, rect)
 
-			for rect in [rect1, rect2, rect3, rect4]:
-				pygame.draw.rect(screen, self.color, rect)
+		# elif self.type == Z_TETROMINO:
+		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
+		# 	rect2 = pygame.Rect((self.x-self.width), self.y, self.width, self.height)
+		# 	rect3 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
+		# 	rect4 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
+
+		# 	for rect in [rect1, rect2, rect3, rect4]:
+		# 		pygame.draw.rect(screen, self.color, rect)
 
 	# rotate method
 	def rotate(self):
@@ -164,35 +169,38 @@ class Tetris(Figure):
 
 	# new figure method
 	def new_figure(self):
-		TETROMINOS = [
+		self.figures = [
 			Figure(100, 100, 60, 60, I_TETROMINO),
-			# Figure(200, 200, 60, 60, O_TETROMINO),
-			# Figure(300, 300, 60, 60, T_TETROMINO),
-			# Figure(100, 400, 60, 60, L_TETROMINO),
-			# Figure(300, 500, 60, 60, J_TETROMINO),
-			# Figure(500, 500, 60, 60, S_TETROMINO),
-			# Figure(650, 650, 60, 60, Z_TETROMINO)
+			Figure(200, 200, 60, 60, O_TETROMINO),
+			Figure(300, 300, 60, 60, T_TETROMINO),
+			Figure(100, 400, 60, 60, L_TETROMINO),
+			Figure(300, 500, 60, 60, J_TETROMINO),
+			Figure(500, 500, 60, 60, S_TETROMINO),
+			Figure(650, 650, 60, 60, Z_TETROMINO)
 		]
 
 	# draw method
-	def draw(self):
-		for trs in TETROMINOS:
-			trs.draw()
+	def draw(self, screen):
+		for trs in self.figures:
+			trs.draw(screen)
 
 	# move method
 	def move(self):
-		for trs in TETROMINOS:
+		for trs in self.figures:
 			if trs.state == "start":
-				trs.y += 1
+				coordListTemp = []
+				for coord in trs.coordList:
+					coordListTemp.append((coord[0], coord[1]+1))
 
-			print(trs.y, self.height, trs.state)
+				trs.coordList = coordListTemp
+
+			#print(trs.y, self.height, trs.state)
 		
-			if trs.y >= self.height:
-				trs.state = "stop"
+			if trs.coordList[0][1] >= self.height:
+				trs.state = "stop" 
 
 # define main function
 def main():
-	
 	# initialize pygame
 	pygame.init()
 
@@ -209,13 +217,7 @@ def main():
 	font = pygame.font.SysFont('timesroman', 16, True, False)
 	font2 = pygame.font.SysFont('timesroman', 20, True, False)
 
-	# constants colors
-	constants.BLACK
-	constants.COLORS
-
 	# game variables
-	clock = pygame.time.Clock()
-	fps = 60
 	counter = 0
 	pressing_down = False 
 			
@@ -229,12 +231,12 @@ def main():
 	running = True
 
 	while running:
-		clock.tick(fps)
+		time.sleep(5)
 
 		screen.fill(BLACK)
 
 		# call draw
-		game.draw()
+		game.draw(screen)
 
 		# call move
 		game.move()

@@ -12,7 +12,7 @@ from pygame.locals import *
 from constants import *
 
 # class Figure
-class Figure(object):
+class Figure:
 	"""docstring for Figure"""
 	def __init__(self, x, y, width, height, figureType: str):
 		self.coordList = list()
@@ -79,6 +79,7 @@ class Figure(object):
 
 	# draw method
 	def draw(self, screen):
+		print("draw")
 		for coord in self.coordList:
 			rect = pygame.Rect(coord[0], coord[1], self.width, self.height)
 			pygame.draw.rect(screen, self.color, rect)
@@ -148,10 +149,18 @@ class Figure(object):
 
 	# get bottom method
 	def getBottom(self):
-		pass
+		listOfNumbers = []
+		for h in self.coordList:
+			temp = h[1]
+			listOfNumbers.append(temp)
+
+		maximum = max(listOfNumbers)
+
+		totalMax = maximum + self.height
+		return totalMax
 		
 # class Tetris
-class Tetris(Figure):
+class Tetris:
 	"""constructor"""
 	def __init__(self, height, width):
 		self.level, self.score = 2, 0
@@ -189,14 +198,15 @@ class Tetris(Figure):
 		for trs in self.figures:
 			if trs.state == "start":
 				coordListTemp = []
+				
 				for coord in trs.coordList:
-					coordListTemp.append((coord[0], coord[1]+1))
+					coordListTemp.append((coord[0], coord[1]+10))
 
 				trs.coordList = coordListTemp
-
-			#print(trs.y, self.height, trs.state)
+			else:
+				print("Figure stop")
 		
-			if trs.coordList[0][1] >= self.height:
+			if trs.getBottom() >= self.height:
 				trs.state = "stop" 
 
 # define main function
@@ -231,7 +241,7 @@ def main():
 	running = True
 
 	while running:
-		time.sleep(5)
+		time.sleep(1)
 
 		screen.fill(BLACK)
 

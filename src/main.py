@@ -14,9 +14,8 @@ from constants import *
 # class Figure
 class Figure:
 	"""docstring for Figure"""
-	def __init__(self, x, y, width, height, figureType: str):
+	def __init__(self, x, y, width, height, figureType: str, isActive: bool = False):
 		self.coordList = list()
-
 		self.x, self.y = x, y
 		# self.type = random.randint(0, len(self.figures) - 1)
 		self.type = figureType
@@ -25,6 +24,7 @@ class Figure:
 		self.rotation = 0
 		self.width, self.height = width, height
 		self.state = "start"
+		self.isActive = isActive
 
 		self.initFigure()
 
@@ -84,69 +84,6 @@ class Figure:
 			rect = pygame.Rect(coord[0], coord[1], self.width, self.height)
 			pygame.draw.rect(screen, self.color, rect)
 
-		# if self.type == I_TETROMINO:
-		# 	for r in range(4):
-		# 		rect = pygame.Rect(self.x, (self.y+r*self.height), self.width, self.height)
-		# 		pygame.draw.rect(screen, self.color, rect)
-
-		# elif self.type == O_TETROMINO:
-		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-		# 	rect2 = pygame.Rect((self.x+self.width), self.y, self.width, self.height)
-		# 	rect3 = pygame.Rect(self.x, (self.y-self.height), self.width, self.height)
-		# 	rect4 = pygame.Rect((self.x+self.width), (self.y-self.height), self.width, self.height)
-
-		# 	for rect in [rect1, rect2, rect3, rect4]:
-		# 		pygame.draw.rect(screen, self.color, rect)
-
-		# elif self.type == T_TETROMINO:
-		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-		# 	rect2 = pygame.Rect((self.x+self.width), self.y, self.width, self.height)
-		# 	rect3 = pygame.Rect((self.x+self.width*2), self.y, self.width, self.height)
-		# 	rect4 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
-
-		# 	for rect in [rect1, rect2, rect3, rect4]:
-		# 		pygame.draw.rect(screen, self.color, rect)
-
-		# elif self.type == L_TETROMINO:
-		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-		# 	rect2 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
-		# 	rect3 = pygame.Rect(self.x, (self.y+self.height*2), self.width, self.height)
-		# 	rect4 = pygame.Rect((self.x+self.width), (self.y+self.height*2), self.width, self.height)
-
-		# 	for rect in [rect1, rect2, rect3, rect4]:
-		# 		pygame.draw.rect(screen, self.color, rect)
-
-		# elif self.type == J_TETROMINO:
-		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-		# 	rect2 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
-		# 	rect3 = pygame.Rect(self.x, (self.y+self.height*2), self.width, self.height)
-		# 	rect4 = pygame.Rect((self.x-self.width), (self.y+self.height*2), self.width, self.height)
-
-		# 	for rect in [rect1, rect2, rect3, rect4]:
-		# 		pygame.draw.rect(screen, self.color, rect)
-
-		# elif self.type == S_TETROMINO:
-		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-		# 	rect2 = pygame.Rect(self.x+self.width, self.y, self.width, self.height)
-		# 	rect3 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
-		# 	rect4 = pygame.Rect((self.x-self.width), (self.y+self.height), self.width, self.height)
-
-		# 	for rect in [rect1, rect2, rect3, rect4]:
-		# 		pygame.draw.rect(screen, self.color, rect)
-
-		# elif self.type == Z_TETROMINO:
-		# 	rect1 = pygame.Rect(self.x, self.y, self.width, self.height)
-		# 	rect2 = pygame.Rect((self.x-self.width), self.y, self.width, self.height)
-		# 	rect3 = pygame.Rect(self.x, (self.y+self.height), self.width, self.height)
-		# 	rect4 = pygame.Rect((self.x+self.width), (self.y+self.height), self.width, self.height)
-
-		# 	for rect in [rect1, rect2, rect3, rect4]:
-		# 		pygame.draw.rect(screen, self.color, rect)
-
-	# rotate method
-	def rotate(self):
-		pass
-
 	# get bottom method
 	def getBottom(self):
 		listOfNumbers = []
@@ -166,9 +103,7 @@ class Tetris:
 		self.level, self.score = 2, 0
 		self.state, self.field = "start", []
 		self.height, self.width = height, width
-		self.x, self.y = 100, 60
 		self.zoom, self.figure = 20, None
-		self.field, self.score, self.state = [], 0, "start"
 
 		for h in range(height):
 			new_line = []
@@ -207,7 +142,38 @@ class Tetris:
 				print("Figure stop")
 		
 			if trs.getBottom() >= self.height:
-				trs.state = "stop" 
+				trs.state = "stop"
+
+	# leftMove method
+	def leftMove(self):
+		for fig in self.figures:
+			if fig == self.isActive:
+				coordListTemp = []
+				for coord in fig.coordList:
+					coordListTemp.append((coord[0]-fig.width, coord[1]))
+				fig.coordList = coordListTemp
+
+	# rightMove method
+	def rightMove(self):
+		for fig in self.figures:
+			if fig == self.isActive:
+				coordListTemp = []
+				for coord in fig.coordList:
+					coordListTemp.append((coord[0]+fig.width, coord[1]))
+				fig.coordList = coordListTemp
+
+	# downMove method
+	def downMove(self):
+		for fig in self.figures:
+			if fig == self.isActive:
+				coordListTemp = []
+				for coord in fig.coordList:
+					coordListTemp.append((coord[0], coord[1]-fig.height))
+				fig.coordList = coordListTemp
+
+	# rotate method
+	def rotate(self):
+		pass
 
 # define main function
 def main():
@@ -265,22 +231,20 @@ def main():
 			if event.type == pygame.QUIT:
 				running = False
 			if event.type == pygame.KEYDOWN:
-				if event.key == K_UP:
-					pass
 				if event.key == K_DOWN:
-					pass
+					game.downMove()
 				if event.key == K_LEFT:
-					pass
+					game.leftMove()
 				if event.key == K_RIGHT:
-					pass
+					game.rightMove()
 				if event.key == K_SPACE:
-					pass
+					game.rotate()
 				if event.key == K_ESCAPE:
 					game.__init__(20, 20)
 
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_DOWN:
-					pass
+					game.downMove()
 
 		# text = font.render("Score: " + str(game.score), True, Black)
 		# text_game_over = font2.render("Game Over", True, Grey)

@@ -79,16 +79,39 @@ class Figure:
 
 	# draw method
 	def draw(self, screen):
-		print("draw")
 		for coord in self.coordList:
 			rect = pygame.Rect(coord[0], coord[1], self.width, self.height)
 			pygame.draw.rect(screen, self.color, rect)
 
+	# get left method
+	def getLeft(self):
+		listOfNumbers = []
+		for coord in self.coordList:
+			temp = coord[0]
+			listOfNumbers.append(temp)
+
+		maximum = max(listOfNumbers)
+
+		totalMax = maximum - self.width
+		return totalMax
+
+	# get right method
+	def getRight(self):
+		listOfNumbers = []
+		for coord in self.coordList:
+			temp = coord[0]
+			listOfNumbers.append(temp)
+
+		maximum = max(listOfNumbers)
+
+		totalMax = maximum + self.width
+		return totalMax
+
 	# get bottom method
 	def getBottom(self):
 		listOfNumbers = []
-		for h in self.coordList:
-			temp = h[1]
+		for coord in self.coordList:
+			temp = coord[1]
 			listOfNumbers.append(temp)
 
 		maximum = max(listOfNumbers)
@@ -114,13 +137,13 @@ class Tetris:
 	# new figure method
 	def new_figure(self):
 		self.figures = [
-			Figure(100, 100, 60, 60, I_TETROMINO),
+			Figure(100, 100, 60, 60, I_TETROMINO, True),
 			Figure(200, 200, 60, 60, O_TETROMINO),
-			Figure(300, 300, 60, 60, T_TETROMINO),
+			Figure(300, 300, 60, 60, T_TETROMINO, True),
 			Figure(100, 400, 60, 60, L_TETROMINO),
-			Figure(300, 500, 60, 60, J_TETROMINO),
+			Figure(300, 500, 60, 60, J_TETROMINO, True),
 			Figure(500, 500, 60, 60, S_TETROMINO),
-			Figure(650, 650, 60, 60, Z_TETROMINO)
+			Figure(650, 650, 60, 60, Z_TETROMINO, True)
 		]
 
 	# draw method
@@ -140,36 +163,52 @@ class Tetris:
 				trs.coordList = coordListTemp
 			else:
 				print("Figure stop")
-		
-			if trs.getBottom() >= self.height:
+
+			if trs.getLeft() <= self.width:
+				trs.state = "stop"
+			elif trs.getRight() >= self.width:
+				trs.state = "stop"
+			elif trs.getBottom() >= self.height:
 				trs.state = "stop"
 
 	# leftMove method
 	def leftMove(self):
+		print("Was this move left")
+
 		for fig in self.figures:
-			if fig == self.isActive:
+			if fig.isActive:
 				coordListTemp = []
 				for coord in fig.coordList:
 					coordListTemp.append((coord[0]-fig.width, coord[1]))
 				fig.coordList = coordListTemp
 
+				print("Was this move left")
+
 	# rightMove method
 	def rightMove(self):
+		print("Was this move right")
+
 		for fig in self.figures:
-			if fig == self.isActive:
+			if fig.isActive:
 				coordListTemp = []
 				for coord in fig.coordList:
 					coordListTemp.append((coord[0]+fig.width, coord[1]))
 				fig.coordList = coordListTemp
 
+				print("Was this move right")
+
 	# downMove method
 	def downMove(self):
+		print("Was this move down")
+
 		for fig in self.figures:
-			if fig == self.isActive:
+			if fig.isActive:
 				coordListTemp = []
 				for coord in fig.coordList:
 					coordListTemp.append((coord[0], coord[1]-fig.height))
 				fig.coordList = coordListTemp
+
+				print("Was this move down")
 
 	# rotate method
 	def rotate(self):
@@ -207,7 +246,6 @@ def main():
 	running = True
 
 	while running:
-		time.sleep(1)
 
 		screen.fill(BLACK)
 
@@ -238,7 +276,8 @@ def main():
 				if event.key == K_RIGHT:
 					game.rightMove()
 				if event.key == K_SPACE:
-					game.rotate()
+					#game.rotate()
+					pass
 				if event.key == K_ESCAPE:
 					game.__init__(20, 20)
 

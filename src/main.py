@@ -90,10 +90,8 @@ class Figure:
 			temp = coord[0]
 			listOfNumbers.append(temp)
 
-		maximum = max(listOfNumbers)
-
-		totalMax = maximum - self.width
-		return totalMax
+		minimum = min(listOfNumbers)
+		return minimum
 
 	# get right method
 	def getRight(self):
@@ -127,6 +125,7 @@ class Tetris:
 		self.state, self.field = "start", []
 		self.height, self.width = height, width
 		self.zoom, self.figure = 20, None
+		self.speed = 10
 
 		for h in range(height):
 			new_line = []
@@ -139,76 +138,69 @@ class Tetris:
 		self.figures = [
 			Figure(100, 100, 60, 60, I_TETROMINO, True),
 			Figure(200, 200, 60, 60, O_TETROMINO),
-			Figure(300, 300, 60, 60, T_TETROMINO, True),
+			Figure(300, 300, 60, 60, T_TETROMINO),
 			Figure(100, 400, 60, 60, L_TETROMINO),
-			Figure(300, 500, 60, 60, J_TETROMINO, True),
+			Figure(300, 500, 60, 60, J_TETROMINO),
 			Figure(500, 500, 60, 60, S_TETROMINO),
-			Figure(650, 650, 60, 60, Z_TETROMINO, True)
+			Figure(650, 650, 60, 60, Z_TETROMINO)
 		]
 
 	# draw method
 	def draw(self, screen):
-		for trs in self.figures:
-			trs.draw(screen)
+		for fig in self.figures:
+			fig.draw(screen)
+
+	def deactivate(self):
+		for fg in self.figures:
+			if fg.state == "stop" and fg.isActive:
+				fg.isActive = False
 
 	# move method
 	def move(self):
-		for trs in self.figures:
-			if trs.state == "start":
+		for fig in self.figures:
+			if fig.state == "start":
 				coordListTemp = []
 				
-				for coord in trs.coordList:
-					coordListTemp.append((coord[0], coord[1]+10))
+				for coord in fig.coordList:
+					coordListTemp.append((coord[0], coord[1]+self.speed))
 
-				trs.coordList = coordListTemp
-			else:
-				print("Figure stop")
+				fig.coordList = coordListTemp
 
-			if trs.getLeft() <= self.width:
-				trs.state = "stop"
-			elif trs.getRight() >= self.width:
-				trs.state = "stop"
-			elif trs.getBottom() >= self.height:
-				trs.state = "stop"
+			if fig.getBottom() >= self.height:
+				fig.state = "stop"
 
 	# leftMove method
 	def leftMove(self):
-		print("Was this move left")
-
 		for fig in self.figures:
-			if fig.isActive:
+			if fig.isActive and fig.getLeft() >= 0:
 				coordListTemp = []
+				moveAmount = fig.width if fig.getLeft() >= fig.width else fig.getLeft()
+				print(f'x:{fig.getLeft()} width: {fig.width} amount of move: {moveAmount}')
 				for coord in fig.coordList:
-					coordListTemp.append((coord[0]-fig.width, coord[1]))
+					coordListTemp.append((coord[0]-moveAmount, coord[1]))
 				fig.coordList = coordListTemp
-
-				print("Was this move left")
 
 	# rightMove method
 	def rightMove(self):
-		print("Was this move right")
-
 		for fig in self.figures:
-			if fig.isActive:
+			if fig.isActive and fig.getRight() <= self.width:
 				coordListTemp = []
+				moveAmount = fig.width if fig.getRight() <= fig.width else fig.getRight()
+				print(f'x:{fig.getRight()} width: {fig.width} amount of move: {moveAmount}')
 				for coord in fig.coordList:
 					coordListTemp.append((coord[0]+fig.width, coord[1]))
 				fig.coordList = coordListTemp
 
-				print("Was this move right")
-
 	# downMove method
 	def downMove(self):
-		print("Was this move down")
-
 		for fig in self.figures:
-			if fig.isActive:
+			if fig.isActive and fig.getBottom() >= self.height:
 				coordListTemp = []
+				moveAmount = fig.width if fig.getBottom() >= fig.height else fig.getBottom()
+				print(f'x:{fig.getBottom()} width: {fig.width} amount of move: {moveAmount}')
 				for coord in fig.coordList:
-					coordListTemp.append((coord[0], coord[1]-fig.height))
+					coordListTemp.append((coord[0], coord[1]+fig.height))
 				fig.coordList = coordListTemp
-
-				print("Was this move down")
 
 	# rotate method
 	def rotate(self):
@@ -220,7 +212,7 @@ def main():
 	pygame.init()
 
 	# define size by width & height
-	size = (800, 800)
+	size = (1000, 1000)
 
 	# screen window
 	screen = pygame.display.set_mode((size))
@@ -251,6 +243,9 @@ def main():
 
 		# call draw
 		game.draw(screen)
+
+		# call deactive 
+		game.deactivate()
 
 		# call move
 		game.move()
@@ -297,6 +292,8 @@ def main():
 
 		# pygame update
 		pygame.display.update()
+
+		time.sleep(.5)
 
 	# quit
 	pygame.quit()

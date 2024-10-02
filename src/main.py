@@ -122,28 +122,20 @@ class Tetris:
 	"""constructor"""
 	def __init__(self, height, width):
 		self.level, self.score = 2, 0
-		self.state, self.field = "start", []
+		self.state = "start"
 		self.height, self.width = height, width
-		self.zoom, self.figure = 20, None
 		self.speed = 10
-
-		for h in range(height):
-			new_line = []
-			for w in range(width):
-				new_line.append(0)
-			self.field.append(new_line)
+		self.figures = []
+		self.nextFigures = []
 
 	# new figure method
-	def new_figure(self):
-		self.figures = [
-			Figure(100, 100, 60, 60, I_TETROMINO, True),
-			Figure(200, 200, 60, 60, O_TETROMINO),
-			Figure(300, 300, 60, 60, T_TETROMINO),
-			Figure(100, 400, 60, 60, L_TETROMINO),
-			Figure(300, 500, 60, 60, J_TETROMINO),
-			Figure(500, 500, 60, 60, S_TETROMINO),
-			Figure(650, 650, 60, 60, Z_TETROMINO)
-		]
+	def newFigure(self):
+		self.figures.append(Figure(500, 0, 60, 60, I_TETROMINO, True))
+
+	def getActiveFigure(self):
+		for fig in self.figures:
+			if fig.isActive:
+				return fig
 
 	# draw method
 	def draw(self, screen):
@@ -180,26 +172,27 @@ class Tetris:
 					coordListTemp.append((coord[0]-moveAmount, coord[1]))
 				fig.coordList = coordListTemp
 
+	# x:160 FigWidth: 60 ScreenWidth: 1000 Move: 840
 	# rightMove method
 	def rightMove(self):
 		for fig in self.figures:
 			if fig.isActive and fig.getRight() <= self.width:
 				coordListTemp = []
-				moveAmount = fig.width if fig.getRight() <= fig.width else fig.getRight()
-				print(f'x:{fig.getRight()} width: {fig.width} amount of move: {moveAmount}')
+				moveAmount = fig.width if (self.width - fig.getRight()) >= fig.width else (self.width - fig.getRight())
+				print(f'x:{fig.getRight()} FigWidth: {fig.width} ScreenWidth: {self.width} Move: {moveAmount}')
 				for coord in fig.coordList:
-					coordListTemp.append((coord[0]+fig.width, coord[1]))
+					coordListTemp.append((coord[0]+moveAmount, coord[1]))
 				fig.coordList = coordListTemp
 
 	# downMove method
 	def downMove(self):
 		for fig in self.figures:
-			if fig.isActive and fig.getBottom() >= self.height:
+			if fig.isActive and fig.getBottom() <= self.height:
 				coordListTemp = []
-				moveAmount = fig.width if fig.getBottom() >= fig.height else fig.getBottom()
-				print(f'x:{fig.getBottom()} width: {fig.width} amount of move: {moveAmount}')
+				moveAmount = fig.height if (self.height - fig.getBottom()) >= fig.height else (self.height - fig.getBottom())
+				print(f'y:{fig.getBottom()} Height: {fig.height} amount of move: {moveAmount}')
 				for coord in fig.coordList:
-					coordListTemp.append((coord[0], coord[1]+fig.height))
+					coordListTemp.append((coord[0], coord[1]+moveAmount))
 				fig.coordList = coordListTemp
 
 	# rotate method
@@ -231,9 +224,6 @@ def main():
 	# instance
 	game = Tetris(size[0], size[1])
 
-	# call new figures
-	game.new_figure()
-
 	# game loop
 	running = True
 
@@ -249,6 +239,10 @@ def main():
 
 		# call move
 		game.move()
+
+		# call new figures
+		if game.getActiveFigure() is None:
+			game.newFigure()
 
 		# counter += 1
 

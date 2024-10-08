@@ -125,12 +125,17 @@ class Tetris:
 		self.state = "start"
 		self.height, self.width = height, width
 		self.speed = 10
-		self.figures = []
-		self.nextFigures = []
+		self.figures, self.nextFigures = [], []
 
 	# new figure method
 	def newFigure(self):
 		self.figures.append(Figure(500, 0, 60, 60, I_TETROMINO, True))
+		self.nextFigures.append(Figure(500, 0, 60, 60, O_TETROMINO, True))
+		self.nextFigures.append(Figure(500, 0, 60, 60, T_TETROMINO, True))
+		self.nextFigures.append(Figure(500, 0, 60, 60, L_TETROMINO, True))
+		self.nextFigures.append(Figure(500, 0, 60, 60, J_TETROMINO, True))
+		self.nextFigures.append(Figure(500, 0, 60, 60, S_TETROMINO, True))
+		self.nextFigures.append(Figure(500, 0, 60, 60, Z_TETROMINO, True))
 
 	def getActiveFigure(self):
 		for fig in self.figures:

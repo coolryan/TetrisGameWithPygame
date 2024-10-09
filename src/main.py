@@ -17,9 +17,7 @@ class Figure:
 	def __init__(self, x, y, width, height, figureType: str, isActive: bool = False):
 		self.coordList = list()
 		self.x, self.y = x, y
-		# self.type = random.randint(0, len(self.figures) - 1)
 		self.type = figureType
-		#self.color = random.randint(1, len(COLORS) - 1)
 		self.color = COLORS[0]
 		self.rotation = 0
 		self.width, self.height = width, height
@@ -77,11 +75,54 @@ class Figure:
 				(self.x+self.width, self.y+self.height)
 			]
 
+	@classmethod
+	def getRandomFigure(cls, maxX, maxY, width, height):
+		if not hasattr(cls, "rand"):
+			cls.rand = random.Random()
+
+		x = cls.rand.randint(0, maxX)
+		y = cls.rand.randint(0, maxY)
+		shapeIndex = cls.rand.randint(0, 6)
+
+		if shapeIndex == 0:
+			figureType = I_TETROMINO
+		elif shapeIndex == 1:
+			figureType = O_TETROMINO
+		elif shapeIndex == 2:
+			figureType = T_TETROMINO
+		elif shapeIndex == 3:
+			figureType = L_TETROMINO
+		elif shapeIndex == 4:
+			figureType = J_TETROMINO
+		elif shapeIndex == 5:
+			figureType = S_TETROMINO
+		elif shapeIndex == 6:
+			figureType = Z_TETROMINO
+
+		newFig = Figure(x, y, width, height, figureType, False)
+		return newFig
+
 	# draw method
 	def draw(self, screen):
 		for coord in self.coordList:
 			rect = pygame.Rect(coord[0], coord[1], self.width, self.height)
 			pygame.draw.rect(screen, self.color, rect)
+
+	def setX(self, x):
+		self.x = x
+		coordListTemp = []
+		
+		for coord in self.coordList:
+			coordListTemp.append((x, coord[1]))
+			self.coordList = coordListTemp
+
+	def setY(self, y):
+		self.y = y
+		coordListTemp = []
+
+		for coord in self.coordList:
+			coordListTemp.append((coord[0], y))
+			self.coordList = coordListTemp
 
 	# get left method
 	def getLeft(self):
@@ -126,16 +167,25 @@ class Tetris:
 		self.height, self.width = height, width
 		self.speed = 10
 		self.figures, self.nextFigures = [], []
+		self.initFigures()
+
+	def initFigures(self):
+		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, FIGURE_WIDTH, FIGURE_HEIGHT))
+		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, FIGURE_WIDTH, FIGURE_HEIGHT))
+		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, FIGURE_WIDTH, FIGURE_HEIGHT))
+		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, FIGURE_WIDTH, FIGURE_HEIGHT))
 
 	# new figure method
 	def newFigure(self):
-		self.figures.append(Figure(500, 0, 60, 60, I_TETROMINO, True))
-		self.nextFigures.append(Figure(500, 0, 60, 60, O_TETROMINO, True))
-		self.nextFigures.append(Figure(500, 0, 60, 60, T_TETROMINO, True))
-		self.nextFigures.append(Figure(500, 0, 60, 60, L_TETROMINO, True))
-		self.nextFigures.append(Figure(500, 0, 60, 60, J_TETROMINO, True))
-		self.nextFigures.append(Figure(500, 0, 60, 60, S_TETROMINO, True))
-		self.nextFigures.append(Figure(500, 0, 60, 60, Z_TETROMINO, True))
+		nextFig = self.nextFigures.pop()
+
+		nextFig.setX(500)
+		nextFig.setY(0)
+		nextFig.isActive = True
+
+		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, FIGURE_WIDTH, FIGURE_HEIGHT))
+
+		self.figures.append(nextFig)
 
 	def getActiveFigure(self):
 		for fig in self.figures:
@@ -172,7 +222,6 @@ class Tetris:
 			if fig.isActive and fig.getLeft() >= 0:
 				coordListTemp = []
 				moveAmount = fig.width if fig.getLeft() >= fig.width else fig.getLeft()
-				print(f'x:{fig.getLeft()} width: {fig.width} amount of move: {moveAmount}')
 				for coord in fig.coordList:
 					coordListTemp.append((coord[0]-moveAmount, coord[1]))
 				fig.coordList = coordListTemp
@@ -184,7 +233,6 @@ class Tetris:
 			if fig.isActive and fig.getRight() <= self.width:
 				coordListTemp = []
 				moveAmount = fig.width if (self.width - fig.getRight()) >= fig.width else (self.width - fig.getRight())
-				print(f'x:{fig.getRight()} FigWidth: {fig.width} ScreenWidth: {self.width} Move: {moveAmount}')
 				for coord in fig.coordList:
 					coordListTemp.append((coord[0]+moveAmount, coord[1]))
 				fig.coordList = coordListTemp
@@ -195,7 +243,6 @@ class Tetris:
 			if fig.isActive and fig.getBottom() <= self.height:
 				coordListTemp = []
 				moveAmount = fig.height if (self.height - fig.getBottom()) >= fig.height else (self.height - fig.getBottom())
-				print(f'y:{fig.getBottom()} Height: {fig.height} amount of move: {moveAmount}')
 				for coord in fig.coordList:
 					coordListTemp.append((coord[0], coord[1]+moveAmount))
 				fig.coordList = coordListTemp

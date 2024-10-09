@@ -19,6 +19,9 @@ COLORS = (
 	(180, 34, 122)
 )
 
+FIGURE_WIDTH = 60
+FIGURE_HEIGHT = 60
+
 # dedine each tetrominos
 I_TETROMINO = "I_TETROMINO"
 O_TETROMINO = "O_TETROMINO"

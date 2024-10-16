@@ -109,20 +109,28 @@ class Figure:
 			pygame.draw.rect(screen, self.color, rect)
 
 	def setX(self, x):
+		diff = self.x - x
 		self.x = x
 		coordListTemp = []
 		
 		for coord in self.coordList:
-			coordListTemp.append((x, coord[1]))
-			self.coordList = coordListTemp
+			coordListTemp.append((coord[0]+diff, coord[1]))
+		
+		self.coordList = coordListTemp
+
+		print(f"set x: {self.x}")
 
 	def setY(self, y):
+		diff = self.y - y
 		self.y = y
 		coordListTemp = []
 
 		for coord in self.coordList:
-			coordListTemp.append((coord[0], y))
-			self.coordList = coordListTemp
+			coordListTemp.append((coord[0], coord[1]+diff))
+
+		self.coordList = coordListTemp
+
+		print(f"set y: {self.y}")
 
 	# get left method
 	def getLeft(self):
@@ -187,6 +195,8 @@ class Tetris:
 
 		self.figures.append(nextFig)
 
+		print(f"\nnew figure's x:{nextFig.x}, y:{nextFig.y}")
+
 	def getActiveFigure(self):
 		for fig in self.figures:
 			if fig.isActive:
@@ -206,12 +216,8 @@ class Tetris:
 	def move(self):
 		for fig in self.figures:
 			if fig.state == "start":
-				coordListTemp = []
-				
-				for coord in fig.coordList:
-					coordListTemp.append((coord[0], coord[1]+self.speed))
-
-				fig.coordList = coordListTemp
+				moveAmount = self.speed if (self.height - fig.getBottom()) >= self.speed else (self.height - fig.getBottom())
+				fig.setY(fig.y-moveAmount)
 
 			if fig.getBottom() >= self.height:
 				fig.state = "stop"
@@ -220,32 +226,26 @@ class Tetris:
 	def leftMove(self):
 		for fig in self.figures:
 			if fig.isActive and fig.getLeft() >= 0:
-				coordListTemp = []
 				moveAmount = fig.width if fig.getLeft() >= fig.width else fig.getLeft()
-				for coord in fig.coordList:
-					coordListTemp.append((coord[0]-moveAmount, coord[1]))
-				fig.coordList = coordListTemp
+				fig.setX(fig.x-moveAmount)
 
 	# x:160 FigWidth: 60 ScreenWidth: 1000 Move: 840
 	# rightMove method
 	def rightMove(self):
 		for fig in self.figures:
 			if fig.isActive and fig.getRight() <= self.width:
-				coordListTemp = []
 				moveAmount = fig.width if (self.width - fig.getRight()) >= fig.width else (self.width - fig.getRight())
-				for coord in fig.coordList:
-					coordListTemp.append((coord[0]+moveAmount, coord[1]))
-				fig.coordList = coordListTemp
+				fig.setX(fig.x+moveAmount)
 
 	# downMove method
 	def downMove(self):
 		for fig in self.figures:
 			if fig.isActive and fig.getBottom() <= self.height:
-				coordListTemp = []
 				moveAmount = fig.height if (self.height - fig.getBottom()) >= fig.height else (self.height - fig.getBottom())
-				for coord in fig.coordList:
-					coordListTemp.append((coord[0], coord[1]+moveAmount))
-				fig.coordList = coordListTemp
+				fig.setY(fig.y-moveAmount)
+
+			if fig.getBottom() >= self.height:
+				fig.state = "stop"
 
 	# rotate method
 	def rotate(self):

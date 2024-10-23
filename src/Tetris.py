@@ -41,8 +41,6 @@ class Tetris:
 
 		self.figures.append(nextFig)
 
-		print(f"\nnew figure's x:{nextFig.x}, y:{nextFig.y}")
-
 	def getActiveFigure(self):
 		for fig in self.figures:
 			if fig.isActive:
@@ -63,7 +61,7 @@ class Tetris:
 		for fig in self.figures:
 			if fig.state == "start":
 				moveAmount = self.speed if (self.height - fig.getBottom()) >= self.speed else (self.height - fig.getBottom())
-				fig.setY(fig.y-moveAmount)
+				fig.setY(fig.y+moveAmount)
 
 			if fig.getBottom() >= self.height:
 				fig.state = "stop"
@@ -88,7 +86,7 @@ class Tetris:
 		for fig in self.figures:
 			if fig.isActive and fig.getBottom() <= self.height:
 				moveAmount = fig.height if (self.height - fig.getBottom()) >= fig.height else (self.height - fig.getBottom())
-				fig.setY(fig.y-moveAmount)
+				fig.setY(fig.y+moveAmount)
 
 			if fig.getBottom() >= self.height:
 				fig.state = "stop"

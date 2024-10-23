@@ -114,11 +114,10 @@ class Figure:
 		coordListTemp = []
 		
 		for coord in self.coordList:
-			coordListTemp.append((coord[0]+diff, coord[1]))
+			coordListTemp.append((coord[0]-diff, coord[1]))
 		
 		self.coordList = coordListTemp
 
-		print(f"set x: {self.x}")
 
 	def setY(self, y):
 		diff = self.y - y
@@ -126,11 +125,10 @@ class Figure:
 		coordListTemp = []
 
 		for coord in self.coordList:
-			coordListTemp.append((coord[0], coord[1]+diff))
+			coordListTemp.append((coord[0], coord[1]-diff))
 
 		self.coordList = coordListTemp
 
-		print(f"set y: {self.y}")
 
 	# get left method
 	def getLeft(self):

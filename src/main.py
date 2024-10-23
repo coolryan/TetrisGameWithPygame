@@ -5,6 +5,10 @@
 	Purpose: to execuate the main program
 """
 
+"""
+	To do: Translate from coordinate system to grid index system. For drawing, will dynamically convert to x,y coordinates again.
+"""
+
 # import libraries
 import pygame, random, time, sys
 

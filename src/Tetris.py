@@ -15,29 +15,30 @@ from Figure import *
 # class Tetris
 class Tetris:
 	"""constructor"""
-	def __init__(self, height, width):
+	def __init__(self, height, width, square_size):
 		self.level, self.score = 2, 0
 		self.state = "start"
 		self.height, self.width = height, width
 		self.speed = 10
 		self.figures, self.nextFigures = [], []
+		self.square_size = square_size
 		self.initFigures()
 
 	def initFigures(self):
-		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, FIGURE_WIDTH, FIGURE_HEIGHT))
-		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, FIGURE_WIDTH, FIGURE_HEIGHT))
-		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, FIGURE_WIDTH, FIGURE_HEIGHT))
-		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, FIGURE_WIDTH, FIGURE_HEIGHT))
+		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
+		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
+		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
+		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
 
 	# new figure method
 	def newFigure(self):
-		nextFig = self.nextFigures.pop()
+		nextFig: Figure = self.nextFigures.pop()
 
-		nextFig.setX(500)
+		nextFig.setX(self.width//2)
 		nextFig.setY(0)
 		nextFig.isActive = True
 
-		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, FIGURE_WIDTH, FIGURE_HEIGHT))
+		self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
 
 		self.figures.append(nextFig)
 

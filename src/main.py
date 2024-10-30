@@ -24,7 +24,13 @@ def main():
 	pygame.init()
 
 	# define size by width & height
-	size = (1000, 1000)
+	# Size in pixels
+	
+	# Size in grid
+	grid_width = 10
+	grid_height = 20
+	square_size = 50
+	size = (grid_width*square_size, grid_height*square_size)
 
 	# screen window
 	screen = pygame.display.set_mode((size))
@@ -41,7 +47,7 @@ def main():
 	pressing_down = False 
 			
 	# instance
-	game = Tetris(size[0], size[1])
+	game = Tetris(grid_width, grid_height, square_size)
 
 	# game loop
 	running = True
@@ -57,7 +63,7 @@ def main():
 		game.deactivate()
 
 		# call move
-		game.move()
+		# game.move()
 
 		# call new figures
 		if game.getActiveFigure() is None:

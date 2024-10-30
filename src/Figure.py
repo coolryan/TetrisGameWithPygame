@@ -14,13 +14,13 @@ from constants import *
 # class Figure
 class Figure:
 	"""docstring for Figure"""
-	def __init__(self, x, y, width, height, figureType: str, isActive: bool = False):
+	def __init__(self, x, y, size, figureType: str, isActive: bool = False):
 		self.coordList = list()
 		self.x, self.y = x, y
 		self.type = figureType
 		self.color = COLORS[0]
 		self.rotation = 0
-		self.width, self.height = width, height
+		self.size = size
 		self.state = "start"
 		self.isActive = isActive
 
@@ -28,55 +28,56 @@ class Figure:
 
 	# initFigure method
 	def initFigure(self):
-		#  [ ] [(x,y), [x,y+4], [0,8], [0.12]]
+		print(f"Init figure: {self.x}, {self.y}, {self.size}, {self.type}")
 		if self.type == I_TETROMINO:
-			self.coordList = [(self.x, self.y+i*self.height) for i in range(4)]
+			self.coordList = [(self.x, self.y+i) for i in range(4)]
 
 		elif self.type == O_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
-				(self.x+self.width, self.y),
-				(self.x, self.y-self.height),
-				(self.x+self.width, self.y-self.height)
+				(self.x+1, self.y),
+				(self.x, self.y-1),
+				(self.x+1, self.y-1)
 			]
 		elif self.type == T_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
-				(self.x+self.width, self.y),
-				(self.x+self.width*2, self.y),
-				(self.x+self.width, self.y+self.height)
+				(self.x+1, self.y),
+				(self.x+2, self.y),
+				(self.x+1, self.y+1)
 			]
 		elif self.type == L_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
-				(self.x, self.y+self.height),
-				(self.x, self.y+self.height*2),
-				(self.x+self.width, self.y+self.height*2)
+				(self.x, self.y+1),
+				(self.x, self.y+2),
+				(self.x+1, self.y+2)
 			]
 		elif self.type == J_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
-				(self.x, self.y+self.height),
-				(self.x, self.y+self.height*2),
-				(self.x-self.width, self.y+self.height*2)
+				(self.x, self.y+1),
+				(self.x, self.y+2),
+				(self.x-1, self.y+2)
 			]
 		elif self.type == S_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
-				(self.x+self.width, self.y),
-				(self.x, self.y+self.height),
-				(self.x-self.width, self.y+self.height)
+				(self.x+1, self.y),
+				(self.x, self.y+1),
+				(self.x-1, self.y+1)
 			]
 		elif self.type == Z_TETROMINO:
 			self.coordList = [
 				(self.x, self.y),
-				(self.x-self.width, self.y),
-				(self.x, self.y+self.height),
-				(self.x+self.width, self.y+self.height)
+				(self.x-1, self.y),
+				(self.x, self.y+1),
+				(self.x+1, self.y+1)
 			]
+		print("CoordList: ", self.coordList)
 
 	@classmethod
-	def getRandomFigure(cls, maxX, maxY, width, height):
+	def getRandomFigure(cls, maxX, maxY, size):
 		if not hasattr(cls, "rand"):
 			cls.rand = random.Random()
 
@@ -99,13 +100,20 @@ class Figure:
 		elif shapeIndex == 6:
 			figureType = Z_TETROMINO
 
-		newFig = Figure(x, y, width, height, figureType, False)
+		newFig = Figure(x, y, size, figureType, False)
 		return newFig
 
 	# draw method
 	def draw(self, screen):
+		print("Size: ", self.size)
+		print("Drawing coords: ", self.coordList)
 		for coord in self.coordList:
-			rect = pygame.Rect(coord[0], coord[1], self.width, self.height)
+			left = coord[0]*self.size
+			right = coord[1]*self.size
+			width = self.size
+			height = self.size
+			print(left, right, width, height)
+			rect = pygame.Rect(left, right, width, height)
 			pygame.draw.rect(screen, self.color, rect)
 
 	def setX(self, x):
@@ -114,7 +122,7 @@ class Figure:
 		coordListTemp = []
 		
 		for coord in self.coordList:
-			coordListTemp.append((coord[0]-diff, coord[1]))
+			coordListTemp.append(((coord[0]-diff)*self.size, coord[1]*self.size))
 		
 		self.coordList = coordListTemp
 
@@ -125,7 +133,7 @@ class Figure:
 		coordListTemp = []
 
 		for coord in self.coordList:
-			coordListTemp.append((coord[0], coord[1]-diff))
+			coordListTemp.append((coord[0]*self.size, (coord[1]-diff)*self.size))
 
 		self.coordList = coordListTemp
 
@@ -149,7 +157,7 @@ class Figure:
 
 		maximum = max(listOfNumbers)
 
-		totalMax = maximum + self.width
+		totalMax = maximum + self.size
 		return totalMax
 
 	# get bottom method
@@ -161,5 +169,5 @@ class Figure:
 
 		maximum = max(listOfNumbers)
 
-		totalMax = maximum + self.height
+		totalMax = maximum + self.size
 		return totalMax

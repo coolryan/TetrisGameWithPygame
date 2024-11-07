@@ -1,22 +1,23 @@
 """
-	Author: Ryan Setaruddin
-	Date: August 7th, 2024
-	Filename: constants.py
-	Purpose: To define constant variables
+    Author: Ryan Setaruddin
+    Date: August 7th, 2024
+    Filename: constants.py
+    Purpose: To define constant variables
 """
 
 # define colors for background, ext messages and/or score
+TEXT_COL = (255, 255, 255)
 BLACK, WHITE, GRAY = (0, 0, 0), (255, 255, 255), (128, 128, 128)
 
 # define colores for each tetrominos
 COLORS = (
-	(128, 128, 128), 
-	(120, 37, 179),
-	(100, 179, 179),
-	(80, 34, 22),     
-	(80, 134, 22),
-	(180, 34, 22),
-	(180, 34, 122)
+    (128, 128, 128), 
+    (120, 37, 179),
+    (100, 179, 179),
+    (80, 34, 22),     
+    (80, 134, 22),
+    (180, 34, 22),
+    (180, 34, 122)
 )
 
 # dedine each tetrominos

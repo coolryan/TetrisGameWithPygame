@@ -7,6 +7,8 @@
 
 """
     To do: Translate from coordinate system to grid index system. For drawing, will dynamically convert to x,y coordinates again.
+	To do: Translate from coordinate system to grid index system. 
+	For drawing, will dynamically convert to x, y coordinates again.
 """
 
 # import libraries

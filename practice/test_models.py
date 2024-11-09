@@ -25,7 +25,23 @@ def test_find_I_figure():
         Make a list of 3 figures, and find the one of type "I".
         Follow the Arrange, Act, Assert pattern as in test_find_figure_at_x_0.
     """
-    ...
+    #Arrange
+    fig1 = Figure(0, 0, 1, "Z")
+    fig2 = Figure(1, 1, 2, "I")
+    fig3 = Figure(2, 2, 3, "O")
+    figs = [fig1, fig2, fig3]
+
+    exp_fig = fig2
+
+    # Act
+    act_fig = None
+    for fig in figs:
+        if fig.x == 1:
+            act_fig = fig
+            break
+
+    # Assert
+    assert exp_fig == act_fig
     
 def test_find_I_figure():
     """
@@ -34,6 +50,11 @@ def test_find_I_figure():
         
     """
     # Arrange
+    fig1 = Figure(2, 0, 1, "S", True)
+    fig2 = Figure(2, 1, 0, "J", True)
+    fig3 = Figure(0, 0, 1, "T")
+    figs = [fig1, fig2, fig3]
+
     exp_active_ct = 2
 
     # Act

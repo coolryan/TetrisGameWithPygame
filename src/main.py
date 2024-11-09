@@ -17,8 +17,8 @@ import pygame, random, time, sys
 from pygame.locals import *
 from constants import *
 
-from Figure import *
-from Tetris import *
+from Models.Figure import *
+from Models.Tetris import *
 
 # introduction function
 def introduction():

@@ -10,7 +10,7 @@ import pygame, random, time, sys
 
 from pygame.locals import *
 from constants import *
-from Figure import *
+from .Figure import *
 
 # class Tetris
 class Tetris:

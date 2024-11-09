@@ -7,6 +7,7 @@ name = "pypi"
 pygame = "*"
 
 [dev-packages]
+pytest = "8.3.3"
 
 [requires]
-python_version = "3.11"
+python_version = "3.12"

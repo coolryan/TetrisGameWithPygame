@@ -25,7 +25,7 @@ def test_find_I_figure():
         Make a list of 3 figures, and find the one of type "I".
         Follow the Arrange, Act, Assert pattern as in test_find_figure_at_x_0.
     """
-    #Arrange
+    # Arrange
     fig1 = Figure(0, 0, 1, "Z")
     fig2 = Figure(1, 1, 2, "I")
     fig3 = Figure(2, 2, 3, "O")
@@ -47,7 +47,6 @@ def test_find_I_figure():
     """
         Make a list of 3 figures, two of them should be active, and find the ones that are active.
         Follow the Arrange, Act, Assert pattern as in test_find_figure_at_x_0.
-        
     """
     # Arrange
     fig1 = Figure(2, 0, 1, "S", True)
@@ -68,4 +67,9 @@ def test_initFigure_I():
     """
         Test creating an I_TETROMINO figure. Make sure the created figure has 4 items in its coordList.
     """
-    ...
+    # Arrange
+    coordList = Figure(0, 1, "I", True)
+    
+    # Act
+
+    # Asset

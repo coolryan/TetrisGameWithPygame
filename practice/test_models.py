@@ -73,12 +73,15 @@ def test_initFigure_I():
         Test creating an I_TETROMINO figure. Make sure the created figure has 4 items in its coordList.
     """
     # Arrange
-    fig = Figure(0, 1, "I", True)
+    fig = Figure(200, 100, "I", True)
     
     # Act
     exp_fig = list()
 
     act_fig = None
+
+    if fig.coordList:
+        act_fig = fig
 
     # Asset
     assert exp_fig == act_fig

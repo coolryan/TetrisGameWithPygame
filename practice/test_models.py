@@ -1,15 +1,15 @@
 from Models.Figure import Figure
+from constants import *
 
 def test_find_figure_at_x_0():
     # Arrange
-    fig1 = Figure(0, 0, 1, "I")
-    fig2 = Figure(1, 0, 1, "J")
-    fig3 = Figure(2, 0, 1, "K")
+    fig1 = Figure(0, 0, 1, I_TETROMINO)
+    fig2 = Figure(1, 0, 1, J_TETROMINO)
+    fig3 = Figure(2, 0, 1, L_TETROMINO)
     figs = [fig1, fig2, fig3]
 
-    exp_fig = fig1
-
     # Act
+    exp_fig = fig1
     act_fig = None
 
     for fig in figs:
@@ -27,18 +27,17 @@ def test_find_type_I_figure():
         Follow the Arrange, Act, Assert pattern as in test_find_figure_at_x_0.
     """
     # Arrange
-    fig1 = Figure(0, 0, 1, "Z")
-    fig2 = Figure(1, 1, 2, "I")
-    fig3 = Figure(2, 2, 3, "O")
+    fig1 = Figure(0, 0, 1, Z_TETROMINO)
+    fig2 = Figure(1, 1, 2, I_TETROMINO)
+    fig3 = Figure(2, 2, 3, O_TETROMINO)
     figs = [fig1, fig2, fig3]
 
-    exp_fig = fig2
-
     # Act
+    exp_fig = fig2
     act_fig = None
 
     for fig in figs:
-        if fig.type == "I":
+        if fig.type == I_TETROMINO:
             act_fig = fig
 
     # Assert
@@ -50,14 +49,13 @@ def test_find_active_figure():
         Follow the Arrange, Act, Assert pattern as in test_find_figure_at_x_0.
     """
     # Arrange
-    fig1 = Figure(2, 0, 1, "S", True)
-    fig2 = Figure(0, 1, 0, "J", True)
-    fig3 = Figure(0, 0, 1, "T", False)
+    fig1 = Figure(2, 0, 1, S_TETROMINO, True)
+    fig2 = Figure(0, 1, 0, J_TETROMINO, True)
+    fig3 = Figure(0, 0, 1, T_TETROMINO, False)
     figs = [fig1, fig2, fig3]
 
-    exp_active_ct = 2
-
     # Act
+    exp_active_ct = 2
     act_active = 0
 
     for fig in figs:
@@ -72,16 +70,26 @@ def test_initFigure_I():
     """
         Test creating an I_TETROMINO figure. Make sure the created figure has 4 items in its coordList.
     """
-    # Arrange
-    fig = Figure(200, 100, "I", True)
-    
+    # Arrange 
     # Act
-    exp_fig = list()
-
-    act_fig = None
-
-    if fig.coordList:
-        act_fig = fig
+    fig = Figure(200, 200, 100, I_TETROMINO)
 
     # Asset
-    assert exp_fig == act_fig
+    assert len(fig.coordList) == 4
+
+
+def test_getrandomFigure():
+    """
+        test that generates two differment random objects
+    """
+    # Arrange
+    maxX = 100
+    maxY = 100
+    size = 300
+
+    # Act
+    fig1 = Figure.getRandomFigure(maxX, maxY, size)
+    fig2 = Figure.getRandomFigure(maxX, maxY, size)
+
+    # Asset
+    assert fig1 != fig2

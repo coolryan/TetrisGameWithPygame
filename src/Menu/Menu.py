@@ -47,8 +47,8 @@ class Menu:
             if menu_state == "options":
               if back_button.draw(screen):
                 menu_state = "main"
-      else:
-        draw_text("Press SPACE to pause", font, TEXT_COL, 160, 250)
+        else:
+          draw_text("Press SPACE to pause", font, TEXT_COL, 160, 250)
 
     # draw Text method
     def draw_text(self, text, font, text_col, x, y):

@@ -4,6 +4,7 @@
     Filename: button.py
     Purpose: construct a button class and blueprint on how to create button
 """
+import pygame
 
 # Button class
 class Button:
@@ -25,7 +26,7 @@ class Button:
 
         # check mouseover and clicked conditions
         if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.clciked == False:
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
                 action = True
 

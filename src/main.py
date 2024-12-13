@@ -24,7 +24,11 @@ from Button.button import Button
 
 # introduction function
 def introduction():
-    pass
+    # check buttons has been drawn
+    if start_button.draw(screen):
+        print('START')
+    if exit_button.draw(screen):
+        print('EXIT')
 
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -40,21 +44,25 @@ def main():
     size = (grid_width*square_size, grid_height*square_size)
 
     game_paused, menu_state = False, "main"
-    font = pygame.font.SysFont("arialblack", 40)
+    font = pygame.font.SysFont("arial", 40)
     TEXT_COL = (255, 255, 255)
 
     # load images
-    path = "Menu/Images/"
-    resume_img = pygame.image.load(os.getcwd(), os.path.join(path, "resume-button-icon.png")).convert_alpha()
-    options_img = pygame.image.load(os.getcwd(), os.path.join(path, "button_options.png")).convert_alpha()
-    quit_img = pygame.image.load(path + "button_quit.png").convert_alpha()
-    back_img = pygame.image.load(path + "button_back.png").convert_alpha()
+    path = "src/Button/Images/"
+    start_img = pygame.image.load(os.path.join(os.cwd(), path, "start_btn.png")).convert_alpha()
+    exit_img = pygame.image.load(os.path.join(os.cwd(), path, "exit_btn.png")).convert_alpha()
+    resume_img = pygame.image.load(os.path.join(os.cwd(), path, "button_resume.png")).convert_laph()
+    options_img = pygame.image.load(os.path.join(os.cwd(), path, "button_options.png")).convert_laph()
+    quit_img = pygame.image.load(os.path.join(os.cwd(), path, "button_quit.png")).convert_laph()
+    back_img = pygame.image.load(os.path.join(os.cwd(), path, "button_back.png")).convert_laph()
 
     # create button instances
-    resume_button = button.Button(304, 125, resume_img, 1)
-    options_button = button.Button(297, 250, options_img, 1)
-    quit_button = button.Button(336, 375, quit_img, 1)
-    back_button = button.Button(332, 450, back_img, 1)
+    start_button = Button(200, 200, start_img, 0.8)
+    exit_button = Button(200, 200, exit_img, 0.8)
+    resume_button = Button(304, 125, resume_img, 1)
+    options_button = Button(297, 250, options_img, 1)
+    quit_button = Button(336, 375, quit_img, 1)
+    back_button = Button(332, 450, back_img, 1)
 
     # screen window
     screen = pygame.display.set_mode((size))
@@ -63,7 +71,7 @@ def main():
     pygame.display.set_caption('Tetris')
 
     # font variables
-    font = pygame.font.SysFont('ariablack', 40)
+    font = pygame.font.SysFont('arial', 40)
             
     # instance
     game = Tetris(grid_width, grid_height, square_size)
@@ -73,16 +81,13 @@ def main():
 
     while running:
   
-        screen.fill(BLACK)
+        screen.fill((52, 78, 91))
 
         # call draw
         game.draw(screen)
 
         # call deactive 
         game.deactivate()
-
-        # call move
-        # game.move()
 
         # call new figures
         if game.getActiveFigure() is None:
@@ -120,6 +125,7 @@ def main():
                 menu_state = "options"
               if quit_button.draw(screen):
                 run = False
+
             # check if the options menu is open
             if menu_state == "options":
               if back_button.draw(screen):

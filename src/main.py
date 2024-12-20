@@ -6,9 +6,8 @@
 """
 
 """
-    To do: Translate from coordinate system to grid index system. For drawing, will dynamically convert to x,y coordinates again.
-	To do: Translate from coordinate system to grid index system. 
-	For drawing, will dynamically convert to x, y coordinates again.
+    To do: Translate from coordinate system to grid index system. 
+    For drawing, will dynamically convert to x,y coordinates again.
 """
 
 # import libraries
@@ -21,14 +20,6 @@ from Models.Figure import *
 from Models.Tetris import *
 
 from Button.button import Button
-
-# introduction function
-def introduction():
-    # check buttons has been drawn
-    if start_button.draw(screen):
-        print('START')
-    if exit_button.draw(screen):
-        print('EXIT')
 
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -47,6 +38,15 @@ def main():
     font = pygame.font.SysFont("arial", 40)
     TEXT_COL = (255, 255, 255)
 
+    # screen window
+    screen = pygame.display.set_mode((size))
+
+    # title & caption
+    pygame.display.set_caption('Tetris')
+
+    # font variables
+    font = pygame.font.SysFont('arial', 40)
+
     # load images
     path = "src/Button/Images/"
     start_img = pygame.image.load(os.path.join(os.getcwd(), path, "start_btn.png"))
@@ -63,15 +63,6 @@ def main():
     options_button = Button(297, 250, options_img, 1)
     quit_button = Button(336, 375, quit_img, 1)
     back_button = Button(332, 450, back_img, 1)
-
-    # screen window
-    screen = pygame.display.set_mode((size))
-
-    # title & caption
-    pygame.display.set_caption('Tetris')
-
-    # font variables
-    font = pygame.font.SysFont('arial', 40)
             
     # instance
     game = Tetris(grid_width, grid_height, square_size)
@@ -86,6 +77,7 @@ def main():
         # call draw
         game.draw(screen)
 
+        # call move
         game.move()
 
         # call deactive 
@@ -94,12 +86,51 @@ def main():
         # call new figures
         if game.getActiveFigure() is None:
             game.newFigure()
+
+        # check if game is paused
+        if game_paused == True:
+            # check menu state
+            if menu_state == "main":
+                # # check buttons has been drawn
+                # if start_button.draw(screen):
+                #      # call draw
+                #     game.draw(screen)
+
+                #     # call move
+                #     game.move()
+
+                # if exit_button.draw(screen):
+                #     # quit
+                #     pygame.quit()
+                #     sys.exit(0)
+                pass
+
+                # draw pause screen buttons
+                if resume_button.draw(screen):
+                    game_paused = False
+
+                if options_button.draw(screen):
+                    menu_state = "options"
+
+                # if quit_button.draw(screen):
+                #     running = False
+                #     # quit
+                #     pygame.quit()
+                #     sys.exit(0)
+
+            # check if the options menu is open
+            if menu_state == "options":
+                if back_button.draw(screen):
+                    menu_state = "main"
         
         # event handler
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
             if event.type == pygame.KEYDOWN:
+                if event.type == QUIT:
+                    # quit
+                    running = False
+                    pygame.quit()
+                    sys.exit(0)
                 if event.key == K_DOWN:
                     game.downMove()
                 if event.key == K_LEFT:
@@ -115,32 +146,20 @@ def main():
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_DOWN:
                     game.downMove()
-
-        # check if game is paused
-        if game_paused == True:
-            # check menu state
-            if menu_state == "main":
-              # draw pause screen buttons
-              if resume_button.draw(screen):
-                game_paused = False
-              if options_button.draw(screen):
-                menu_state = "options"
-              if quit_button.draw(screen):
-                run = False
-
-            # check if the options menu is open
-            if menu_state == "options":
-              if back_button.draw(screen):
-                menu_state = "main"
+                if event.key == K_LEFT:
+                    game.leftMove()
+                if event.key == K_RIGHT:
+                    game.rightMove()
+                if event.key == K_SPACE:
+                    #game.rotate()
+                    pass
+                if event.key == K_ESCAPE:
+                    game_paused = False
 
         # pygame update
         pygame.display.update()
 
         time.sleep(1.5)
-
-    # quit
-    pygame.quit()
-    sys.exit(0)
 
 # run the main program
 if __name__ == '__main__':

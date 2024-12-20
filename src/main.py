@@ -49,13 +49,12 @@ def main():
 
     # load images
     path = "src/Button/Images/"
-    start_img = pygame.image.load(os.path.join(os.cwd(), path, "start_btn.png")).convert_alpha()
-    exit_img = pygame.image.load(os.path.join(os.cwd(), path, "exit_btn.png")).convert_alpha()
-    resume_img = pygame.image.load(os.path.join(os.cwd(), path, "button_resume.png")).convert_laph()
-    options_img = pygame.image.load(os.path.join(os.cwd(), path, "button_options.png")).convert_laph()
-    quit_img = pygame.image.load(os.path.join(os.cwd(), path, "button_quit.png")).convert_laph()
-    back_img = pygame.image.load(os.path.join(os.cwd(), path, "button_back.png")).convert_laph()
-
+    start_img = pygame.image.load(os.path.join(os.getcwd(), path, "start_btn.png"))
+    exit_img = pygame.image.load(os.path.join(os.getcwd(), path, "exit_btn.png"))
+    resume_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_resume.png"))
+    options_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_options.png"))
+    quit_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_quit.png"))
+    back_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_back.png"))
     # create button instances
     start_button = Button(200, 200, start_img, 0.8)
     exit_button = Button(200, 200, exit_img, 0.8)

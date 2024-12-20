@@ -108,12 +108,12 @@ class Figure:
         print("Size: ", self.size)
         print("Drawing coords: ", self.coordList)
         for coord in self.coordList:
-            left = coord[0]*self.size
-            right = coord[1]*self.size
+            x = coord[0]*self.size
+            y = coord[1]*self.size
             width = self.size
             height = self.size
-            print(left, right, width, height)
-            rect = pygame.Rect(left, right, width, height)
+            print(f"x: {x} y: {y}")
+            rect = pygame.Rect(x, y, width, height)
             pygame.draw.rect(screen, self.color, rect)
 
     def setX(self, x):
@@ -122,7 +122,7 @@ class Figure:
         coordListTemp = []
         
         for coord in self.coordList:
-            coordListTemp.append(((coord[0]-diff)*self.size, coord[1]*self.size))
+            coordListTemp.append(((coord[0]-diff), coord[1]))
         
         self.coordList = coordListTemp
 
@@ -133,7 +133,7 @@ class Figure:
         coordListTemp = []
 
         for coord in self.coordList:
-            coordListTemp.append((coord[0]*self.size, (coord[1]-diff)*self.size))
+            coordListTemp.append((coord[0], (coord[1]-diff)))
 
         self.coordList = coordListTemp
 
@@ -157,7 +157,7 @@ class Figure:
 
         maximum = max(listOfNumbers)
 
-        totalMax = maximum + self.size
+        totalMax = maximum
         return totalMax
 
     # get bottom method
@@ -169,5 +169,5 @@ class Figure:
 
         maximum = max(listOfNumbers)
 
-        totalMax = maximum + self.size
+        totalMax = maximum
         return totalMax

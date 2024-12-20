@@ -55,6 +55,7 @@ def main():
     options_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_options.png"))
     quit_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_quit.png"))
     back_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_back.png"))
+
     # create button instances
     start_button = Button(200, 200, start_img, 0.8)
     exit_button = Button(200, 200, exit_img, 0.8)
@@ -84,6 +85,8 @@ def main():
 
         # call draw
         game.draw(screen)
+
+        game.move()
 
         # call deactive 
         game.deactivate()
@@ -133,7 +136,7 @@ def main():
         # pygame update
         pygame.display.update()
 
-        time.sleep(.5)
+        time.sleep(1.5)
 
     # quit
     pygame.quit()

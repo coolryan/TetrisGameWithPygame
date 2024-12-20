@@ -15,11 +15,11 @@ from .Figure import *
 # class Tetris
 class Tetris:
     """constructor"""
-    def __init__(self, height, width, square_size):
+    def __init__(self, width, height, square_size):
         self.level, self.score = 2, 0
         self.state = "start"
         self.height, self.width = height, width
-        self.speed = 10
+        self.speed = 1
         self.figures, self.nextFigures = [], []
         self.square_size = square_size
         self.initFigures()
@@ -71,7 +71,7 @@ class Tetris:
     def leftMove(self):
         for fig in self.figures:
             if fig.isActive and fig.getLeft() >= 0:
-                moveAmount = fig.width if fig.getLeft() >= fig.width else fig.getLeft()
+                moveAmount = 1 if fig.getLeft() >= 0 else fig.getLeft()
                 fig.setX(fig.x-moveAmount)
 
     # x:160 FigWidth: 60 ScreenWidth: 1000 Move: 840
@@ -79,7 +79,7 @@ class Tetris:
     def rightMove(self):
         for fig in self.figures:
             if fig.isActive and fig.getRight() <= self.width:
-                moveAmount = fig.width if (self.width - fig.getRight()) >= fig.width else (self.width - fig.getRight())
+                moveAmount = 1 if (self.width - fig.getRight()) >= 1 else 0
                 fig.setX(fig.x+moveAmount)
 
     # downMove method

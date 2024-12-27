@@ -86,7 +86,9 @@ class Tetris:
     def downMove(self):
         for fig in self.figures:
             if fig.isActive and fig.getBottom() <= self.height:
-                moveAmount = self.speed if (self.height - fig.getBottom()) >= self.height else (self.height - fig.getBottom())
+                spaceLeft = self.height - fig.getBottom()
+                enoughSpace = self.speed <= spaceLeft
+                moveAmount = self.speed if enoughSpace else spaceLeft
                 fig.setY(fig.y+moveAmount)
 
             if fig.getBottom() >= self.height:

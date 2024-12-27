@@ -70,6 +70,8 @@ def main():
     # game loop
     running = True
 
+    game_tick_freq = 7
+    turn = 0
     while running:
   
         screen.fill((52, 78, 91))
@@ -78,7 +80,8 @@ def main():
         game.draw(screen)
 
         # call move
-        game.move()
+        if turn % game_tick_freq == 0:
+            game.move()
 
         # call deactive 
         game.deactivate()
@@ -159,7 +162,8 @@ def main():
         # pygame update
         pygame.display.update()
 
-        time.sleep(1.5)
+        time.sleep(.1)
+        turn += 1
 
 # run the main program
 if __name__ == '__main__':

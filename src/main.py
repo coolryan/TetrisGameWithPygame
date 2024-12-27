@@ -73,7 +73,7 @@ def main():
     game_tick_freq = 7
     turn = 0
     while running:
-  
+        moved = False
         screen.fill((52, 78, 91))
 
         # call draw
@@ -82,6 +82,7 @@ def main():
         # call move
         if turn % game_tick_freq == 0:
             game.move()
+            moved = True
 
         # call deactive 
         game.deactivate()
@@ -136,34 +137,26 @@ def main():
                     sys.exit(0)
                 if event.key == K_DOWN:
                     game.downMove()
+                    moved = True
                 if event.key == K_LEFT:
                     game.leftMove()
+                    moved = True
                 if event.key == K_RIGHT:
                     game.rightMove()
+                    moved = True
                 if event.key == K_SPACE:
                     #game.rotate()
-                    pass
+                    moved = True
                 if event.key == K_ESCAPE:
                     game_paused = True
-
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_DOWN:
-                    game.downMove()
-                if event.key == K_LEFT:
-                    game.leftMove()
-                if event.key == K_RIGHT:
-                    game.rightMove()
-                if event.key == K_SPACE:
-                    #game.rotate()
-                    pass
-                if event.key == K_ESCAPE:
-                    game_paused = False
 
         # pygame update
         pygame.display.update()
 
         time.sleep(.1)
         turn += 1
+        if moved:
+            game.updateGrid()
 
 # run the main program
 if __name__ == '__main__':

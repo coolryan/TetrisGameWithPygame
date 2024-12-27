@@ -36,8 +36,8 @@ class Figure:
             self.coordList = [
                 (self.x, self.y),
                 (self.x+1, self.y),
-                (self.x, self.y-1),
-                (self.x+1, self.y-1)
+                (self.x, self.y+1),
+                (self.x+1, self.y+1)
             ]
         elif self.type == T_TETROMINO:
             self.coordList = [

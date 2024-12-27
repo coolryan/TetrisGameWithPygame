@@ -23,6 +23,8 @@ class Tetris:
         self.figures, self.nextFigures = [], []
         self.square_size = square_size
         self.initFigures()
+        self.grid = [[None for i in range(width)] for j in range(height)]
+
 
     def initFigures(self):
         self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
@@ -46,6 +48,15 @@ class Tetris:
         for fig in self.figures:
             if fig.isActive:
                 return fig
+            
+    def updateGrid(self):
+        # Reset the grid
+        self.grid = [[None for i in range(self.width)] for j in range(self.height)]
+        # Add each figure's coords to the grid
+        for fig in self.figures:
+            for coord in fig.coordList:
+                self.grid[coord[0]][coord[1]] = fig
+                
 
     # draw method
     def draw(self, screen):
@@ -64,8 +75,27 @@ class Tetris:
             return 0
 
         # find minimum space open from all block in active figure
+        emptySpacePerCoord = []
         for coord in activeFigure.coordList:
-            pass
+            # Check how many empty spaces underneath
+            spacesUnder = 0
+            emptySpace = 0
+            empty = True
+            y = coord[1]
+            x = coord[0]
+            while empty:
+                spacesUnder += 1
+                if y+spacesUnder >= self.height:
+                    break
+
+                if self.grid[y+spacesUnder][x] is None or self.grid[y+spacesUnder][x] is activeFigure:
+                    emptySpace = spacesUnder
+                else:
+                    empty = False
+            emptySpacePerCoord.append(emptySpace)
+        return min(emptySpacePerCoord)            
+                
+                
 
     def distanceLeftActive():
         activeFigure = self.getActiveFigure()

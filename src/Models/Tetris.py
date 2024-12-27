@@ -57,6 +57,26 @@ class Tetris:
             if fg.state == "stop" and fg.isActive:
                 fg.isActive = False
 
+    # distance funnction helpers
+    def distanceDownActive(self):
+        activeFigure = self.getActiveFigure()
+        if activeFigure is None:
+            return 0
+
+        # find minimum space open from all block in active figure
+        for coord in activeFigure.coordList:
+            pass
+
+    def distanceLeftActive():
+        activeFigure = self.getActiveFigure()
+        if activeFigure is None:
+            return 0
+
+    def distanceRightActive(self):
+        activeFigure = self.getActiveFigure()
+        if activeFigure is None:
+            return 0
+
     # move method
     def move(self):
         for fig in self.figures:

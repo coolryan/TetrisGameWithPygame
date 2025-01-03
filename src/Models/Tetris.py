@@ -23,6 +23,7 @@ class Tetris:
         self.figures, self.nextFigures = [], []
         self.square_size = square_size
         self.initFigures()
+        # Grid is by y then x. So grid[y][x]
         self.grid = [[None for i in range(width)] for j in range(height)]
 
 
@@ -55,7 +56,12 @@ class Tetris:
         # Add each figure's coords to the grid
         for fig in self.figures:
             for coord in fig.coordList:
-                self.grid[coord[0]][coord[1]] = fig
+                try:
+                    x = coord[0]
+                    y = coord[1]
+                    self.grid[y][x] = fig
+                except IndexError as e:
+                    print(f"IndexError: {e}")
                 
 
     # draw method

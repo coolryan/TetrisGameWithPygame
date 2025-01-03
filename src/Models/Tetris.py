@@ -117,17 +117,22 @@ class Tetris:
     def move(self):
         for fig in self.figures:
             if fig.state == "start":
-                moveAmount = self.speed if (self.height - fig.getBottom()) >= self.speed else (self.height - fig.getBottom())
-                fig.setY(fig.y+moveAmount)
+                spaceLeft = self.height - fig.getBottom() - 1
+                enoughSpace = self.speed < spaceLeft
+                moveAmount = self.speed if enoughSpace else spaceLeft
+                if self.willCollide(fig=fig, dx=0, dy=moveAmount):
+                    fig.state = "stop"
+                else:
+                    fig.setY(fig.y+moveAmount)
 
-            if fig.getBottom() >= self.height:
+            if fig.getBottom() >= self.height -1:
                 fig.state = "stop"
 
     # leftMove method
     def leftMove(self):
         for fig in self.figures:
             if fig.isActive and fig.getLeft() >= 0:
-                moveAmount = 1 if fig.getLeft() >= 0 else fig.getLeft()
+                moveAmount = 1 if fig.getLeft() > 0 else fig.getLeft()
                 fig.setX(fig.x-moveAmount)
 
     # x:160 FigWidth: 60 ScreenWidth: 1000 Move: 840
@@ -135,20 +140,36 @@ class Tetris:
     def rightMove(self):
         for fig in self.figures:
             if fig.isActive and fig.getRight() <= self.width:
-                moveAmount = 1 if (self.width - fig.getRight()) >= 1 else 0
+                moveAmount = 1 if (self.width - fig.getRight()) > 1 else 0
                 fig.setX(fig.x+moveAmount)
 
     # downMove method
     def downMove(self):
         for fig in self.figures:
             if fig.isActive and fig.getBottom() <= self.height:
-                spaceLeft = self.height - fig.getBottom()
-                enoughSpace = self.speed <= spaceLeft
+                spaceLeft = self.height - fig.getBottom() - 1
+                enoughSpace = self.speed < spaceLeft
                 moveAmount = self.speed if enoughSpace else spaceLeft
                 fig.setY(fig.y+moveAmount)
 
-            if fig.getBottom() >= self.height:
+            if fig.getBottom() >= self.height -1:
                 fig.state = "stop"
+
+    def willCollide(self, fig, dx, dy):
+        """
+            Check the new coordinates of the figure, and see if anything other than itself is on the grid at those locations
+        """
+        # Calculate the new coordinates (without actually changing them in the figure)
+        newCoordList = [(coord[0]+dx, coord[1]+dy) for coord in fig.coordList]
+        # Make sure none of the new coordinates already have shapes in them
+        for coord in newCoordList:
+            x = coord[0]
+            y = coord[1]
+            shapeAtCoord = self.grid[y][x] is not None
+            thisFigAtCoord = self.grid[y][x] is fig
+            if shapeAtCoord and not thisFigAtCoord:
+                return True
+        return False
 
     # rotate method
     def rotate(self):

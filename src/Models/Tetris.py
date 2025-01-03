@@ -132,8 +132,11 @@ class Tetris:
     def leftMove(self):
         for fig in self.figures:
             if fig.isActive and fig.getLeft() >= 0:
-                moveAmount = 1 if fig.getLeft() > 0 else fig.getLeft()
-                fig.setX(fig.x-moveAmount)
+                moveAmount = -1 if fig.getLeft() > 0 else fig.getLeft()
+                if self.willCollide(fig=fig, dx=moveAmount, dy=0):
+                    continue
+                else:
+                    fig.setX(fig.x+moveAmount)
 
     # x:160 FigWidth: 60 ScreenWidth: 1000 Move: 840
     # rightMove method
@@ -141,7 +144,10 @@ class Tetris:
         for fig in self.figures:
             if fig.isActive and fig.getRight() <= self.width:
                 moveAmount = 1 if (self.width - fig.getRight()) > 1 else 0
-                fig.setX(fig.x+moveAmount)
+                if self.willCollide(fig=fig, dx=moveAmount, dy=0):
+                    continue
+                else:
+                    fig.setX(fig.x+moveAmount)
 
     # downMove method
     def downMove(self):

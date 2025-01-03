@@ -122,7 +122,9 @@ class Figure:
         coordListTemp = []
         
         for coord in self.coordList:
-            coordListTemp.append(((coord[0]-diff), coord[1]))
+            coordListTemp.append(
+                ((coord[0]-diff), coord[1])
+            )
         
         self.coordList = coordListTemp
 
@@ -133,7 +135,9 @@ class Figure:
         coordListTemp = []
 
         for coord in self.coordList:
-            coordListTemp.append((coord[0], (coord[1]-diff)))
+            coordListTemp.append(
+                (coord[0], (coord[1]-diff))
+            )
 
         self.coordList = coordListTemp
 

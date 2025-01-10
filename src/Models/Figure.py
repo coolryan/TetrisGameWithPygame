@@ -11,51 +11,6 @@ import pygame, random, time, sys
 from pygame.locals import *
 from constants import *
 
-shapeDictionary = {
-    I_TETROMINO: [
-        [(0,0), (0,1), (0,2), (0,3)], # RotationIndex 0
-        [(0,0), (1,0), (2,0), (3,0)], # RotationIndex 1
-        [(0,0), (0,1), (0,2), (0,3)], # RotationIndex 2
-        [(0,0), (1,0), (2,0), (3,0)]  # RotationIndex 3
-    ],
-    T_TETROMINO: [
-        [(0,0), (1,0), (2,0), (1,1)],
-        [(1,0), (1,1), (1,2), (0,1)],
-        [(0,1), (1,1), (2,1), (1,0)],
-        [(1,0), (1,1), (1,2), (2,1)]
-    ],
-    O_TETROMINO: [
-        [(0,0), (1,0), (0,1), (1,1)],
-        [(0,0), (1,0), (0,1), (1,1)],
-        [(0,0), (1,0), (0,1), (1,1)],
-        [(0,0), (1,0), (0,1), (1,1)]
-    ],
-    L_TETROMINO: [
-        [(0,0), (0,1), (0,2), (1,2)],
-        [(0,0), (1,0), (2,0), (0,1)],
-        [(0,0), (1,0), (1,1), (1,2)],
-        [(2,0), (0,1), (1,1), (2,1)]
-    ],
-    J_TETROMINO: [
-        [(1,0), (1,1), (1,2), (0,2)],
-        [(0,0), (0,1), (1,1), (2,1)],
-        [(1,0), (2,0), (1,1), (1,2)],
-        [(0,0), (1,0), (2,0), (2,1)]
-    ],
-    S_TETROMINO: [
-        [(1,0), (2,0), (0,1), (1,1)],
-        [(0,0), (0,1), (1,1), (1,2)],
-        [(1,0), (2,0), (0,1), (1,1)],
-        [(0,0), (0,1), (1,1), (1,2)]
-    ],
-    Z_TETROMINO: [
-        [(0,0), (1,0), (1,1), (2,1)],
-        [(2,0), (1,1), (2,1), (1,2)],
-        [(0,0), (1,0), (1,1), (2,1)],
-        [(2,0), (1,1), (2,1), (1,2)]
-    ]
-}
-
 # class Figure
 class Figure:
     """docstring for Figure"""
@@ -63,7 +18,7 @@ class Figure:
         self.coordList = list()
         self.x, self.y = x, y
         self.type = figureType
-        self.color = COLORS[0]
+        self.color = SHAPE_COLORS[self.type]
         self.rotationIndex = 0
         self.size = size
         self.state = "start"
@@ -71,24 +26,21 @@ class Figure:
 
         self.initFigure()
 
-
     # initFigure method
     def initFigure(self):
         print(f"Init figure: {self.x}, {self.y}, {self.size}, {self.type}")
 
-        currentCoordMap = shapeDictionary[self.type][self.rotationIndex]
+        currentCoordMap = SHAPE_OFFSETS[self.type][self.rotationIndex]
         self.coordList = [(self.x + coordOffset[0], self.y + coordOffset[1]) for coordOffset in currentCoordMap]
 
         print("CoordList: ", self.coordList)
-
 
     @classmethod
     def getRandomFigure(cls, maxX, maxY, size):
         if not hasattr(cls, "rand"):
             cls.rand = random.Random()
 
-        x = cls.rand.randint(0, maxX)
-        y = cls.rand.randint(0, maxY)
+        x, y = cls.rand.randint(0, maxX), cls.rand.randint(0, maxY)
         shapeIndex = cls.rand.randint(0, 6)
 
         if shapeIndex == 0:
@@ -109,20 +61,18 @@ class Figure:
         newFig = Figure(x, y, size, figureType, False)
         return newFig
 
-
     # draw method
     def draw(self, screen):
         print("Size: ", self.size)
         print("Drawing coords: ", self.coordList)
         for coord in self.coordList:
-            x = coord[0]*self.size
-            y = coord[1]*self.size
-            width = self.size
-            height = self.size
+            x, y = coord[0]*self.size, coord[1]*self.size
+            width, height = self.size, self.size
+
             print(f"x: {x} y: {y}")
+
             rect = pygame.Rect(x, y, width, height)
             pygame.draw.rect(screen, self.color, rect)
-
 
     def setX(self, x):
         diff = self.x - x

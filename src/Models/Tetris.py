@@ -19,7 +19,7 @@ class Tetris:
         self.level, self.score = 2, 0
         self.state = "start"
         self.height, self.width = height, width
-        self.speed = 1
+        self.velocity = 1
         self.figures, self.nextFigures = [], []
         self.square_size = square_size
         self.initFigures()
@@ -57,8 +57,7 @@ class Tetris:
         for fig in self.figures:
             for coord in fig.coordList:
                 try:
-                    x = coord[0]
-                    y = coord[1]
+                    x, y = self.size, coord[1]
                     self.grid[y][x] = fig
                 except IndexError as e:
                     print(f"IndexError: {e}")    
@@ -83,11 +82,9 @@ class Tetris:
         emptySpacePerCoord = []
         for coord in activeFigure.coordList:
             # Check how many empty spaces underneath
-            spacesUnder = 0
-            emptySpace = 0
-            empty = True
-            y = coord[1]
-            x = coord[0]
+            spacesUnder, emptySpace, empty = 0, 0, True
+            y, x = coord[1], coord[0]
+
             while empty:
                 spacesUnder += 1
                 if y+spacesUnder >= self.height:
@@ -97,6 +94,7 @@ class Tetris:
                     emptySpace = spacesUnder
                 else:
                     empty = False
+
             emptySpacePerCoord.append(emptySpace)
         return min(emptySpacePerCoord)            
                 
@@ -115,8 +113,9 @@ class Tetris:
         for fig in self.figures:
             if fig.state == "start":
                 spaceLeft = self.height - fig.getBottom() - 1
-                enoughSpace = self.speed < spaceLeft
-                moveAmount = self.speed if enoughSpace else spaceLeft
+                enoughSpace = self.velocity < spaceLeft
+                moveAmount = self.velocity if enoughSpace else spaceLeft
+
                 if self.willCollide(fig=fig, dx=0, dy=moveAmount):
                     fig.state = "stop"
                 else:
@@ -130,6 +129,7 @@ class Tetris:
         for fig in self.figures:
             if fig.isActive and fig.getLeft() >= 0:
                 moveAmount = -1 if fig.getLeft() > 0 else fig.getLeft()
+
                 if self.willCollide(fig=fig, dx=moveAmount, dy=0):
                     continue
                 else:
@@ -141,6 +141,7 @@ class Tetris:
         for fig in self.figures:
             if fig.isActive and fig.getRight() <= self.width:
                 moveAmount = 1 if (self.width - fig.getRight()) > 1 else 0
+
                 if self.willCollide(fig=fig, dx=moveAmount, dy=0):
                     continue
                 else:
@@ -151,9 +152,13 @@ class Tetris:
         for fig in self.figures:
             if fig.isActive and fig.getBottom() <= self.height:
                 spaceLeft = self.height - fig.getBottom() - 1
-                enoughSpace = self.speed < spaceLeft
-                moveAmount = self.speed if enoughSpace else spaceLeft
-                fig.setY(fig.y+moveAmount)
+                enoughSpace = self.velocity < spaceLeft
+                moveAmount = self.velocity if enoughSpace else spaceLeft
+
+                if self.willCollide(fig=fig, dx=0, dy=moveAmount):
+                    continue
+                else:
+                    fig.setY(fig.y+moveAmount)
 
             if fig.getBottom() >= self.height -1:
                 fig.state = "stop"
@@ -173,10 +178,10 @@ class Tetris:
         newCoordList = [(coord[0]+dx, coord[1]+dy) for coord in fig.coordList]
         # Make sure none of the new coordinates already have shapes in them
         for coord in newCoordList:
-            x = coord[0]
-            y = coord[1]
+            x, y = coord[0], coord[1]
             shapeAtCoord = self.grid[y][x] is not None
             thisFigAtCoord = self.grid[y][x] is fig
+
             if shapeAtCoord and not thisFigAtCoord:
                 return True
         return False

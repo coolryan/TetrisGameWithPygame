@@ -67,11 +67,12 @@ def main():
     # instance
     game = Tetris(grid_width, grid_height, square_size)
 
-    # game loop
+    # game variables
     running = True
-
     game_tick_freq = 7
     turn = 0
+
+     # game loop
     while running:
         moved = False
         screen.fill((52, 78, 91))

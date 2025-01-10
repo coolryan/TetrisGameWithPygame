@@ -61,8 +61,7 @@ class Tetris:
                     y = coord[1]
                     self.grid[y][x] = fig
                 except IndexError as e:
-                    print(f"IndexError: {e}")
-                
+                    print(f"IndexError: {e}")    
 
     # draw method
     def draw(self, screen):
@@ -101,8 +100,6 @@ class Tetris:
             emptySpacePerCoord.append(emptySpace)
         return min(emptySpacePerCoord)            
                 
-                
-
     def distanceLeftActive():
         activeFigure = self.getActiveFigure()
         if activeFigure is None:
@@ -161,6 +158,10 @@ class Tetris:
             if fig.getBottom() >= self.height -1:
                 fig.state = "stop"
 
+    # rotate method
+    def rotate(self):
+        pass
+
     def willCollide(self, fig, dx, dy):
         """
             Check the new coordinates of the figure, and see if anything other than itself is on the grid at those locations
@@ -176,7 +177,3 @@ class Tetris:
             if shapeAtCoord and not thisFigAtCoord:
                 return True
         return False
-
-    # rotate method
-    def rotate(self):
-        pass

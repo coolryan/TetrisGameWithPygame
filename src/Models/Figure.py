@@ -29,6 +29,7 @@ class Figure:
     # initFigure method
     def initFigure(self):
         print(f"Init figure: {self.x}, {self.y}, {self.size}, {self.type}")
+
         if self.type == I_TETROMINO:
             self.coordList = [(self.x, self.y+i) for i in range(4)]
 

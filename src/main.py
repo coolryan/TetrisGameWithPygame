@@ -145,7 +145,7 @@ def main():
                     game.rightMove()
                     moved = True
                 if event.key == K_SPACE:
-                    #game.rotate()
+                    game.rotate()
                     moved = True
                 if event.key == K_ESCAPE:
                     game_paused = True

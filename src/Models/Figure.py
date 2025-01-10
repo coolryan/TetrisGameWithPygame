@@ -11,6 +11,51 @@ import pygame, random, time, sys
 from pygame.locals import *
 from constants import *
 
+shapeDictionary = {
+    I_TETROMINO: [
+        [(0,0), (0,1), (0,2), (0,3)], # RotationIndex 0
+        [(0,0), (1,0), (2,0), (3,0)], # RotationIndex 1
+        [(0,0), (0,1), (0,2), (0,3)], # RotationIndex 2
+        [(0,0), (1,0), (2,0), (3,0)]  # RotationIndex 3
+    ],
+    T_TETROMINO: [
+        [(0,0), (1,0), (2,0), (1,1)],
+        [(1,0), (1,1), (1,2), (0,1)],
+        [(0,1), (1,1), (2,1), (1,0)],
+        [(1,0), (1,1), (1,2), (2,1)]
+    ],
+    O_TETROMINO: [
+        [(0,0), (1,0), (0,1), (1,1)],
+        [(0,0), (1,0), (0,1), (1,1)],
+        [(0,0), (1,0), (0,1), (1,1)],
+        [(0,0), (1,0), (0,1), (1,1)]
+    ],
+    L_TETROMINO: [
+        [(0,0), (0,1), (0,2), (1,2)],
+        [(0,0), (1,0), (2,0), (0,1)],
+        [(0,0), (1,0), (1,1), (1,2)],
+        [(2,0), (0,1), (1,1), (2,1)]
+    ],
+    J_TETROMINO: [
+        [(1,0), (1,1), (1,2), (0,2)],
+        [(0,0), (0,1), (1,1), (2,1)],
+        [(1,0), (2,0), (1,1), (1,2)],
+        [(0,0), (1,0), (2,0), (2,1)]
+    ],
+    S_TETROMINO: [
+        [(1,0), (2,0), (0,1), (1,1)],
+        [(0,0), (0,1), (1,1), (1,2)],
+        [(1,0), (2,0), (0,1), (1,1)],
+        [(0,0), (0,1), (1,1), (1,2)]
+    ],
+    Z_TETROMINO: [
+        [(0,0), (1,0), (1,1), (2,1)],
+        [(2,0), (1,1), (2,1), (1,2)],
+        [(0,0), (1,0), (1,1), (2,1)],
+        [(2,0), (1,1), (2,1), (1,2)]
+    ]
+}
+
 # class Figure
 class Figure:
     """docstring for Figure"""
@@ -19,63 +64,23 @@ class Figure:
         self.x, self.y = x, y
         self.type = figureType
         self.color = COLORS[0]
-        self.rotation = 0
+        self.rotationIndex = 0
         self.size = size
         self.state = "start"
         self.isActive = isActive
 
         self.initFigure()
 
+
     # initFigure method
     def initFigure(self):
         print(f"Init figure: {self.x}, {self.y}, {self.size}, {self.type}")
 
-        if self.type == I_TETROMINO:
-            self.coordList = [(self.x, self.y+i) for i in range(4)]
+        currentCoordMap = shapeDictionary[self.type][self.rotationIndex]
+        self.coordList = [(self.x + coordOffset[0], self.y + coordOffset[1]) for coordOffset in currentCoordMap]
 
-        elif self.type == O_TETROMINO:
-            self.coordList = [
-                (self.x, self.y),
-                (self.x+1, self.y),
-                (self.x, self.y+1),
-                (self.x+1, self.y+1)
-            ]
-        elif self.type == T_TETROMINO:
-            self.coordList = [
-                (self.x, self.y),
-                (self.x+1, self.y),
-                (self.x+2, self.y),
-                (self.x+1, self.y+1)
-            ]
-        elif self.type == L_TETROMINO:
-            self.coordList = [
-                (self.x, self.y),
-                (self.x, self.y+1),
-                (self.x, self.y+2),
-                (self.x+1, self.y+2)
-            ]
-        elif self.type == J_TETROMINO:
-            self.coordList = [
-                (self.x, self.y),
-                (self.x, self.y+1),
-                (self.x, self.y+2),
-                (self.x-1, self.y+2)
-            ]
-        elif self.type == S_TETROMINO:
-            self.coordList = [
-                (self.x, self.y),
-                (self.x+1, self.y),
-                (self.x, self.y+1),
-                (self.x-1, self.y+1)
-            ]
-        elif self.type == Z_TETROMINO:
-            self.coordList = [
-                (self.x, self.y),
-                (self.x-1, self.y),
-                (self.x, self.y+1),
-                (self.x+1, self.y+1)
-            ]
         print("CoordList: ", self.coordList)
+
 
     @classmethod
     def getRandomFigure(cls, maxX, maxY, size):
@@ -104,6 +109,7 @@ class Figure:
         newFig = Figure(x, y, size, figureType, False)
         return newFig
 
+
     # draw method
     def draw(self, screen):
         print("Size: ", self.size)
@@ -116,6 +122,7 @@ class Figure:
             print(f"x: {x} y: {y}")
             rect = pygame.Rect(x, y, width, height)
             pygame.draw.rect(screen, self.color, rect)
+
 
     def setX(self, x):
         diff = self.x - x
@@ -143,6 +150,14 @@ class Figure:
         self.coordList = coordListTemp
 
 
+    def rotate(self):
+        self.rotationIndex = self.rotationIndex + 1
+        if self.rotationIndex > 3:
+            self.rotationIndex = 0
+
+        self.initFigure()
+
+
     # get left method
     def getLeft(self):
         listOfNumbers = []
@@ -152,6 +167,7 @@ class Figure:
 
         minimum = min(listOfNumbers)
         return minimum
+
 
     # get right method
     def getRight(self):
@@ -164,6 +180,7 @@ class Figure:
 
         totalMax = maximum
         return totalMax
+
 
     # get bottom method
     def getBottom(self):

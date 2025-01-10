@@ -160,7 +160,10 @@ class Tetris:
 
     # rotate method
     def rotate(self):
-        pass
+        for fig in self.figures:
+            if fig.isActive:
+                fig.rotate()
+                break
 
     def willCollide(self, fig, dx, dy):
         """

@@ -16,10 +16,10 @@ import os, pygame, random, sys, time
 from pygame.locals import *
 from constants import *
 
-from Models.Figure import *
-from Models.Tetris import *
+from models.Figure import *
+from models.Tetris import *
 
-from Button.button import Button
+#from Button.Button import Button
 
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -47,22 +47,22 @@ def main():
     # font variables
     font = pygame.font.SysFont('arial', 40)
 
-    # load images
-    path = "src/Button/Images/"
-    start_img = pygame.image.load(os.path.join(os.getcwd(), path, "start_btn.png"))
-    exit_img = pygame.image.load(os.path.join(os.getcwd(), path, "exit_btn.png"))
-    resume_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_resume.png"))
-    options_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_options.png"))
-    quit_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_quit.png"))
-    back_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_back.png"))
+    # # load images
+    # path = "src/Button/Images/"
+    # start_img = pygame.image.load(os.path.join(os.getcwd(), path, "start_btn.png"))
+    # exit_img = pygame.image.load(os.path.join(os.getcwd(), path, "exit_btn.png"))
+    # resume_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_resume.png"))
+    # options_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_options.png"))
+    # quit_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_quit.png"))
+    # back_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_back.png"))
 
-    # create button instances
-    start_button = Button(200, 200, start_img, 0.8)
-    exit_button = Button(200, 200, exit_img, 0.8)
-    resume_button = Button(304, 125, resume_img, 1)
-    options_button = Button(297, 250, options_img, 1)
-    quit_button = Button(336, 375, quit_img, 1)
-    back_button = Button(332, 450, back_img, 1)
+    # # create button instances
+    # start_button = Button(200, 200, start_img, 0.8)
+    # exit_button = Button(200, 200, exit_img, 0.8)
+    # resume_button = Button(304, 125, resume_img, 1)
+    # options_button = Button(297, 250, options_img, 1)
+    # quit_button = Button(336, 375, quit_img, 1)
+    # back_button = Button(332, 450, back_img, 1)
             
     # instance
     game = Tetris(grid_width, grid_height, square_size)

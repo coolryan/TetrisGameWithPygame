@@ -74,6 +74,7 @@ class Figure:
             rect = pygame.Rect(x, y, width, height)
             pygame.draw.rect(screen, self.color, rect)
 
+    # set methods
     def setX(self, x):
         diff = self.x - x
         self.x = x
@@ -107,8 +108,7 @@ class Figure:
 
         self.initFigure()
 
-
-    # get left method
+    # get methods
     def getLeft(self):
         listOfNumbers = []
         for coord in self.coordList:
@@ -118,8 +118,6 @@ class Figure:
         minimum = min(listOfNumbers)
         return minimum
 
-
-    # get right method
     def getRight(self):
         listOfNumbers = []
         for coord in self.coordList:
@@ -127,12 +125,17 @@ class Figure:
             listOfNumbers.append(temp)
 
         maximum = max(listOfNumbers)
+        return maximum
 
-        totalMax = maximum
-        return totalMax
+    def getTop(self):
+        listOfNumbers = []
+        for coord in self.coordList:
+            temp = coord[1]
+            listOfNumbers.append(temp)
 
+        minimum = min(listOfNumbers)
+        return minimum
 
-    # get bottom method
     def getBottom(self):
         listOfNumbers = []
         for coord in self.coordList:
@@ -140,6 +143,4 @@ class Figure:
             listOfNumbers.append(temp)
 
         maximum = max(listOfNumbers)
-
-        totalMax = maximum
-        return totalMax
+        return maximum

@@ -17,7 +17,7 @@ class Tetris:
     """constructor"""
     def __init__(self, width, height, square_size):
         self.level, self.score = 2, 0
-        self.state = "start"
+        self.state = GAMESTATE.RUNNING
         self.height, self.width = height, width
         self.velocity = 1
         self.figures, self.nextFigures = [], []
@@ -57,7 +57,7 @@ class Tetris:
         for fig in self.figures:
             for coord in fig.coordList:
                 try:
-                    x, y = self.size, coord[1]
+                    x, y = coord[0], coord[1]
                     self.grid[y][x] = fig
                 except IndexError as e:
                     print(f"IndexError: {e}")    
@@ -71,6 +71,11 @@ class Tetris:
         for fg in self.figures:
             if fg.state == "stop" and fg.isActive:
                 fg.isActive = False
+
+    def checkGameState(self):
+        for fig in self.figures:
+            if fig.state == "stop" and fig.getTop() < 0:
+                self.state = GAMESTATE.GAMEOVER
 
     # distance funnction helpers
     def distanceDownActive(self):

@@ -5,6 +5,13 @@
     Purpose: To define constant variables
 """
 
+from enum import StrEnum
+
+class GAMESTATE(StrEnum):
+    RUNNING = "RUNNING"
+    GAMEOVER = "GAMEOVER"
+    GAMEPAUSED = "GAMEPAUSED"
+
 # define colors for background, ext messages and/or score
 TEXT_COL = (255, 255, 255)
 BLACK, WHITE, GRAY = (0, 0, 0), (255, 255, 255), (128, 128, 128)

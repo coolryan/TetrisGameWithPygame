@@ -80,6 +80,9 @@ def main():
         # call draw
         game.draw(screen)
 
+        if game.state is GAMESTATE.GAMEOVER:
+            break
+
         # call move
         if turn % game_tick_freq == 0:
             game.move()
@@ -151,13 +154,15 @@ def main():
                 if event.key == K_ESCAPE:
                     game_paused = True
 
-        # pygame update
-        pygame.display.update()
-
         time.sleep(.1)
         turn += 1
         if moved:
             game.updateGrid()
+
+        game.checkGameState()
+
+        # pygame update
+        pygame.display.update()
 
 # run the main program
 if __name__ == '__main__':

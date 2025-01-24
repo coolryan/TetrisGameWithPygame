@@ -38,7 +38,7 @@ class Tetris:
         nextFig: Figure = self.nextFigures.pop()
 
         nextFig.setX(self.width//2)
-        nextFig.setY(0)
+        nextFig.setY(-4)
         nextFig.isActive = True
 
         self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
@@ -60,7 +60,7 @@ class Tetris:
                     x, y = coord[0], coord[1]
                     self.grid[y][x] = fig
                 except IndexError as e:
-                    print(f"IndexError: {e}")    
+                    continue    
 
     # draw method
     def draw(self, screen):
@@ -76,6 +76,26 @@ class Tetris:
         for fig in self.figures:
             if fig.state == "stop" and fig.getTop() < 0:
                 self.state = GAMESTATE.GAMEOVER
+                print("GAMESTATE")
+
+    # clear method
+    def clearFullRows(self):
+        rowCleared = False
+
+        for y, row in enumerate(reversed(self.grid)):
+            isRowFull = True
+            for x, gridLocation in enumerate(row):
+                if gridLocation is None:
+                    isRowFull = False
+                elif rowCleared and gridLocation is not None:
+                    gridLocation.state = "start"
+
+            if isRowFull:
+                for x, fig in enumerate(row):
+                    fig.remove(x, y)
+                rowCleared = True
+
+        self.updateGrid()
 
     # distance funnction helpers
     def distanceDownActive(self):

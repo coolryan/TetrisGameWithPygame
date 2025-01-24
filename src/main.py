@@ -161,6 +161,8 @@ def main():
 
         game.checkGameState()
 
+        game.clearFullRows()
+
         # pygame update
         pygame.display.update()
 

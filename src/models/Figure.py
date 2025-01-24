@@ -28,12 +28,8 @@ class Figure:
 
     # initFigure method
     def initFigure(self):
-        print(f"Init figure: {self.x}, {self.y}, {self.size}, {self.type}")
-
         currentCoordMap = SHAPE_OFFSETS[self.type][self.rotationIndex]
         self.coordList = [(self.x + coordOffset[0], self.y + coordOffset[1]) for coordOffset in currentCoordMap]
-
-        print("CoordList: ", self.coordList)
 
     @classmethod
     def getRandomFigure(cls, maxX, maxY, size):
@@ -63,13 +59,9 @@ class Figure:
 
     # draw method
     def draw(self, screen):
-        print("Size: ", self.size)
-        print("Drawing coords: ", self.coordList)
         for coord in self.coordList:
             x, y = coord[0]*self.size, coord[1]*self.size
             width, height = self.size, self.size
-
-            print(f"x: {x} y: {y}")
 
             rect = pygame.Rect(x, y, width, height)
             pygame.draw.rect(screen, self.color, rect)
@@ -144,3 +136,14 @@ class Figure:
 
         maximum = max(listOfNumbers)
         return maximum
+
+    def remove(self, x, y):
+        coordListTemp = []
+
+        for coord in self.coordList:
+            if coord[0] == x and coord[1] == y:
+                continue
+            else:
+                coordListTemp.append(coord)
+
+        self.coordList = coordListTemp

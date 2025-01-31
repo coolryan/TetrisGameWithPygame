@@ -3,9 +3,9 @@ from constants import *
 
 def test_find_figure_at_x_0():
     # Arrange
-    fig1 = Figure(0, 0, 1, I_TETROMINO)
-    fig2 = Figure(1, 0, 1, J_TETROMINO)
-    fig3 = Figure(2, 0, 1, L_TETROMINO)
+    fig1 = Figure(0, 0, 0, 1, I_TETROMINO)
+    fig2 = Figure(1, 1, 0, 1, J_TETROMINO)
+    fig3 = Figure(2, 2, 0, 1, L_TETROMINO)
     figs = [fig1, fig2, fig3]
 
     # Act
@@ -27,9 +27,9 @@ def test_find_type_I_figure():
         Follow the Arrange, Act, Assert pattern as in test_find_figure_at_x_0.
     """
     # Arrange
-    fig1 = Figure(0, 0, 1, Z_TETROMINO)
-    fig2 = Figure(1, 1, 2, I_TETROMINO)
-    fig3 = Figure(2, 2, 3, O_TETROMINO)
+    fig1 = Figure(0, 0, 0, 1, Z_TETROMINO)
+    fig2 = Figure(1, 1, 1, 2, I_TETROMINO)
+    fig3 = Figure(2,2, 2, 3, O_TETROMINO)
     figs = [fig1, fig2, fig3]
 
     # Act
@@ -49,9 +49,9 @@ def test_find_active_figure():
         Follow the Arrange, Act, Assert pattern as in test_find_figure_at_x_0.
     """
     # Arrange
-    fig1 = Figure(2, 0, 1, S_TETROMINO, True)
-    fig2 = Figure(0, 1, 0, J_TETROMINO, True)
-    fig3 = Figure(0, 0, 1, T_TETROMINO, False)
+    fig1 = Figure(1, 2, 0, 1, S_TETROMINO, True)
+    fig2 = Figure(2, 0, 1, 0, J_TETROMINO, True)
+    fig3 = Figure(3, 0, 0, 1, T_TETROMINO, False)
     figs = [fig1, fig2, fig3]
 
     # Act
@@ -72,7 +72,7 @@ def test_initFigure_I():
     """
     # Arrange 
     # Act
-    fig = Figure(200, 200, 100, I_TETROMINO)
+    fig = Figure(1, 200, 200, 100, I_TETROMINO)
 
     # Asset
     assert len(fig.coordList) == 4
@@ -88,8 +88,8 @@ def test_getrandomFigure():
     size = 300
 
     # Act
-    fig1 = Figure.getRandomFigure(maxX, maxY, size)
-    fig2 = Figure.getRandomFigure(maxX, maxY, size)
+    fig1 = Figure.getRandomFigure(1, maxX, maxY, size)
+    fig2 = Figure.getRandomFigure(2, maxX, maxY, size)
 
     # Asset
     assert fig1 != fig2

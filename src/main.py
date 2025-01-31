@@ -81,6 +81,7 @@ def main():
         game.draw(screen)
 
         if game.state is GAMESTATE.GAMEOVER:
+            print("Game over")
             break
 
         # call move

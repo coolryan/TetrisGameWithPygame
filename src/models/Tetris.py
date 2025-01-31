@@ -14,6 +14,9 @@ from .Figure import *
 
 # class Tetris
 class Tetris:
+    # Class state
+    currentFigureIndex = 0
+
     """constructor"""
     def __init__(self, width, height, square_size):
         self.level, self.score = 2, 0
@@ -26,12 +29,17 @@ class Tetris:
         # Grid is by y then x. So grid[y][x]
         self.grid = [[None for i in range(width)] for j in range(height)]
 
+    @classmethod
+    def _getNextFigureId(cls) -> int:
+        cls.currentFigureIndex += 1
+        return cls.currentFigureIndex
+
 
     def initFigures(self):
-        self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
-        self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
-        self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
-        self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
+        self.nextFigures.append(Figure.getRandomFigure(self._getNextFigureId(), self.width, self.height, self.square_size))
+        self.nextFigures.append(Figure.getRandomFigure(self._getNextFigureId(), self.width, self.height, self.square_size))
+        self.nextFigures.append(Figure.getRandomFigure(self._getNextFigureId(), self.width, self.height, self.square_size))
+        self.nextFigures.append(Figure.getRandomFigure(self._getNextFigureId(), self.width, self.height, self.square_size))
 
     # new figure method
     def newFigure(self):
@@ -41,7 +49,7 @@ class Tetris:
         nextFig.setY(-4)
         nextFig.isActive = True
 
-        self.nextFigures.append(Figure.getRandomFigure(self.width, self.height, self.square_size))
+        self.nextFigures.append(Figure.getRandomFigure(self._getNextFigureId(), self.width, self.height, self.square_size))
 
         self.figures.append(nextFig)
 
@@ -76,7 +84,6 @@ class Tetris:
         for fig in self.figures:
             if fig.state == "stop" and fig.getTop() < 0:
                 self.state = GAMESTATE.GAMEOVER
-                print("GAMESTATE")
 
     # clear method
     def clearFullRows(self):
@@ -123,7 +130,7 @@ class Tetris:
             emptySpacePerCoord.append(emptySpace)
         return min(emptySpacePerCoord)            
                 
-    def distanceLeftActive():
+    def distanceLeftActive(self):
         activeFigure = self.getActiveFigure()
         if activeFigure is None:
             return 0
@@ -146,7 +153,7 @@ class Tetris:
                 else:
                     fig.setY(fig.y+moveAmount)
 
-            if fig.getBottom() >= self.height -1:
+            if fig.getBottom() == self.height -1:
                 fig.state = "stop"
 
     # leftMove method
@@ -185,7 +192,7 @@ class Tetris:
                 else:
                     fig.setY(fig.y+moveAmount)
 
-            if fig.getBottom() >= self.height -1:
+            if fig.getBottom() == self.height -1:
                 fig.state = "stop"
 
     # rotate method
@@ -204,6 +211,9 @@ class Tetris:
         # Make sure none of the new coordinates already have shapes in them
         for coord in newCoordList:
             x, y = coord[0], coord[1]
+            if x<0 or y<0:
+                continue
+
             shapeAtCoord = self.grid[y][x] is not None
             thisFigAtCoord = self.grid[y][x] is fig
 

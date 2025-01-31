@@ -14,8 +14,9 @@ from constants import *
 # class Figure
 class Figure:
     """docstring for Figure"""
-    def __init__(self, x, y, size, figureType: str, isActive: bool = False):
+    def __init__(self, id: int, x, y, size, figureType: str, isActive: bool = False):
         self.coordList = list()
+        self.id = id
         self.x, self.y = x, y
         self.type = figureType
         self.color = SHAPE_COLORS[self.type]
@@ -31,8 +32,11 @@ class Figure:
         currentCoordMap = SHAPE_OFFSETS[self.type][self.rotationIndex]
         self.coordList = [(self.x + coordOffset[0], self.y + coordOffset[1]) for coordOffset in currentCoordMap]
 
+    def __repr__(self):
+        return f"Figure: {self.type}, Id: {self.id}, x: {self.x}, y: {self.y}, state: {self.state}, active: {self.isActive}, coordList: {self.coordList}"
+
     @classmethod
-    def getRandomFigure(cls, maxX, maxY, size):
+    def getRandomFigure(cls, id: int, maxX, maxY, size):
         if not hasattr(cls, "rand"):
             cls.rand = random.Random()
 
@@ -54,7 +58,7 @@ class Figure:
         elif shapeIndex == 6:
             figureType = Z_TETROMINO
 
-        newFig = Figure(x, y, size, figureType, False)
+        newFig = Figure(id, x, y, size, figureType, False)
         return newFig
 
     # draw method

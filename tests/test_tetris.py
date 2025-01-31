@@ -5,7 +5,7 @@ def test_distanceDownActive_none_below():
     # Arrange
     tetris = Tetris(5, 5, 1)
     isActive = True
-    newFig = Figure(0, 0, 1, O_TETROMINO, isActive)
+    newFig = Figure(1, 0, 0, 1, O_TETROMINO, isActive)
     tetris.figures.append(newFig)
 
     # Act
@@ -18,9 +18,9 @@ def test_distanceDownActive_another_below():
     # Arrange
     tetris = Tetris(5, 5, 1)
     isActive = True
-    newFig = Figure(0, 0, 1, O_TETROMINO, isActive)
+    newFig = Figure(1, 0, 0, 1, O_TETROMINO, isActive)
     tetris.figures.append(newFig)
-    anotherFig = Figure(0, 4, 1, O_TETROMINO, False)
+    anotherFig = Figure(2, 0, 4, 1, O_TETROMINO, False)
     tetris.figures.append(anotherFig)
 
     # Act

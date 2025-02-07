@@ -1,9 +1,9 @@
-from src.Models.Tetris import Figure, Tetris
+from src.Models.TetrisGame import Figure, TetrisGame
 from src.constants import *
 
 def test_distanceDownActive_none_below():
     # Arrange
-    tetris = Tetris(5, 5, 1)
+    tetris = TetrisGame(5, 5, 1)
     isActive = True
     newFig = Figure(1, 0, 0, 1, O_TETROMINO, isActive)
     tetris.figures.append(newFig)
@@ -16,7 +16,7 @@ def test_distanceDownActive_none_below():
 
 def test_distanceDownActive_another_below():
     # Arrange
-    tetris = Tetris(5, 5, 1)
+    tetris = TetrisGame(5, 5, 1)
     isActive = True
     newFig = Figure(1, 0, 0, 1, O_TETROMINO, isActive)
     tetris.figures.append(newFig)

@@ -12,8 +12,8 @@ from pygame.locals import *
 from constants import *
 from .Figure import *
 
-# class Tetris
-class Tetris:
+# class TetrisGame
+class TetrisGame:
     # Class state
     currentFigureIndex = 0
 

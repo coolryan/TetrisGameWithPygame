@@ -17,7 +17,7 @@ from pygame.locals import *
 from constants import *
 
 from models.Figure import *
-from models.Tetris import *
+from models.TetrisGame import *
 
 #from Button.Button import Button
 
@@ -32,7 +32,7 @@ def main():
 
     # Size in grid
     grid_width, grid_height, square_size = 10, 20, 50
-    size = (grid_width*square_size, grid_height*square_size)
+    size = ((grid_width+10)*square_size, grid_height*square_size)
 
     game_paused, menu_state = False, "main"
     font = pygame.font.SysFont("arial", 40)
@@ -65,11 +65,11 @@ def main():
     # back_button = Button(332, 450, back_img, 1)
             
     # instance
-    game = Tetris(grid_width, grid_height, square_size)
+    game = TetrisGame(grid_width, grid_height, square_size)
 
     # game variables
     running = True
-    game_tick_freq = 7
+    game_tick_freq = 3
     turn = 0
 
      # game loop

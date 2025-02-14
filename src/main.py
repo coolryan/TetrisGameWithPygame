@@ -31,7 +31,7 @@ def main():
     pygame.init()
 
     game_width, game_height = 20, 25
-    grid_location_x, grid_location_y = 5, 5
+    grid_location_x, grid_location_y = 5, 0
 
     # Size in grid
     grid_width, grid_height, square_size = 10, 20, 50

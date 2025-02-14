@@ -81,7 +81,8 @@ class TetrisGame:
     # draw method
     def draw(self, screen):
         for fig in self.figures:
-            fig.draw(screen)
+            # fig.draw(screen)
+            fig.draw(self.grid_surface)
 
     def deactivate(self):
         for fg in self.figures:
@@ -268,10 +269,28 @@ class TetrisGame:
         game_tick_freq = 3
         turn = 0
 
+        # rect = pygame.Rect(x, y, width, height)
+        # pygame.draw.rect(screen, self.color, rect)
+
          # game loop
         while running:
             moved = False
-            screen.fill((52, 78, 91)) # Gives background color
+            
+            # self.height, self.width = game_height, game_width
+            # self.grid_location_x, self.grid_location_y = grid_location_x, grid_location_y
+            # self.grid_width, self.grid_height = grid_width, grid_height
+            # self.square_size = square_size
+
+            screen.fill(BG_COLOR) # Gives background color
+            # Draw grid
+            net_grid_width = self.grid_width * self.square_size
+            net_grid_height = self.grid_height * self.square_size
+            grid_x, gird_y = self.grid_location_x * self.square_size, self.grid_location_y * self.square_size
+            grid_rec = pygame.Rect(grid_x, gird_y, net_grid_width, net_grid_height)
+            self.grid_surface = screen.subsurface(grid_rec)
+            self.grid_surface.fill(GRID_COLOR)
+            # pygame.draw.rect(screen, GRID_COLOR, self.grid_surface)
+
 
             # call draw
             self.draw(screen)

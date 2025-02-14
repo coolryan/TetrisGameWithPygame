@@ -16,9 +16,12 @@ class GAMESTATE(StrEnum):
 TEXT_COL = (255, 255, 255)
 BLACK, WHITE, GRAY = (0, 0, 0), (255, 255, 255), (128, 128, 128)
 
+BG_COLOR = (52, 78, 91) # teal
+GRID_COLOR = (255, 255, 255)
+
 # define colores for each tetrominos
 COLORS = (
-    (128, 128, 128), 
+    GRAY, 
     (120, 37, 179),
     (100, 179, 179),
     (80, 34, 22),     

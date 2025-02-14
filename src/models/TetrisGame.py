@@ -95,6 +95,7 @@ class TetrisGame:
                 self.state = GAMESTATE.GAMEOVER
 
     # clear method
+    # Todo: Bug when row full, its clearing erase the wrong squares.
     def clearFullRows(self):
         rowCleared = False
 
@@ -107,6 +108,7 @@ class TetrisGame:
                     gridLocation.state = "start"
 
             if isRowFull:
+                print("Row full")
                 for x, fig in enumerate(row):
                     fig.remove(x, y)
                 rowCleared = True
@@ -205,6 +207,7 @@ class TetrisGame:
                 fig.state = "stop"
 
     # rotate method
+    # Todo: Fix bug where if rotating makes part of the shape go off screen, crashes
     def rotate(self):
         for fig in self.figures:
             if fig.isActive:
@@ -377,7 +380,7 @@ class TetrisGame:
 
             self.checkGameState()
 
-            #self.clearFullRows()
+            self.clearFullRows()
 
             # pygame update
             pygame.display.update()

@@ -54,7 +54,7 @@ class TetrisGame:
         nextFig: Figure = self.nextFigures.pop()
 
         nextFig.setX(self.grid_width//2)
-        nextFig.setY(self.grid_height-4)
+        nextFig.setY(-4)
         nextFig.isActive = True
 
         self.nextFigures.append(Figure.getRandomFigure(self._getNextFigureId(), self.grid_width, self.grid_height, self.square_size))
@@ -271,7 +271,7 @@ class TetrisGame:
          # game loop
         while running:
             moved = False
-            screen.fill((52, 78, 91))
+            screen.fill((52, 78, 91)) # Gives background color
 
             # call draw
             self.draw(screen)

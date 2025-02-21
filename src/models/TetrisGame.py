@@ -97,23 +97,45 @@ class TetrisGame:
     # clear method
     # Todo: Bug when row full, its clearing erase the wrong squares.
     def clearFullRows(self):
-        rowCleared = False
-
         for y, row in enumerate(reversed(self.grid)):
             isRowFull = True
             for x, gridLocation in enumerate(row):
+                coord_y = self.grid_height - y - 1
                 if gridLocation is None:
                     isRowFull = False
-                elif rowCleared and gridLocation is not None:
-                    gridLocation.state = "start"
+                # Lets set the rows above emptied row to start so they fall down
+                # elif rowCleared and gridLocation is not None:
+                #     gridLocation.state = "start"
 
             if isRowFull:
                 print("Row full")
                 for x, fig in enumerate(row):
-                    fig.remove(x, y)
-                rowCleared = True
+                    coord_x = x
+                    fig.remove(coord_x, coord_y)
+                isRowFull = False
+
+                # if len(fig.coordList) == 0:
+                #     self.figures.remove(fig)
+
+        figures = []
+        for fig in self.figures:
+            if len(fig.coordList) > 0:
+                figures.append(fig)
+        self.figures = figures
 
         self.updateGrid()
+
+    def checkFloatingRows(self):
+        for y, row in enumerate(reversed(self.grid)):
+            allEmpty = True
+            for x, gridLocation in enumerate(row):
+                if gridLocation is not None:
+                    allEmpty = False
+            if allEmpty:
+                for x, gridLocation in enumerate(row):
+                    if gridLocation:
+                        gridLocation.state = "start"
+
 
     # distance funnction helpers
     def distanceDownActive(self):
@@ -381,6 +403,7 @@ class TetrisGame:
             self.checkGameState()
 
             self.clearFullRows()
+            self.checkFloatingRows()
 
             # pygame update
             pygame.display.update()

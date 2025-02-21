@@ -141,6 +141,7 @@ class Figure:
         maximum = max(listOfNumbers)
         return maximum
 
+    # Remove by offset
     def remove(self, x, y):
         coordListTemp = []
 

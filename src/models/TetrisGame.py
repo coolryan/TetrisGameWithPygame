@@ -12,6 +12,19 @@ from pygame.locals import *
 from constants import *
 from .Figure import *
 
+
+"""
+Todo next time:
+Every game loop, call a method that will find all shapes that can move:
+
+while not all(fig.canMove is not None for fig in self.figures): # While theres figures not yet validated to move
+    for fig in self.figures:
+        if noShapesUnder and notAtBottom:
+            fig.canMvoe = True
+        elif atBottom or (shapeUnder.canMove is False):
+            fig.canMove = False
+"""
+
 # class TetrisGame
 class TetrisGame:
     # Class state

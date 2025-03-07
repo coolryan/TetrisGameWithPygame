@@ -85,13 +85,13 @@ class TetrisGame:
             fig.draw(self.grid_surface)
 
     def deactivate(self):
-        for fg in self.figures:
-            if fg.state == "stop" and fg.isActive:
-                fg.isActive = False
+        for fig in self.figures:
+            if not fig.canFall and fig.isActive:
+                fig.isActive = False
 
     def checkGameState(self):
         for fig in self.figures:
-            if fig.state == "stop" and fig.getTop() < 0:
+            if not fig.canFall and fig.getTop() < 0:
                 self.state = GAMESTATE.GAMEOVER
 
     # clear method
@@ -134,7 +134,8 @@ class TetrisGame:
             if allEmpty:
                 for x, gridLocation in enumerate(row):
                     if gridLocation:
-                        gridLocation.state = "start"
+                        # gridLocation.state = "start"
+                        pass
 
 
     # distance funnction helpers
@@ -176,18 +177,18 @@ class TetrisGame:
     # move method
     def move(self):
         for fig in self.figures:
-            if fig.state == "start":
+            if fig.canFall:
                 spaceLeft = self.grid_height - fig.getBottom() - 1
                 enoughSpace = self.velocity < spaceLeft
                 moveAmount = self.velocity if enoughSpace else spaceLeft
 
                 if self.willCollide(fig=fig, dx=0, dy=moveAmount):
-                    fig.state = "stop"
+                    pass
                 else:
                     fig.setY(fig.y+moveAmount)
 
             if fig.getBottom() == self.grid_height -1:
-                fig.state = "stop"
+                pass
 
     # leftMove method
     def leftMove(self):
@@ -226,7 +227,7 @@ class TetrisGame:
                     fig.setY(fig.y+moveAmount)
 
             if fig.getBottom() == self.grid_height -1:
-                fig.state = "stop"
+                pass
 
     # rotate method
     # Todo: Fix bug where if rotating makes part of the shape go off screen, crashes

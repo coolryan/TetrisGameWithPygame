@@ -22,7 +22,8 @@ class Figure:
         self.color = SHAPE_COLORS[self.type]
         self.rotationIndex = 0
         self.size = size
-        self.state = "start"
+        # self.state = "start"
+        # use to indicate which block a user can move
         self.isActive = isActive
 
         self.initFigure()
@@ -33,7 +34,8 @@ class Figure:
         self.coordList = [(self.x + coordOffset[0], self.y + coordOffset[1]) for coordOffset in currentCoordMap]
 
     def __repr__(self):
-        return f"Figure: {self.type}, Id: {self.id}, x: {self.x}, y: {self.y}, state: {self.state}, active: {self.isActive}, coordList: {self.coordList}"
+        #return f"Figure: {self.type}, Id: {self.id}, x: {self.x}, y: {self.y}, state: {self.state}, active: {self.isActive}, coordList: {self.coordList}"
+        return f"Figure: {self.type}, Id: {self.id}, x: {self.x}, y: {self.y}, active: {self.isActive}, coordList: {self.coordList}"
 
     @classmethod
     def getRandomFigure(cls, id: int, maxX, maxY, size):
@@ -141,7 +143,10 @@ class Figure:
         maximum = max(listOfNumbers)
         return maximum
 
-    # Remove by offset
+    @property
+    def canFall(self):
+        return True
+        
     def remove(self, x, y):
         coordListTemp = []
 

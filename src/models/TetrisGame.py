@@ -80,7 +80,8 @@ class TetrisGame:
                 return fig
 
     def canFall(self, fig: Figure):
-        if fig.getBottom() <= self.grid_height:
+        # Is the figure at the bottom of the grid
+        if fig.getBottom() >= self.grid_height -1:
             return False
         return True
             
@@ -108,9 +109,11 @@ class TetrisGame:
                 fig.isActive = False
 
     def checkGameState(self):
+        # Check if any figure is at the top of the grid, if so gameover
         for fig in self.figures:
-            if not self.canFall and fig.getTop() < 0:
+            if not self.canFall(fig) and fig.getTop() < 0:
                 self.state = GAMESTATE.GAMEOVER
+    
 
     # clear method
     # Todo: Bug when row full, its clearing erase the wrong squares.
@@ -144,6 +147,7 @@ class TetrisGame:
         self.updateGrid()
 
     def checkFloatingRows(self):
+        # Check which shapes can fall
         for y, row in enumerate(reversed(self.grid)):
             allEmpty = True
             for x, gridLocation in enumerate(row):

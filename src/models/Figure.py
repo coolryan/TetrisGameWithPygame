@@ -142,10 +142,6 @@ class Figure:
 
         maximum = max(listOfNumbers)
         return maximum
-
-    @property
-    def canFall(self):
-        return True
         
     def remove(self, x, y):
         coordListTemp = []

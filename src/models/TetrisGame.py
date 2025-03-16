@@ -78,6 +78,11 @@ class TetrisGame:
         for fig in self.figures:
             if fig.isActive:
                 return fig
+
+    def canFall(self, fig: Figure):
+        if fig.getBottom() <= self.grid_height:
+            return False
+        return True
             
     def updateGrid(self):
         # Reset the grid
@@ -99,12 +104,12 @@ class TetrisGame:
 
     def deactivate(self):
         for fig in self.figures:
-            if not fig.canFall and fig.isActive:
+            if not self.canFall(fig) and fig.isActive:
                 fig.isActive = False
 
     def checkGameState(self):
         for fig in self.figures:
-            if not fig.canFall and fig.getTop() < 0:
+            if not self.canFall and fig.getTop() < 0:
                 self.state = GAMESTATE.GAMEOVER
 
     # clear method
@@ -190,7 +195,7 @@ class TetrisGame:
     # move method
     def move(self):
         for fig in self.figures:
-            if fig.canFall:
+            if self.canFall(fig):
                 spaceLeft = self.grid_height - fig.getBottom() - 1
                 enoughSpace = self.velocity < spaceLeft
                 moveAmount = self.velocity if enoughSpace else spaceLeft

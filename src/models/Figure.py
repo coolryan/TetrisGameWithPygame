@@ -25,6 +25,7 @@ class Figure:
         # self.state = "start"
         # use to indicate which block a user can move
         self.isActive = isActive
+        self.canFall = CANFALL.UNDEFINED
 
         self.initFigure()
 

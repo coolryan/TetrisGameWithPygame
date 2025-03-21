@@ -79,8 +79,21 @@ class TetrisGame:
             if fig.isActive:
                 return fig
 
-    def canFall(self, fig: Figure):
+    def markFiguresCanFall(self):
+        """
+        go through every figure on the board
+        and mark which figures can fall or not
+        """
+        for fig in self.figures:
+            fig.canFall = CANFALL.UNDEFINED
+
+        while any([fig.canFall == CANFALL.UNDEFINED for fig in self.figures]):
+            for fig in [fig.canFall == CANFALL.UNDEFINED for fig in self.figures]:
+                fig.canFall = self.canFall(fig)
+
+    def canFall(self, fig: Figure) -> CANFALL:
         # Is the figure at the bottom of the grid
+        # left off here. returns a CANFALL enum vakue
         if fig.getBottom() >= self.grid_height -1:
             return False
         return True

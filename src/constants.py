@@ -12,6 +12,11 @@ class GAMESTATE(StrEnum):
     GAMEOVER = "GAMEOVER"
     GAMEPAUSED = "GAMEPAUSED"
 
+class CANFALL(StrEnum):
+    TRUE = "TRUE"
+    FALSE = "FALSE"
+    UNDEFINED = "UNDEFINED"
+
 # define colors for background, ext messages and/or score
 TEXT_COL = (255, 255, 255)
 BLACK, WHITE, GRAY = (0, 0, 0), (255, 255, 255), (128, 128, 128)

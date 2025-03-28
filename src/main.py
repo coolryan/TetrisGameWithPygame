@@ -21,9 +21,9 @@ from models.TetrisGame import *
 
 #from Button.Button import Button
 
-def draw_text(text, font, text_col, x, y):
-    img = font.render(text, True, text_col)
-    screen.blit(img, (x, y))
+# def draw_text(text, font, text_col, x, y):
+#     img = font.render(text, True, text_col)
+#     screen.blit(img, (x, y))
 
 # define main function
 def main():

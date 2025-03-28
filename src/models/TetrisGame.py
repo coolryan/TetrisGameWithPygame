@@ -410,11 +410,11 @@ class TetrisGame:
                     pass
 
                     # draw pause screen buttons
-                    if resume_button.draw(screen):
-                        game_paused = False
+                    # if resume_button.draw(screen):
+                    #     game_paused = False
 
-                    if options_button.draw(screen):
-                        menu_state = "options"
+                    # if options_button.draw(screen):
+                    #     menu_state = "options"
 
                     # if quit_button.draw(screen):
                     #     running = False
@@ -423,9 +423,9 @@ class TetrisGame:
                     #     sys.exit(0)
 
                 # check if the options menu is open
-                if menu_state == "options":
-                    if back_button.draw(screen):
-                        menu_state = "main"
+                # if menu_state == "options":
+                #     if back_button.draw(screen):
+                #         menu_state = "main"
             
             # event handler
             for event in pygame.event.get():

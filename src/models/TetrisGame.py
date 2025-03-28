@@ -92,11 +92,21 @@ class TetrisGame:
                 fig.canFall = self.canFall(fig)
 
     def canFall(self, fig: Figure) -> CANFALL:
-        # Is the figure at the bottom of the grid
-        # left off here. returns a CANFALL enum vakue
+        # a figure can fall if one or two scenarios are true:
+        # * if there is nothing under it and its not in the bottom of the screen.
+        # * all shapes under it are also falling.
+        # left off here. returns a CANFALL enum value
+        figuresUnder = self.getFiguresUnder(fig, 0, 1)
         if fig.getBottom() >= self.grid_height -1:
-            return False
-        return True
+            return CANFALL.FALSE
+        elif len(figuresUnder) == 0:
+            return CANFALL.TRUE
+        elif len([otherFigs for otherFigs in figuresUnder if otherFigs.canFall != CANFALL.TRUE]) == 0:
+            return CANFALL.TRUE
+        elif len([otherFigs for otherFigs in figuresUnder if otherFigs.canFall == CANFALL.FALSE]) > 0:
+            return CANFALL.FALSE
+        else:
+            return CANFALL.UNDEFINED
             
     def updateGrid(self):
         # Reset the grid
@@ -118,13 +128,13 @@ class TetrisGame:
 
     def deactivate(self):
         for fig in self.figures:
-            if not self.canFall(fig) and fig.isActive:
+            if self.canFall(fig) == CANFALL.FALSE and fig.isActive:
                 fig.isActive = False
 
     def checkGameState(self):
         # Check if any figure is at the top of the grid, if so gameover
         for fig in self.figures:
-            if not self.canFall(fig) and fig.getTop() < 0:
+            if self.canFall(fig) == CANFALL.FALSE and fig.getTop() < 0:
                 self.state = GAMESTATE.GAMEOVER
     
 
@@ -212,18 +222,18 @@ class TetrisGame:
     # move method
     def move(self):
         for fig in self.figures:
-            if self.canFall(fig):
+            if self.canFall(fig) == CANFALL.TRUE:
                 spaceLeft = self.grid_height - fig.getBottom() - 1
                 enoughSpace = self.velocity < spaceLeft
                 moveAmount = self.velocity if enoughSpace else spaceLeft
 
                 if self.willCollide(fig=fig, dx=0, dy=moveAmount):
-                    pass
+                    continue
                 else:
                     fig.setY(fig.y+moveAmount)
 
             if fig.getBottom() == self.grid_height -1:
-                pass
+                continue
 
     # leftMove method
     def leftMove(self):
@@ -262,7 +272,7 @@ class TetrisGame:
                     fig.setY(fig.y+moveAmount)
 
             if fig.getBottom() == self.grid_height -1:
-                pass
+                continue
 
     # rotate method
     # Todo: Fix bug where if rotating makes part of the shape go off screen, crashes
@@ -276,9 +286,19 @@ class TetrisGame:
         """
             Check the new coordinates of the figure, and see if anything other than itself is on the grid at those locations
         """
+        return len(self.getFiguresUnder(fig, dx, dy)) > 0
+    
+    def getFiguresUnder(self, fig, dx, dy):
+        """
+            Check the new coordinates of the figure, and returns anything other than itself on the grid at those locations
+        """
+        if fig.getBottom() == self.grid_height -1:
+            return set()
+
         # Calculate the new coordinates (without actually changing them in the figure)
         newCoordList = [(coord[0]+dx, coord[1]+dy) for coord in fig.coordList]
         # Make sure none of the new coordinates already have shapes in them
+        figuresUnder = set()
         for coord in newCoordList:
             x, y = coord[0], coord[1]
             if x<0 or y<0:
@@ -288,11 +308,10 @@ class TetrisGame:
             thisFigAtCoord = self.grid[y][x] is fig
 
             if shapeAtCoord and not thisFigAtCoord:
-                return True
-        return False
+                figuresUnder.add(shapeAtCoord)
+        return figuresUnder
 
     def start(self):
-        
         size = ((self.grid_width+10)*self.square_size, self.grid_height*self.square_size)
 
         game_paused, menu_state = False, "main"
@@ -333,7 +352,7 @@ class TetrisGame:
         # rect = pygame.Rect(x, y, width, height)
         # pygame.draw.rect(screen, self.color, rect)
 
-         # game loop
+        # game loop
         while running:
             moved = False
             

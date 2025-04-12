@@ -288,7 +288,7 @@ class TetrisGame:
         """
         return len(self.getFiguresUnder(fig, dx, dy)) > 0
     
-    def getFiguresUnder(self, fig, dx, dy):
+    def getFiguresUnder(self, fig: Figure, dx, dy):
         """
             Check the new coordinates of the figure, and returns anything other than itself on the grid at those locations
         """
@@ -308,7 +308,7 @@ class TetrisGame:
             thisFigAtCoord = self.grid[y][x] is fig
 
             if shapeAtCoord and not thisFigAtCoord:
-                figuresUnder.add(shapeAtCoord)
+                figuresUnder.add(self.grid[y][x])
         return figuresUnder
 
     def start(self):
@@ -370,6 +370,17 @@ class TetrisGame:
             self.grid_surface = screen.subsurface(grid_rec)
             self.grid_surface.fill(GRID_COLOR)
             # pygame.draw.rect(screen, GRID_COLOR, self.grid_surface)
+
+            cell_size = self.square_size  # or whatever size your cells are
+            grid_color = (50, 50, 50)  # a dark gray or any color you like
+
+            # Draw vertical lines
+            for x in range(0, net_grid_width, cell_size):
+                pygame.draw.line(self.grid_surface, grid_color, (x, 0), (x, net_grid_height))
+
+            # Draw horizontal lines
+            for y in range(0, net_grid_height, cell_size):
+                pygame.draw.line(self.grid_surface, grid_color, (0, y), (net_grid_width, y))
 
 
             # call draw

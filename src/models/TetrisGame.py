@@ -88,7 +88,7 @@ class TetrisGame:
             fig.canFall = CANFALL.UNDEFINED
 
         while any([fig.canFall == CANFALL.UNDEFINED for fig in self.figures]):
-            for fig in [fig.canFall == CANFALL.UNDEFINED for fig in self.figures]:
+            for fig in [fig for fig in self.figures if fig.canFall == CANFALL.UNDEFINED]:
                 fig.canFall = self.canFall(fig)
 
     def canFall(self, fig: Figure) -> CANFALL:
@@ -250,7 +250,7 @@ class TetrisGame:
     # rightMove method
     def rightMove(self):
         for fig in self.figures:
-            if fig.isActive and fig.getRight() <= self.grid_width:
+            if fig.isActive and fig.getRight() < self.grid_width:
                 moveAmount = 1 if (self.grid_width - fig.getRight()) > 1 else 0
 
                 if self.willCollide(fig=fig, dx=moveAmount, dy=0):
@@ -465,6 +465,7 @@ class TetrisGame:
             turn += 1
             if moved:
                 self.updateGrid()
+                self.markFiguresCanFall()
 
             self.checkGameState()
 

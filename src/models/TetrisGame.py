@@ -280,6 +280,8 @@ class TetrisGame:
         for fig in self.figures:
             if fig.isActive:
                 fig.rotate()
+                if fig.getLeft() < 0 or fig.getRight() >= self.grid_width:
+                    fig.unrotate()
                 break
 
     def willCollide(self, fig, dx, dy):

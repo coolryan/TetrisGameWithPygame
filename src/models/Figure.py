@@ -108,9 +108,9 @@ class Figure:
         self.initFigure()
 
     def unrotate(self):
-        # self.rotationIndex = self.rotationIndex - 1
-        # if self.rotationIndex < 0:
-        #     self.rotationIndex = 3
+        self.rotationIndex = self.rotationIndex - 1
+        if self.rotationIndex < 0:
+            self.rotationIndex = 3
 
         self.initFigure()
 

@@ -34,7 +34,7 @@ class TetrisGame:
     def __init__(self, game_width, game_height, grid_location_x, grid_location_y,
         grid_width, grid_height, square_size
     ):
-        self.level, self.score = 2, 0
+        self.level, self.score = 1, 0
         self.state = GAMESTATE.RUNNING
 
         self.height, self.width = game_height, game_width

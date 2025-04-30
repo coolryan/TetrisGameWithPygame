@@ -11,6 +11,7 @@ import pygame, random, time, sys
 from pygame.locals import *
 from constants import *
 from .Figure import *
+from .Score import *
 
 
 """
@@ -34,7 +35,7 @@ class TetrisGame:
     def __init__(self, game_width, game_height, grid_location_x, grid_location_y,
         grid_width, grid_height, square_size
     ):
-        self.level, self.score = 1, 0
+        self.score = Score(0, 1, rowsCleared= 0)
         self.state = GAMESTATE.RUNNING
 
         self.height, self.width = game_height, game_width
@@ -50,7 +51,7 @@ class TetrisGame:
         # Grid is by y then x. So grid[y][x]
         self.grid = [[None for i in range(self.grid_width)] for j in range(self.grid_height)]
 
-    @classmethod
+    @classmethod                                                                                                                      
     def _getNextFigureId(cls) -> int:
         cls.currentFigureIndex += 1
         return cls.currentFigureIndex
@@ -136,10 +137,8 @@ class TetrisGame:
         for fig in self.figures:
             if self.canFall(fig) == CANFALL.FALSE and fig.getTop() < 0:
                 self.state = GAMESTATE.GAMEOVER
-    
 
     # clear method
-    # Todo: Bug when row full, its clearing erase the wrong squares.
     def clearFullRows(self):
         for y, row in enumerate(reversed(self.grid)):
             isRowFull = True
@@ -156,6 +155,9 @@ class TetrisGame:
                 for x, fig in enumerate(row):
                     coord_x = x
                     fig.remove(coord_x, coord_y)
+
+                self.score.points += 1
+                self.score.rowsCleared += 1
                 isRowFull = False
 
                 # if len(fig.coordList) == 0:

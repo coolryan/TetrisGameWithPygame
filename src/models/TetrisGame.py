@@ -35,7 +35,7 @@ class TetrisGame:
     def __init__(self, game_width, game_height, grid_location_x, grid_location_y,
         grid_width, grid_height, square_size
     ):
-        self.score = Score(0, 1, rowsCleared= 0)
+        self.score = Score(0, 1)
         self.state = GAMESTATE.RUNNING
 
         self.height, self.width = game_height, game_width
@@ -157,7 +157,7 @@ class TetrisGame:
                     fig.remove(coord_x, coord_y)
 
                 self.score.points += 1
-                self.score.rowsCleared += 1
+                self.score.rowCleared()
                 isRowFull = False
 
                 # if len(fig.coordList) == 0:

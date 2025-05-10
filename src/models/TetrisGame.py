@@ -156,8 +156,8 @@ class TetrisGame:
                     coord_x = x
                     fig.remove(coord_x, coord_y)
 
-                self.score.points += 1
                 self.score.rowCleared()
+
                 isRowFull = False
 
                 # if len(fig.coordList) == 0:
@@ -314,12 +314,15 @@ class TetrisGame:
             if shapeAtCoord and not thisFigAtCoord:
                 figuresUnder.add(self.grid[y][x])
         return figuresUnder
+    
+    def display_score(self):
+        font = pygame.font.SysFont('Calibri', 25, True, False)
+        text = font.render("Score: " + str(self.score), True, BLACK)
 
     def start(self):
         size = ((self.grid_width+10)*self.square_size, self.grid_height*self.square_size)
 
         game_paused, menu_state = False, "main"
-        font = pygame.font.SysFont("arial", 40)
         TEXT_COL = (255, 255, 255)
 
         # screen window
@@ -385,7 +388,6 @@ class TetrisGame:
             # Draw horizontal lines
             for y in range(0, net_grid_height, cell_size):
                 pygame.draw.line(self.grid_surface, grid_color, (0, y), (net_grid_width, y))
-
 
             # call draw
             self.draw(screen)
@@ -475,6 +477,8 @@ class TetrisGame:
 
             self.clearFullRows()
             self.checkFloatingRows()
+
+            self.display_score()
 
             # pygame update
             pygame.display.update()

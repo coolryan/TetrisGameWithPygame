@@ -29,6 +29,7 @@ from models.TetrisGame import *
 def main():
     # initialize pygame
     pygame.init()
+    pygame.font.init()
 
     game_width, game_height = 20, 25
     grid_location_x, grid_location_y = 5, 0

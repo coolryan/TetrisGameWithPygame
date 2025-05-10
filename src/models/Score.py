@@ -11,9 +11,9 @@ class Score:
     _rowsCleared: int = 0
 
     # If a certain number of rows are cleared, the level increases
-    def rowCleared(self, rowsCleared: int = 1):
+    def rowCleared(self, rowsCleared: int = 1, points: int = 5):
         self._rowsCleared += rowsCleared
 
         if self._rowsCleared % rowsPerLevel == 0:
+            self.points += points
             self.level += 1
-        

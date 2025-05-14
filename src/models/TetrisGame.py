@@ -315,9 +315,12 @@ class TetrisGame:
                 figuresUnder.add(self.grid[y][x])
         return figuresUnder
     
-    def display_score(self):
+    def display_score(self, screen):
         font = pygame.font.SysFont('Calibri', 25, True, False)
-        text = font.render("Score: " + str(self.score), True, BLACK)
+        scoreText = font.render("Score: " + str(self.score), True, BLACK)
+        textRect = scoreText.get_rect()
+        textRect.topleft = (10, 10)
+        screen.blit(scoreText, textRect)
 
     def start(self):
         size = ((self.grid_width+10)*self.square_size, self.grid_height*self.square_size)
@@ -478,7 +481,7 @@ class TetrisGame:
             self.clearFullRows()
             self.checkFloatingRows()
 
-            self.display_score()
+            self.display_score(screen)
 
             # pygame update
             pygame.display.update()

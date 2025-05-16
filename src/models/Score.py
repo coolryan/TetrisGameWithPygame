@@ -15,5 +15,6 @@ class Score:
         self._rowsCleared += rowsCleared
 
         if self._rowsCleared % rowsPerLevel == 0:
-            self.points += points
             self.level += 1
+
+        self.points += points

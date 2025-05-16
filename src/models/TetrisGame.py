@@ -317,7 +317,7 @@ class TetrisGame:
     
     def display_score(self, screen):
         font = pygame.font.SysFont('Calibri', 25, True, False)
-        scoreText = font.render("Score: " + str(self.score), True, BLACK)
+        scoreText = font.render("Score: " + str(self.score.points), True, BLACK)
         textRect = scoreText.get_rect()
         textRect.topleft = (10, 10)
         screen.blit(scoreText, textRect)

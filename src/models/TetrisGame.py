@@ -6,13 +6,14 @@
 """
 
 # import libraries
-import pygame, random, time, sys
+import pygame, random, time, sys, os
 
 from pygame.locals import *
 from constants import *
 from .Figure import *
 from .Score import *
 
+from ..buttons import Button
 
 """
 Todo next time:
@@ -322,6 +323,13 @@ class TetrisGame:
         textRect.topleft = (10, 10)
         screen.blit(scoreText, textRect)
 
+    def display_level(self, screen):
+        font = pygame.font.SysFont('Calibri', 25, True, False)
+        levelText = font.render("Level: " + str(self.score.level), True, BLACK)
+        textRect = levelText.get_rect()
+        textRect.topleft = (10, 35)
+        screen.blit(levelText, textRect)
+
     def start(self):
         size = ((self.grid_width+10)*self.square_size, self.grid_height*self.square_size)
 
@@ -337,22 +345,22 @@ class TetrisGame:
         # font variables
         font = pygame.font.SysFont('arial', 40)
 
-        # # load images
-        # path = "src/Button/Images/"
-        # start_img = pygame.image.load(os.path.join(os.getcwd(), path, "start_btn.png"))
-        # exit_img = pygame.image.load(os.path.join(os.getcwd(), path, "exit_btn.png"))
-        # resume_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_resume.png"))
-        # options_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_options.png"))
-        # quit_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_quit.png"))
-        # back_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_back.png"))
+        # load images
+        path = "resources/button/images"
+        start_img = pygame.image.load(os.path.join(os.getcwd(), path, "start_btn.png"))
+        exit_img = pygame.image.load(os.path.join(os.getcwd(), path, "exit_btn.png"))
+        resume_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_resume.png"))
+        options_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_options.png"))
+        quit_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_quit.png"))
+        back_img = pygame.image.load(os.path.join(os.getcwd(), path, "button_back.png"))
 
-        # # create button instances
-        # start_button = Button(200, 200, start_img, 0.8)
-        # exit_button = Button(200, 200, exit_img, 0.8)
-        # resume_button = Button(304, 125, resume_img, 1)
-        # options_button = Button(297, 250, options_img, 1)
-        # quit_button = Button(336, 375, quit_img, 1)
-        # back_button = Button(332, 450, back_img, 1)
+        # create button instances
+        start_button = Button(200, 200, start_img, 0.8)
+        exit_button = Button(200, 200, exit_img, 0.8)
+        resume_button = Button(304, 125, resume_img, 1)
+        options_button = Button(297, 250, options_img, 1)
+        quit_button = Button(336, 375, quit_img, 1)
+        back_button = Button(332, 450, back_img, 1)
             
         # game variables
         running = True
@@ -415,38 +423,37 @@ class TetrisGame:
             if game_paused == True:
                 # check menu state
                 if menu_state == "main":
-                    # # check buttons has been drawn
-                    # if start_button.draw(screen):
-                    #      # call draw
-                    #     self.draw(screen)
+                    # check buttons has been drawn
+                    if start_button.draw(screen):
+                        # call draw
+                        self.draw(screen)
 
-                    #     # call move
-                    #     self.move()
+                        # call move
+                        self.move()
 
-                    # if exit_button.draw(screen):
-                    #     # quit
-                    #     pygame.quit()
-                    #     sys.exit(0)
-                    pass
+                    if exit_button.draw(screen):
+                        # quit
+                        pygame.quit()
+                        sys.exit(0)
 
                     # draw pause screen buttons
-                    # if resume_button.draw(screen):
-                    #     game_paused = False
+                    if resume_button.draw(screen):
+                        game_paused = False
 
-                    # if options_button.draw(screen):
-                    #     menu_state = "options"
+                    if options_button.draw(screen):
+                        menu_state = "options"
 
-                    # if quit_button.draw(screen):
-                    #     running = False
-                    #     # quit
-                    #     pygame.quit()
-                    #     sys.exit(0)
+                    if quit_button.draw(screen):
+                        running = False
+                        # quit
+                        pygame.quit()
+                        sys.exit(0)
 
                 # check if the options menu is open
-                # if menu_state == "options":
-                #     if back_button.draw(screen):
-                #         menu_state = "main"
-            
+                if menu_state == "options":
+                    if back_button.draw(screen):
+                        menu_state = "main"
+
             # event handler
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -482,6 +489,7 @@ class TetrisGame:
             self.checkFloatingRows()
 
             self.display_score(screen)
+            self.display_level(screen)
 
             # pygame update
             pygame.display.update()

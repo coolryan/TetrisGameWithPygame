@@ -46,6 +46,7 @@ class TetrisGame:
 
         self.figures, self.nextFigures = [], []
         self.velocity = 1
+        self.sleep_time = .2
 
         self.initFigures()
 
@@ -158,6 +159,14 @@ class TetrisGame:
                     fig.remove(coord_x, coord_y)
 
                 self.score.rowCleared()
+
+                self.sleep_time = {
+                    1: .2,
+                    2: .18,
+                    3: .16,
+                    4: .15,
+                    5: .14,
+                }[self.score.level]
 
                 isRowFull = False
 
@@ -387,6 +396,10 @@ class TetrisGame:
             grid_rec = pygame.Rect(grid_x, gird_y, net_grid_width, net_grid_height)
             self.grid_surface = screen.subsurface(grid_rec)
             self.grid_surface.fill(GRID_COLOR)
+
+            next_rect = pygame.Rect(800, 50, 150, 150)
+            self.next_surface = screen.subsurface(next_rect)
+            self.next_surface.fill(GRID_COLOR)
             # pygame.draw.rect(screen, GRID_COLOR, self.grid_surface)
 
             cell_size = self.square_size  # or whatever size your cells are
@@ -477,7 +490,7 @@ class TetrisGame:
                     if event.key == K_ESCAPE:
                         game_paused = True
 
-            time.sleep(.1)
+            time.sleep(self.sleep_time)
             turn += 1
             if moved:
                 self.updateGrid()

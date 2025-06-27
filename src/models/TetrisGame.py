@@ -72,10 +72,17 @@ class TetrisGame:
         nextFig.setX(self.grid_width//2)
         nextFig.setY(-4)
         nextFig.isActive = True
-
+        
+        upcomingFigure: Figure = self.nextFigures[0]
+        x, y = self.next_surface.get_bounding_rect().topleft
+        upcomingFigure.setX(x)
+        upcomingFigure.setY(-y)
+        
         self.nextFigures.append(Figure.getRandomFigure(self._getNextFigureId(), self.grid_width, self.grid_height, self.square_size))
 
         self.figures.append(nextFig)
+
+        upcomingFigure.draw(self.next_surface)
 
     def getActiveFigure(self):
         for fig in self.figures:
@@ -392,12 +399,14 @@ class TetrisGame:
             # Draw grid
             net_grid_width = self.grid_width * self.square_size
             net_grid_height = self.grid_height * self.square_size
+
             grid_x, gird_y = self.grid_location_x * self.square_size, self.grid_location_y * self.square_size
             grid_rec = pygame.Rect(grid_x, gird_y, net_grid_width, net_grid_height)
+
             self.grid_surface = screen.subsurface(grid_rec)
             self.grid_surface.fill(GRID_COLOR)
 
-            next_rect = pygame.Rect(800, 50, 150, 150)
+            next_rect = pygame.Rect(780, 20, 200, 200)
             self.next_surface = screen.subsurface(next_rect)
             self.next_surface.fill(GRID_COLOR)
             # pygame.draw.rect(screen, GRID_COLOR, self.grid_surface)

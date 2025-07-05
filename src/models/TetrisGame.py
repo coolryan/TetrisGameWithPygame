@@ -75,14 +75,15 @@ class TetrisGame:
         
         upcomingFigure: Figure = self.nextFigures[0]
         x, y = self.next_surface.get_bounding_rect().topleft
-        upcomingFigure.setX(x)
-        upcomingFigure.setY(-y)
+        upcomingFigure.setX(0)
+        upcomingFigure.setY(0)
+        upcomingFigure.draw(self.next_surface)
+
+        pygame.image.save(self.next_surface, "debug_screen.png")
         
         self.nextFigures.append(Figure.getRandomFigure(self._getNextFigureId(), self.grid_width, self.grid_height, self.square_size))
 
         self.figures.append(nextFig)
-
-        upcomingFigure.draw(self.next_surface)
 
     def getActiveFigure(self):
         for fig in self.figures:

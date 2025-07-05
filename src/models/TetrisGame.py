@@ -67,7 +67,8 @@ class TetrisGame:
 
     # new figure method
     def newFigure(self):
-        nextFig: Figure = self.nextFigures.pop()
+        nextFig: Figure = self.nextFigures[0]
+        self.nextFigures.remove(nextFig)
 
         nextFig.setX(self.grid_width//2)
         nextFig.setY(-4)
@@ -77,9 +78,10 @@ class TetrisGame:
         x, y = self.next_surface.get_bounding_rect().topleft
         upcomingFigure.setX(0)
         upcomingFigure.setY(0)
-        upcomingFigure.draw(self.next_surface)
+        # upcomingFigure.draw(self.next_surface)
+        self.upcomingFigure = upcomingFigure
 
-        pygame.image.save(self.next_surface, "debug_screen.png")
+        # pygame.image.save(self.next_surface, "debug_screen.png")
         
         self.nextFigures.append(Figure.getRandomFigure(self._getNextFigureId(), self.grid_width, self.grid_height, self.square_size))
 
@@ -513,6 +515,8 @@ class TetrisGame:
 
             self.display_score(screen)
             self.display_level(screen)
+            if hasattr(self, 'upcomingFigure'):
+                self.upcomingFigure.draw(self.next_surface)
 
             # pygame update
             pygame.display.update()

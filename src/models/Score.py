@@ -5,7 +5,7 @@ rowsPerLevel = 3
 
 @dataclass
 class Score:
-    #player_name: str 
+    player_name: str 
     points: int = 0
     level: int = 1
     _rowsCleared: int = 0

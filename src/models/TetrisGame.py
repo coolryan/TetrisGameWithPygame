@@ -6,7 +6,7 @@
 """
 
 # import libraries
-import pygame, random, time, sys, os
+import pygame, random, time, sys, os, json
 
 from pygame.locals import *
 from constants import *
@@ -148,6 +148,7 @@ class TetrisGame:
         # Check if any figure is at the top of the grid, if so gameover
         for fig in self.figures:
             if self.canFall(fig) == CANFALL.FALSE and fig.getTop() < 0:
+                
                 self.state = GAMESTATE.GAMEOVER
 
     # clear method
@@ -349,6 +350,23 @@ class TetrisGame:
         textRect.topleft = (10, 35)
         screen.blit(levelText, textRect)
 
+    def game_over(self):
+        filename = "highScores.json"
+        highScore = self.score.points
+        name = self.score.player_name
+
+        game_state = {
+            name: "MrBeast", "score": highScore, "date": "2025-06-15"
+        }
+
+        try:
+            with open(filename, "w") as file:
+                json.dump(game_state, file, indent=4)
+            print("Game saved!")
+
+        except IOError:
+            print("error, high score cannot be saved.")
+
     def start(self):
         size = ((self.grid_width+10)*self.square_size, self.grid_height*self.square_size)
 
@@ -429,7 +447,7 @@ class TetrisGame:
             self.draw(screen)
 
             if self.state is GAMESTATE.GAMEOVER:
-                print("Game over")
+                self.game_over()
                 break
 
             # call move

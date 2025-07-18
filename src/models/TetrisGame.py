@@ -6,7 +6,7 @@
 """
 
 # import libraries
-import pygame, random, time, sys, os, json
+import pygame, datetime, time, sys, os, json
 
 from pygame.locals import *
 from constants import *
@@ -36,7 +36,7 @@ class TetrisGame:
     def __init__(self, game_width, game_height, grid_location_x, grid_location_y,
         grid_width, grid_height, square_size
     ):
-        self.score = Score(0, 1)
+        self.score = Score("MrBeast", 1)
         self.state = GAMESTATE.RUNNING
 
         self.height, self.width = game_height, game_width
@@ -351,21 +351,39 @@ class TetrisGame:
         screen.blit(levelText, textRect)
 
     def game_over(self):
-        filename = "highScores.json"
-        highScore = self.score.points
+        # variables
         name = self.score.player_name
-
-        game_state = {
-            name: "MrBeast", "score": highScore, "date": "2025-06-15"
+        highScore = self.score.points
+        level = self.score.level
+        currentDateTime = datetime.datetime.now()
+        formattedDateTime = currentDateTime.strftime("%Y-%M-%D %H:%M:%S")
+        
+        # your game data
+        game_data = {
+            "name": name,
+            "score": highScore,
+            "level": level,
+            "date": formattedDateTime
         }
 
-        try:
-            with open(filename, "w") as file:
-                json.dump(game_state, file, indent=4)
-            print("Game saved!")
+        # define the data folder & file path
+        data_folder = "data"
+        file_name = "save_game.json"
+        file_path = os.path.join(data_folder, file_name)
 
-        except IOError:
-            print("error, high score cannot be saved.")
+        # create the data folder if it doesn't exist
+        if not os.path.exists(file_path):
+            os.makedirs(data_folder)
+            print(f"Created data folder: {data_folder}")
+
+        # write the JSON data to the file
+        try:
+            with open(file_path, "w") as file:
+                json.dump(game_data, file, indent=4)
+            print(f"JSON data successfully saved to: {file_name}")
+
+        except IOError as e:
+            print(f"Error saving JSON data: {e}")
 
     def start(self):
         size = ((self.grid_width+10)*self.square_size, self.grid_height*self.square_size)

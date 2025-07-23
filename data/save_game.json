@@ -1,6 +1,32 @@
-{
-    "name": "MrBeast",
-    "score": 46,
-    "level": 4,
-    "date": "2025-03-07/18/25 17:03:28"
-}
+[
+    {
+        "name": "MrBeast",
+        "score": 36,
+        "level": 3,
+        "date": "2025-07-23 15:37:32"
+    }, {
+        "name": "Markiplier",
+        "score": 60,
+        "level": 8,
+        "date": "2025-07-23 15:37:32"
+    }
+][
+    {
+        "name": "MrBeast",
+        "score": 36,
+        "level": 3,
+        "date": "2025-07-23 15:37:32"
+    },
+    {
+        "name": "Markiplier",
+        "score": 60,
+        "level": 8,
+        "date": "2025-07-23 15:37:32"
+    },
+    {
+        "name": "MrBeast",
+        "score": 41,
+        "level": 3,
+        "date": "2025-07-23 16:33:14"
+    }
+]

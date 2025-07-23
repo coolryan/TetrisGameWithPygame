@@ -114,6 +114,7 @@ class TetrisGame:
             return CANFALL.FALSE
         elif len(figuresUnder) == 0:
             return CANFALL.TRUE
+        #TODO possibly bug
         elif len([otherFigs for otherFigs in figuresUnder if otherFigs.canFall != CANFALL.TRUE]) == 0:
             return CANFALL.TRUE
         elif len([otherFigs for otherFigs in figuresUnder if otherFigs.canFall == CANFALL.FALSE]) > 0:
@@ -356,7 +357,7 @@ class TetrisGame:
         highScore = self.score.points
         level = self.score.level
         currentDateTime = datetime.datetime.now()
-        formattedDateTime = currentDateTime.strftime("%Y-%M-%D %H:%M:%S")
+        formattedDateTime = currentDateTime.strftime("%Y-%m-%d %H:%M:%S")
         
         # your game data
         game_data = {
@@ -376,14 +377,24 @@ class TetrisGame:
             os.makedirs(data_folder)
             print(f"Created data folder: {data_folder}")
 
-        # write the JSON data to the file
+        # write the JSON data to the file                         
+        # loaded the game data
         try:
-            with open(file_path, "w") as file:
-                json.dump(game_data, file, indent=4)
-            print(f"JSON data successfully saved to: {file_name}")
+            with open(file_path, "r+") as file:
+                if not os.path.exists(file_path):
+                    json.dumps([game_data], file, indent=4)
+                else:
+                    #loaded_data = [{"name": "MrBeast"}]
+                    loaded_data = json.load(file)
+                    loaded_data.append(game_data)
+                    json.dump(loaded_data, file, indent=4)
+            print(f"Loaded game data:", loaded_data )
+        
+        except FileNotFoundError:
+            print(f"No Saved game found found: {file_path}. Starting new game.")
 
-        except IOError as e:
-            print(f"Error saving JSON data: {e}")
+        except json.JSONDecodeError:
+            print(f"Error: Saved game file {file_path}' is corrupted. Starting new game.")
 
     def start(self):
         size = ((self.grid_width+10)*self.square_size, self.grid_height*self.square_size)

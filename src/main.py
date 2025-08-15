@@ -28,6 +28,7 @@ from models.TetrisGame import *
 # define main function
 def main():
     # initialize pygame
+    player_name = input("Enter your name: ")
     pygame.init()
     pygame.font.init()
 
@@ -37,7 +38,7 @@ def main():
     # Size in grid
     grid_width, grid_height, square_size = 10, 20, 50
     tetris = TetrisGame(game_width, game_height, grid_location_x, grid_location_y,
-        grid_width, grid_height, square_size)
+        grid_width, grid_height, square_size, player_name=player_name)
 
     tetris.start()
 

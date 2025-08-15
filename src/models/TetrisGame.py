@@ -34,9 +34,9 @@ class TetrisGame:
 
     """constructor"""
     def __init__(self, game_width, game_height, grid_location_x, grid_location_y,
-        grid_width, grid_height, square_size
+        grid_width, grid_height, square_size, player_name
     ):
-        self.score = Score("MrBeast", 1)
+        self.score = Score(player_name, 1)
         self.state = GAMESTATE.RUNNING
 
         self.height, self.width = game_height, game_width
@@ -100,9 +100,13 @@ class TetrisGame:
         for fig in self.figures:
             fig.canFall = CANFALL.UNDEFINED
 
-        while any([fig.canFall == CANFALL.UNDEFINED for fig in self.figures]):
+        # Todo: This seems to get stuck sometimes
+        max_iterations = 100
+        iterations = 0
+        while any([fig.canFall == CANFALL.UNDEFINED for fig in self.figures]) and iterations < max_iterations:
             for fig in [fig for fig in self.figures if fig.canFall == CANFALL.UNDEFINED]:
                 fig.canFall = self.canFall(fig)
+            iterations += 1
 
     def canFall(self, fig: Figure) -> CANFALL:
         # a figure can fall if one or two scenarios are true:
@@ -375,20 +379,21 @@ class TetrisGame:
         # create the data folder if it doesn't exist
         if not os.path.exists(file_path):
             os.makedirs(data_folder)
-            print(f"Created data folder: {data_folder}")
 
         # write the JSON data to the file                         
         # loaded the game data
         try:
-            with open(file_path, "r+") as file:
-                if not os.path.exists(file_path):
-                    json.dumps([game_data], file, indent=4)
-                else:
-                    #loaded_data = [{"name": "MrBeast"}]
+            if os.path.exists(file_path):
+                with open(file_path, "r") as file:
                     loaded_data = json.load(file)
-                    loaded_data.append(game_data)
-                    json.dump(loaded_data, file, indent=4)
-            print(f"Loaded game data:", loaded_data )
+            else:
+                loaded_data = []
+            loaded_data.append(game_data)
+
+            with open(file_path, "w") as file:
+                json.dump(loaded_data, file, indent=4)
+
+            print(f"Wrote game data:", loaded_data )
         
         except FileNotFoundError:
             print(f"No Saved game found found: {file_path}. Starting new game.")

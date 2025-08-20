@@ -9,7 +9,7 @@
 import pygame, random, time, sys
 
 from pygame.locals import *
-from constants import *
+from ..constants import *
 
 # class Figure
 class Figure:

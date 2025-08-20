@@ -1,4 +1,4 @@
-from src.Models.TetrisGame import Figure, TetrisGame
+from src.models.TetrisGame import Figure, TetrisGame
 from src.constants import *
 
 def test_distanceDownActive_none_below():

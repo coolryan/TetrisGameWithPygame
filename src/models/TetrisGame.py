@@ -9,11 +9,11 @@
 import pygame, datetime, time, sys, os, json
 
 from pygame.locals import *
-from ..constants import *
-from .Figure import *
-from .Score import *
+from constants import *
+from models.Figure import *
+from models.Score import *
 
-from ..buttons.Button import Button
+from buttons.Button import Button
 
 """
 Todo next time:

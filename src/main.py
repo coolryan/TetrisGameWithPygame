@@ -14,10 +14,10 @@
 import os, pygame, random, sys, time
 
 from pygame.locals import *
-from constants import *
 
-from models.Figure import *
-from models.TetrisGame import *
+from src.constants import *
+from src.models.Figure import *
+from src.models.TetrisGame import *
 
 #from Button.Button import Button
 

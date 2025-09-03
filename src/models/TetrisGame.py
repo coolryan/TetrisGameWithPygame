@@ -78,13 +78,9 @@ class TetrisGame:
         x, y = self.next_surface.get_bounding_rect().topleft
         upcomingFigure.setX(0)
         upcomingFigure.setY(0)
-        # upcomingFigure.draw(self.next_surface)
-        self.upcomingFigure = upcomingFigure
-
-        # pygame.image.save(self.next_surface, "debug_screen.png")
         
+        self.upcomingFigure = upcomingFigure
         self.nextFigures.append(Figure.getRandomFigure(self._getNextFigureId(), self.grid_width, self.grid_height, self.square_size))
-
         self.figures.append(nextFig)
 
     def getActiveFigure(self):
@@ -160,6 +156,7 @@ class TetrisGame:
     def clearFullRows(self):
         for y, row in enumerate(reversed(self.grid)):
             isRowFull = self.getIsRowFull(y, row)
+            
                 # Lets set the rows above emptied row to start so they fall down
                 # elif rowCleared and gridLocation is not None:
                 #     gridLocation.state = "start"

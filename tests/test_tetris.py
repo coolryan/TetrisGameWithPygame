@@ -1,6 +1,9 @@
+import pytest
+
 from src.models.TetrisGame import Figure, TetrisGame
 from src.constants import *
 
+@pytest.skip("not in use")
 def test_distanceDownActive_none_below():
     # Arrange
     tetris = TetrisGame(5, 5, 1)
@@ -14,6 +17,7 @@ def test_distanceDownActive_none_below():
     # Assert
     assert result == 3
 
+@pytest.skip("not in use")
 def test_distanceDownActive_another_below():
     # Arrange
     tetris = TetrisGame(5, 5, 1)

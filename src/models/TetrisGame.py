@@ -159,11 +159,7 @@ class TetrisGame:
     # clear method
     def clearFullRows(self):
         for y, row in enumerate(reversed(self.grid)):
-            isRowFull = True
-            for x, gridLocation in enumerate(row):
-                coord_y = self.grid_height - y - 1
-                if gridLocation is None:
-                    isRowFull = False
+            isRowFull = self.getIsRowFull(y, row)
                 # Lets set the rows above emptied row to start so they fall down
                 # elif rowCleared and gridLocation is not None:
                 #     gridLocation.state = "start"
@@ -172,6 +168,7 @@ class TetrisGame:
                 print("Row full")
                 for x, fig in enumerate(row):
                     coord_x = x
+                    coord_y = self.grid_height - 1 - y
                     fig.remove(coord_x, coord_y)
 
                 self.score.rowCleared()
@@ -196,6 +193,13 @@ class TetrisGame:
         self.figures = figures
 
         self.updateGrid()
+
+    def getIsRowFull(self, y, row) -> bool:
+        isRowFull = True
+        for _, gridLocation in enumerate(row):
+            if gridLocation is None:
+                isRowFull = False
+        return isRowFull
 
     def checkFloatingRows(self):
         # Check which shapes can fall

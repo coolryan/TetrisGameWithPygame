@@ -33,9 +33,17 @@ def test_distanceDownActive_another_below():
     # Assert
     assert result == 1
 
-def test_getIsRowFull_buttonRowFull():
+def test_getIsRowFull_RowFull():
     # Arrange
-    tetris = TetrisGame(5, 5, 1)
+    game_width, game_height = 20, 25
+    grid_location_x, grid_location_y = 5, 0
+
+    # Size in grid
+    grid_width, grid_height, square_size = 10, 20, 50
+
+    tetris = TetrisGame(game_width, game_height, 
+                        grid_location_x, grid_location_y, 
+                        grid_width, grid_height, square_size, player_name="test")
     y = 1
     row = []
 

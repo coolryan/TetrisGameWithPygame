@@ -124,7 +124,11 @@ class TetrisGame:
             return CANFALL.UNDEFINED
             
     def updateGrid(self):
-        # Reset the grid
+        """
+            Reset the grid.
+            Uses the coordinates that are in each figure to populate.
+        
+        """
         self.grid = [[None for i in range(self.grid_width)] for j in range(self.grid_height)]
         # Add each figure's coords to the grid
         for fig in self.figures:

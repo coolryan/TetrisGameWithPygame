@@ -51,6 +51,7 @@ class TetrisGame:
         self.initFigures()
 
         # Grid is by y then x. So grid[y][x]
+        # y=0 will be the top, y=height-1 will be the bottom
         self.grid = [[None for i in range(self.grid_width)] for j in range(self.grid_height)]
 
     @classmethod                                                                                                                      

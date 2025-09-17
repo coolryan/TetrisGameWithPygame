@@ -8,6 +8,7 @@ pygame = "*"
 
 [dev-packages]
 pytest = "8.3.3"
+pytest-mock = ">=3.15.0"
 
 [requires]
 python_version = "3.12"

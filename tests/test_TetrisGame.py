@@ -125,13 +125,14 @@ def test_getIsRowFull_RowFullyEmpty(tetris_game: TetrisGame):
 def test_clearFullRows_bottomRowFull(mocker: MockerFixture, tetris_game: TetrisGame, test_full_bottom_grid: list[list[Optional[Figure]]]):
     # Arrange
     # Set the grid up for the test
+    bottomY = tetris_game.grid_height - 1
     tetris_game.grid = test_full_bottom_grid
 
     # Act
     tetris_game.clearFullRows()
 
     # Assert
-    assert all(item is None for item in tetris_game.grid[tetris_game.grid_height-1])
+    assert all(item is None for item in tetris_game.grid[bottomY])
 
 
 def test_clearFullRows_second_from_bottom_full(
@@ -140,6 +141,7 @@ def test_clearFullRows_second_from_bottom_full(
 ):
     # Arrange
     # Set the grid up for the test
+    bottomY = tetris_game.grid_height - 1
     oneUpY = tetris_game.grid_height - 2
     tetris_game.grid = test_empty_grid
     figO1 = Figure(id=0, x=0, y=oneUpY, size=50, figureType=O_TETROMINO, isActive=False)
@@ -151,15 +153,15 @@ def test_clearFullRows_second_from_bottom_full(
     # Now lets fill the grid out  
     tetris_game.updateGrid()
     # Make sure they're not clear right now
-    assert not all(item is None for item in tetris_game.grid[tetris_game.grid_height-2])
-    assert not all(item is None for item in tetris_game.grid[tetris_game.grid_height-1])
+    assert not all(item is None for item in tetris_game.grid[oneUpY])
+    assert not all(item is None for item in tetris_game.grid[bottomY])
 
     # Act
     tetris_game.clearFullRows()
 
     # Assert
-    assert all(item is None for item in tetris_game.grid[tetris_game.grid_height-2])
-    assert not all(item is None for item in tetris_game.grid[tetris_game.grid_height-1])
+    assert all(item is None for item in tetris_game.grid[oneUpY])
+    assert not all(item is None for item in tetris_game.grid[bottomY])
 
 def test_clearFullRows_bottomTwoRows(
         tetris_game: TetrisGame,
@@ -167,6 +169,7 @@ def test_clearFullRows_bottomTwoRows(
 ):
     # Arrange
     # Set the grid up for the test
+    bottomY = tetris_game.grid_height - 1
     oneUpY = tetris_game.grid_height - 2
     tetris_game.grid = test_empty_grid
     figO1 = Figure(id=0, x=0, y=oneUpY, size=50, figureType=O_TETROMINO, isActive=False)
@@ -178,15 +181,15 @@ def test_clearFullRows_bottomTwoRows(
     # Now lets fill the grid out
     tetris_game.updateGrid()
     # Make sure they're not clear right now
-    assert not all(item is None for item in tetris_game.grid[tetris_game.grid_height-2])
-    assert not all(item is None for item in tetris_game.grid[tetris_game.grid_height-1])
+    assert not all(item is None for item in tetris_game.grid[oneUpY])
+    assert not all(item is None for item in tetris_game.grid[bottomY])
 
     # Act
     tetris_game.clearFullRows()
 
     # Assert
-    assert all(item is None for item in tetris_game.grid[tetris_game.grid_height-2])
-    assert all(item is None for item in tetris_game.grid[tetris_game.grid_height-1])
+    assert all(item is None for item in tetris_game.grid[oneUpY])
+    assert all(item is None for item in tetris_game.grid[bottomY])
 
 def test_clearFullRows_bottomTwoUpRows(
         tetris_game: TetrisGame,
@@ -194,10 +197,10 @@ def test_clearFullRows_bottomTwoUpRows(
 ):
     # Arrange
     # Set the grid up for the test
+    bottomY = tetris_game.grid_height - 1
     oneUpY = tetris_game.grid_height - 2
     twoUpY = tetris_game.grid_height - 3
     threeUpY = tetris_game.grid_height - 4
-    bottomY = tetris_game.grid_height - 1
     tetris_game.grid = test_empty_grid
     
     figO1 = Figure(id=0, x=0, y=twoUpY, size=50, figureType=O_TETROMINO, isActive=False)
@@ -210,25 +213,25 @@ def test_clearFullRows_bottomTwoUpRows(
     
     figI1.rotate()
     figI1.setX(0)
-    figI1.setY(tetris_game.grid_height)
+    figI1.setY(bottomY)
     
     figI2.rotate()
     figI2.setX(4)
-    figI2.setY(tetris_game.grid_height)
+    figI2.setY(bottomY)
 
     tetris_game.figures = [figO1, figT1, figT2, figO2, figI1, figI2, figO3]
 
     # Now lets fill the grid out
     tetris_game.updateGrid()
     # Make sure they're not clear right now
-    assert not all(item is None for item in tetris_game.grid[tetris_game.grid_height-3])
-    assert not all(item is None for item in tetris_game.grid[tetris_game.grid_height-2])
-    assert not all(item is None for item in tetris_game.grid[tetris_game.grid_height-1])
+    assert not all(item is None for item in tetris_game.grid[twoUpY])
+    assert not all(item is None for item in tetris_game.grid[oneUpY])
+    assert not all(item is None for item in tetris_game.grid[bottomY])
 
     # Act
     tetris_game.clearFullRows()
 
     # Assert
-    assert all(item is None for item in tetris_game.grid[tetris_game.grid_height-3])
-    assert not all(item is None for item in tetris_game.grid[tetris_game.grid_height-2])
-    assert all(item is None for item in tetris_game.grid[tetris_game.grid_height-1])
+    assert all(item is None for item in tetris_game.grid[twoUpY])
+    assert not all(item is None for item in tetris_game.grid[oneUpY])
+    assert all(item is None for item in tetris_game.grid[bottomY])

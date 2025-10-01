@@ -197,14 +197,15 @@ def test_clearFullRows_bottomTwoUpRows(
     oneUpY = tetris_game.grid_height - 2
     twoUpY = tetris_game.grid_height - 3
     threeUpY = tetris_game.grid_height - 4
+    bottomY = tetris_game.grid_height - 1
     tetris_game.grid = test_empty_grid
     
     figO1 = Figure(id=0, x=0, y=twoUpY, size=50, figureType=O_TETROMINO, isActive=False)
     figT1 = Figure(id=0, x=2, y=twoUpY, size=50, figureType=T_TETROMINO, isActive=False)
     figT2 = Figure(id=0, x=5, y=twoUpY, size=50, figureType=T_TETROMINO, isActive=False)
     figO2 = Figure(id=0, x=8, y=threeUpY, size=50, figureType=O_TETROMINO, isActive=False)
-    figI1 = Figure(id=1, x=8, y=oneUpY, size=50, figureType=I_TETROMINO, isActive=False)
-    figI2 = Figure(id=1, x=8, y=oneUpY, size=50, figureType=I_TETROMINO, isActive=False)
+    figI1 = Figure(id=1, x=0, y=bottomY, size=50, figureType=I_TETROMINO, isActive=False)
+    figI2 = Figure(id=1, x=4, y=bottomY, size=50, figureType=I_TETROMINO, isActive=False)
     figO3 = Figure(id=0, x=8, y=oneUpY, size=50, figureType=O_TETROMINO, isActive=False)
     
     figI1.rotate()

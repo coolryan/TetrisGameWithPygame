@@ -6,13 +6,15 @@
 """
 
 # import libraries
-import pygame, datetime, time, sys, os, json
+import os
+import glob
 
+import pygame, datetime, time, sys, os, json
 from pygame.locals import *
+
 from src.constants import *
 from src.models.Figure import *
 from src.models.Score import *
-
 from src.buttons.Button import Button
 
 """
@@ -31,6 +33,7 @@ while not all(fig.canMove is not None for fig in self.figures): # While theres f
 class TetrisGame:
     # Class state
     currentFigureIndex = 0
+    game_image_dir = "data/replay_images"
 
     """constructor"""
     def __init__(self, game_width, game_height, grid_location_x, grid_location_y,
@@ -47,6 +50,8 @@ class TetrisGame:
         self.figures, self.nextFigures = [], []
         self.velocity = 1
         self.sleep_time = .2
+        self.turn = 0
+        self.save_images = True
 
         self.initFigures()
 
@@ -407,7 +412,26 @@ class TetrisGame:
         except json.JSONDecodeError:
             print(f"Error: Saved game file {file_path}' is corrupted. Starting new game.")
 
+    def clear_saved_images(self):
+        folder = f"{self.game_image_dir}/*"
+
+        files = glob.glob(folder)
+        for f in files:
+            if f == folder:
+                continue
+            os.remove(f)
+
+    def save_game_image(self, screen, game_turn):
+        if not self.save_images:
+            return
+        
+        file_name = f"{self.game_image_dir}/tetris_turn_{game_turn}.jpeg"
+        pygame.image.save(screen, file_name)
+
     def start(self):
+        # Clean up state
+        self.clear_saved_images()
+
         size = ((self.grid_width+10)*self.square_size, self.grid_height*self.square_size)
 
         game_paused, menu_state = False, "main"
@@ -442,7 +466,6 @@ class TetrisGame:
         # game variables
         running = True
         game_tick_freq = 3
-        turn = 0
 
         # rect = pygame.Rect(x, y, width, height)
         # pygame.draw.rect(screen, self.color, rect)
@@ -491,7 +514,11 @@ class TetrisGame:
                 break
 
             # call move
-            if turn % game_tick_freq == 0:
+            if self.turn % game_tick_freq == 0:
+                # Save image
+                game_turn = self.turn / game_tick_freq
+                self.save_game_image(screen, game_turn)
+
                 self.move()
                 moved = True
 
@@ -561,7 +588,7 @@ class TetrisGame:
                         game_paused = True
 
             time.sleep(self.sleep_time)
-            turn += 1
+            self.turn += 1
             if moved:
                 self.updateGrid()
                 self.markFiguresCanFall()

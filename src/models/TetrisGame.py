@@ -425,6 +425,8 @@ class TetrisGame:
         if not self.save_images:
             return
         
+        os.makedirs(self.game_image_dir, exist_ok=True)
+        
         file_name = f"{self.game_image_dir}/tetris_turn_{game_turn}.jpeg"
         pygame.image.save(screen, file_name)
 

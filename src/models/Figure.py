@@ -29,6 +29,15 @@ class Figure:
 
         self.initFigure()
 
+    def clone(self):
+        cloned_fig = Figure(self.id, self.x, self.y, self.size, self.type, self.isActive)
+        cloned_fig.canFall = self.canFall
+        cloned_fig.rotationIndex = self.rotationIndex
+        cloned_fig.color = self.color
+        cloned_fig.coordList = self.coordList
+        return cloned_fig
+
+
     # initFigure method
     def initFigure(self):
         currentCoordMap = SHAPE_OFFSETS[self.type][self.rotationIndex]
@@ -99,14 +108,23 @@ class Figure:
 
         self.coordList = coordListTemp
 
+    def set_coords(self, x, y):
+        self.setX(x)
+        self.setY(y)
 
-    def rotate(self):
+
+    def rotate(self, ct:int = 1):        
         self.rotationIndex = self.rotationIndex + 1
         if self.rotationIndex > 3:
             self.rotationIndex = 0
 
-        self.initFigure()
+        ct -= 1
+        if ct==0:
+            self.initFigure()
+        else:
+            self.rotate(ct)
 
+    # Todo: Do we need this? Deprecate it
     def unrotate(self):
         self.rotationIndex = self.rotationIndex - 1
         if self.rotationIndex < 0:

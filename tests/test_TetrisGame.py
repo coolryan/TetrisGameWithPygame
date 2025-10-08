@@ -2,6 +2,8 @@ from typing import Optional
 import pytest
 from pytest_mock import MockerFixture
 
+import pygame
+
 from src.models.TetrisGame import Figure, TetrisGame
 from src.constants import *
 
@@ -235,3 +237,56 @@ def test_clearFullRows_bottomTwoUpRows(
     assert all(item is None for item in tetris_game.grid[twoUpY])
     assert not all(item is None for item in tetris_game.grid[oneUpY])
     assert all(item is None for item in tetris_game.grid[bottomY])
+
+
+def test_clear_bug_1(tetris_game: TetrisGame, test_empty_grid: list[list[Optional[Figure]]]):
+    #Arrange
+    bottomY = tetris_game.grid_height - 1
+    up1Y = tetris_game.grid_height - 2
+    up2Y = tetris_game.grid_height - 3
+    up3Y = tetris_game.grid_height - 4
+    up4Y = tetris_game.grid_height - 5
+    j1 = Figure(id=0, x=1, y=up4Y, size=50, figureType=J_TETROMINO, isActive=False)
+    s1 = Figure(id=0, x=0, y=up3Y, size=50, figureType=S_TETROMINO, isActive=False)
+    s1.rotate()
+    s1.set_coords(8, up3Y)
+
+    o1 = Figure(id=0, x=0, y=up1Y, size=50, figureType=O_TETROMINO, isActive=False)
+    l1 = Figure(id=0, x=0, y=up1Y, size=50, figureType=L_TETROMINO, isActive=False)
+    l1.rotate(3)
+    l1.set_coords(2, up1Y)
+
+    j2 = Figure(id=0, x=5, y=up2Y, size=50, figureType=J_TETROMINO, isActive=False)
+    z1 = Figure(id=0, x=7, y=up1Y, size=50, figureType=Z_TETROMINO, isActive=False)
+
+    tetris_game.figures = [j1, s1, o1, l1, j2, z1]
+
+    # Now lets fill the grid out
+    tetris_game.updateGrid()
+    # Make sure they're not clear right now
+    assert not all(item is None for item in tetris_game.grid[bottomY])
+    assert not all(item is None for item in tetris_game.grid[up1Y])
+    assert not all(item is None for item in tetris_game.grid[up2Y])
+    assert not all(item is None for item in tetris_game.grid[up3Y])
+    assert not all(item is None for item in tetris_game.grid[up4Y])
+
+    # Act
+    tetris_game.clearFullRows()
+    
+    pygame.init()
+    pygame.font.init()
+    game_width, game_height = 20, 25
+    square_size = 50
+    size = ((game_width+10)*square_size, game_height*square_size)
+    screen = pygame.display.set_mode((size))
+    tetris_game.initialize_game_screen(screen)
+    tetris_game.draw(screen)
+    tetris_game.save_game_image(screen, "test_bug")
+
+
+    # Assert
+    assert not all(item is None for item in tetris_game.grid[bottomY])
+    assert not all(item is None for item in tetris_game.grid[up1Y])
+    assert not all(item is None for item in tetris_game.grid[up2Y])
+    assert not all(item is None for item in tetris_game.grid[up3Y])
+    assert not all(item is None for item in tetris_game.grid[up4Y])

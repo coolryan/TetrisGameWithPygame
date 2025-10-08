@@ -11,7 +11,7 @@
 """
 
 # import libraries
-import os, pygame, random, sys, time
+import pygame
 
 from pygame.locals import *
 

@@ -430,6 +430,43 @@ class TetrisGame:
         file_name = f"{self.game_image_dir}/tetris_turn_{game_turn}.jpeg"
         pygame.image.save(screen, file_name)
 
+    # Todo: This is where we left off. Lets save the game state so that when a
+    # bug is detected, we can restore the game state, or at least analyze it.
+    def save_game_state(self):
+        self.saved_figures = [fig.clone() for fig in self.figures]
+        self.saved_grid = self.grid
+
+    def initialize_game_screen(self, screen):
+        screen.fill(BG_COLOR) # Gives background color
+        # Draw grid
+        net_grid_width = self.grid_width * self.square_size
+        net_grid_height = self.grid_height * self.square_size
+
+        grid_x, gird_y = self.grid_location_x * self.square_size, self.grid_location_y * self.square_size
+        grid_rec = pygame.Rect(grid_x, gird_y, net_grid_width, net_grid_height)
+
+        self.grid_surface = screen.subsurface(grid_rec)
+        self.grid_surface.fill(GRID_COLOR)
+
+        next_rect = pygame.Rect(780, 20, 200, 200)
+        self.next_surface = screen.subsurface(next_rect)
+        self.next_surface.fill(GRID_COLOR)
+        # pygame.draw.rect(screen, GRID_COLOR, self.grid_surface)
+
+        cell_size = self.square_size  # or whatever size your cells are
+        grid_color = (50, 50, 50)  # a dark gray or any color you like
+
+        # Draw vertical lines
+        for x in range(0, net_grid_width, cell_size):
+            pygame.draw.line(self.grid_surface, grid_color, (x, 0), (x, net_grid_height))
+
+        # Draw horizontal lines
+        for y in range(0, net_grid_height, cell_size):
+            pygame.draw.line(self.grid_surface, grid_color, (0, y), (net_grid_width, y))
+
+        # call draw
+        self.draw(screen)
+
     def start(self):
         # Clean up state
         self.clear_saved_images()
@@ -475,41 +512,14 @@ class TetrisGame:
         # game loop
         while running:
             moved = False
+            pieceStoppedMoving = False
             
             # self.height, self.width = game_height, game_width
             # self.grid_location_x, self.grid_location_y = grid_location_x, grid_location_y
             # self.grid_width, self.grid_height = grid_width, grid_height
             # self.square_size = square_size
 
-            screen.fill(BG_COLOR) # Gives background color
-            # Draw grid
-            net_grid_width = self.grid_width * self.square_size
-            net_grid_height = self.grid_height * self.square_size
-
-            grid_x, gird_y = self.grid_location_x * self.square_size, self.grid_location_y * self.square_size
-            grid_rec = pygame.Rect(grid_x, gird_y, net_grid_width, net_grid_height)
-
-            self.grid_surface = screen.subsurface(grid_rec)
-            self.grid_surface.fill(GRID_COLOR)
-
-            next_rect = pygame.Rect(780, 20, 200, 200)
-            self.next_surface = screen.subsurface(next_rect)
-            self.next_surface.fill(GRID_COLOR)
-            # pygame.draw.rect(screen, GRID_COLOR, self.grid_surface)
-
-            cell_size = self.square_size  # or whatever size your cells are
-            grid_color = (50, 50, 50)  # a dark gray or any color you like
-
-            # Draw vertical lines
-            for x in range(0, net_grid_width, cell_size):
-                pygame.draw.line(self.grid_surface, grid_color, (x, 0), (x, net_grid_height))
-
-            # Draw horizontal lines
-            for y in range(0, net_grid_height, cell_size):
-                pygame.draw.line(self.grid_surface, grid_color, (0, y), (net_grid_width, y))
-
-            # call draw
-            self.draw(screen)
+            self.initialize_game_screen(screen)
 
             if self.state is GAMESTATE.GAMEOVER:
                 self.game_over()
@@ -529,6 +539,7 @@ class TetrisGame:
 
             # call new figures
             if self.getActiveFigure() is None:
+                pieceStoppedMoving = True
                 self.newFigure()
 
             # check if game is paused
@@ -597,8 +608,10 @@ class TetrisGame:
 
             self.checkGameState()
 
-            self.clearFullRows()
-            self.checkFloatingRows()
+            # Should only clear rows if the shape is done falling.
+            if pieceStoppedMoving:
+                self.clearFullRows()
+                self.checkFloatingRows()
 
             self.display_score(screen)
             self.display_level(screen)

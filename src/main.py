@@ -26,22 +26,27 @@ from src.models.TetrisGame import *
 #     screen.blit(img, (x, y))
 
 # define main function
-def main():
+def main(turn: None):
     # initialize pygame
     player_name = input("Enter your name: ")
     pygame.init()
     pygame.font.init()
 
-    game_width, game_height = 20, 25
-    grid_location_x, grid_location_y = 5, 0
+    if turn:
+        tetris = TetrisGame.getTetrisGameFromGameState(turn)
+    else:
+        game_width, game_height = 20, 25
+        grid_location_x, grid_location_y = 5, 0
 
-    # Size in grid
-    grid_width, grid_height, square_size = 10, 20, 50
-    tetris = TetrisGame(game_width, game_height, grid_location_x, grid_location_y,
-        grid_width, grid_height, square_size, player_name=player_name)
+        # Size in grid
+        grid_width, grid_height, square_size = 10, 20, 50
+        tetris = TetrisGame(game_width, game_height, grid_location_x, grid_location_y,
+            grid_width, grid_height, square_size, player_name=player_name)
+
 
     tetris.start()
 
 # run the main program
 if __name__ == '__main__':
-    main()
+    turn = 517
+    main(turn)

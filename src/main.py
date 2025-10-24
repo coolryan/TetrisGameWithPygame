@@ -11,8 +11,9 @@
 """
 
 # import libraries
-import pygame
+from typing import Optional
 
+import pygame
 from pygame.locals import *
 
 from src.constants import *
@@ -26,9 +27,15 @@ from src.models.TetrisGame import *
 #     screen.blit(img, (x, y))
 
 # define main function
-def main(turn: None):
+def main():
     # initialize pygame
-    player_name = input("Enter your name: ")
+    name_or_turn = input("Enter user name for new game, otherwise to load type turn: ")
+    try:
+        turn = int(name_or_turn)
+    except:
+        turn = None
+        player_name = name_or_turn
+
     pygame.init()
     pygame.font.init()
 
@@ -48,5 +55,4 @@ def main(turn: None):
 
 # run the main program
 if __name__ == '__main__':
-    turn = 517
-    main(turn)
+    main()

@@ -11,6 +11,7 @@ import glob
 import json
 import os
 import re
+from typing import Optional
 
 import pygame, datetime, time, sys, os, json
 from pygame.locals import *
@@ -55,55 +56,48 @@ class TetrisGame:
 
         player_name = game_state["user"]
         saved_grid = game_state["grid"]
-        saved_game_turn = game_state["game_turn"]
-        saved_loop_Turn = game_state["loop_turn"]
+        # saved_game_turn = game_state["game_turn"] # Dont need?
+        saved_loop_turn = game_state["loop_turn"]
         saved_figures = game_state["figures"]
 
         loaded_game =  TetrisGame(game_width, game_height, grid_location_x, grid_location_y,
         grid_width, grid_height, square_size, player_name=player_name)
 
-        fig_size = square_size
-        for fig_str in saved_figures:
-            parsed_data = cls._parse_fig_str(fig_str)
+        # Create figures for each saved figure
+        figLookup = {}
+        for fig_dict in saved_figures:
             fig = Figure(
-                parsed_data["id"],
-                parsed_data["x"],
-                parsed_data["y"],
-                fig_size,
-                parsed_data["Figure"],
-                parsed_data["active"],
+                fig_dict["Id"],
+                fig_dict["x"],
+                fig_dict["y"],
+                square_size,
+                fig_dict["Figure"],
+                fig_dict["active"],
             )
             loaded_game.figures.append(fig)
+            figLookup[fig.id] = fig
+        
+        # Recreate the grid
+        loaded_game.grid = []
+        for row in saved_grid:
+            newRow: list[Optional[Figure]] = []
+            for cell in row:
+                if cell and "TETROMINO" in cell:
+                    figId = int(cell.split(":")[0]) # Parse ie "36:Z_TETROMINO" to get id 36
+                    fig = figLookup[figId]
+                else:
+                    fig = None
+                newRow.append(fig)
+            loaded_game.grid.append(newRow)
 
+        loaded_game.turn = saved_loop_turn
 
         return loaded_game
     
     @classmethod
-    def _parse_fig_str(cls, data_string):
-        parts = re.split(r',\s*(?![^()]*\))', data_string)
-
-        # 2. Initialize a dictionary to store the parsed data
-        parsed_data = {}
-
-        # 3. Iterate over the parts and process each key-value pair
-        for part in parts:
-            # Find the first colon and split into key and raw value
-            if ':' in part:
-                key, raw_value = part.split(':', 1)
-                key = key.strip()
-                raw_value = raw_value.strip()
-
-                # Convert the raw string value to the correct Python type
-                try:
-                    # Use ast.literal_eval for safe conversion of complex types (lists, tuples, booleans, integers)
-                    # It's safer than the built-in eval()
-                    value = ast.literal_eval(raw_value)
-                except (ValueError, SyntaxError):
-                    # If literal_eval fails, the value is treated as a simple string
-                    value = raw_value
-
-                parsed_data[key] = value
-        return parsed_data
+    def _parse_fig_str(cls, data_string) -> dict:
+        fig_json = json.loads(data_string)
+        return fig_json
 
     """constructor"""
     def __init__(self, game_width, game_height, grid_location_x, grid_location_y,
@@ -129,8 +123,6 @@ class TetrisGame:
         # Grid is by y then x. So grid[y][x]
         # y=0 will be the top, y=height-1 will be the bottom
         self.grid = [[None for i in range(self.grid_width)] for j in range(self.grid_height)]
-
-    
 
     @classmethod                                                                                                                      
     def _getNextFigureId(cls) -> int:
@@ -293,7 +285,6 @@ class TetrisGame:
                     if gridLocation:
                         # gridLocation.state = "start"
                         pass
-
 
     # distance funnction helpers
     def distanceDownActive(self):
@@ -494,6 +485,16 @@ class TetrisGame:
                 continue
             os.remove(f)
 
+    def clear_saved_states(self):
+        folder = f"{self.game_save_dir}/*"
+
+        files = glob.glob(folder)
+        for f in files:
+            if f == folder:
+                continue
+            os.remove(f)
+        
+
     def save_game_image(self, screen, game_turn):
         if not self.save_images:
             return
@@ -510,7 +511,7 @@ class TetrisGame:
             return
 
         # Serialize the game state
-        saved_figures = [str(fig) for fig in self.figures]
+        saved_figures = [fig.toJson() for fig in self.figures]
         saved_grid = []
         for row in self.grid:
             new_row = []
@@ -529,6 +530,7 @@ class TetrisGame:
         }
 
         os.makedirs(self.game_save_dir, exist_ok=True)
+
         file_name = f"{self.game_save_dir}/game_state_{game_turn}.json"
         with open(file_name, 'w', encoding='utf-8') as f:
             json.dump(game_state, f, indent=4)
@@ -568,6 +570,7 @@ class TetrisGame:
     def start(self):
         # Clean up state
         self.clear_saved_images()
+        self.clear_saved_states()
 
         size = ((self.grid_width+10)*self.square_size, self.grid_height*self.square_size)
 
@@ -626,7 +629,7 @@ class TetrisGame:
             # call move
             if self.turn % game_tick_freq == 0:
                 # Save image
-                game_turn = self.turn / game_tick_freq
+                game_turn = int(self.turn / game_tick_freq)
                 self.save_game_image(screen, game_turn)
                 self.save_game_state(game_turn)
 

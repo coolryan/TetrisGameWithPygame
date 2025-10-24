@@ -290,3 +290,27 @@ def test_clear_bug_1(tetris_game: TetrisGame, test_empty_grid: list[list[Optiona
     assert not all(item is None for item in tetris_game.grid[up2Y])
     assert not all(item is None for item in tetris_game.grid[up3Y])
     assert not all(item is None for item in tetris_game.grid[up4Y])
+
+
+def test__parse_fig_str():
+    # Arrange
+    fig_json = "Figure: I_TETROMINO, Id: 1, x: 9, y: 19, active: False, coordList: [(9, 19)]"
+    exp_fig_json = {
+        "Figure" : "I_TETROMINO",
+        "Id": 1,
+        "x": 9,
+        "y": 19,
+        "active": False,
+        "coordList": [(9, 19)]
+    }
+
+    # Act
+    parsed_data = TetrisGame._parse_fig_str(fig_str)
+
+    # Assert
+    assert parsed_data["Figure"] == "I_TETROMINO"
+    assert parsed_data["Id"] == 1
+    assert parsed_data["x"] == 9
+    assert parsed_data["y"] == 19
+    assert parsed_data["active"] is False
+    assert parsed_data["coordList"] == [(9, 19)]

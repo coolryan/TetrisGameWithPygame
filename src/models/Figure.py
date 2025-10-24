@@ -46,6 +46,16 @@ class Figure:
     def __repr__(self):
         #return f"Figure: {self.type}, Id: {self.id}, x: {self.x}, y: {self.y}, state: {self.state}, active: {self.isActive}, coordList: {self.coordList}"
         return f"Figure: {self.type}, Id: {self.id}, x: {self.x}, y: {self.y}, active: {self.isActive}, coordList: {self.coordList}"
+    
+    def toJson(self):
+        return {
+            "Figure": self.type,
+            "Id": self.id,
+            "x": self.x,
+            "y": self.y,
+            "active": self.isActive,
+            "coordList": self.coordList,
+        }
 
     @classmethod
     def getRandomFigure(cls, id: int, maxX, maxY, size):

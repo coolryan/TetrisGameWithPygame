@@ -78,17 +78,20 @@ class TetrisGame:
             figLookup[fig.id] = fig
         
         # Recreate the grid
-        loaded_game.grid = []
-        for row in saved_grid:
-            newRow: list[Optional[Figure]] = []
-            for cell in row:
-                if cell and "TETROMINO" in cell:
-                    figId = int(cell.split(":")[0]) # Parse ie "36:Z_TETROMINO" to get id 36
-                    fig = figLookup[figId]
-                else:
-                    fig = None
-                newRow.append(fig)
-            loaded_game.grid.append(newRow)
+        # loaded_game.grid = []
+        # for row in saved_grid:
+        #     newRow: list[Optional[Figure]] = []
+        #     for cell in row:
+        #         if cell and "TETROMINO" in cell:
+        #             figId = int(cell.split(":")[0]) # Parse ie "36:Z_TETROMINO" to get id 36
+        #             fig = figLookup[figId]
+        #         else:
+        #             fig = None
+        #         newRow.append(fig)
+        #     loaded_game.grid.append(newRow)
+
+        loaded_game.grid = [[]]
+        loaded_game.updateGrid()
 
         loaded_game.turn = saved_loop_turn
 
@@ -511,6 +514,9 @@ class TetrisGame:
             return
 
         # Serialize the game state
+        for fig in self.figures:
+            if fig.x >= 10 or fig.y >= 20:
+                print("Whats going on?")
         saved_figures = [fig.toJson() for fig in self.figures]
         saved_grid = []
         for row in self.grid:

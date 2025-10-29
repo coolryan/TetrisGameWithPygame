@@ -188,7 +188,7 @@ class TetrisGame:
         # * if there is nothing under it and its not in the bottom of the screen.
         # * all shapes under it are also falling.
         # left off here. returns a CANFALL enum value
-        figuresUnder = self.getFiguresUnder(fig, 0, 1)
+        figuresUnder = self.getFiguresAtNewLocation(fig, 0, 1)
         if fig.getBottom() >= self.grid_height -1:
             return CANFALL.FALSE
         elif len(figuresUnder) == 0:
@@ -223,10 +223,15 @@ class TetrisGame:
             # fig.draw(screen)
             fig.draw(self.grid_surface)
 
-    def deactivate(self):
+    def deactivate(self) -> bool:
+        """ Returns true if a shape was deactivated """
+        deactivated = False
         for fig in self.figures:
             if self.canFall(fig) == CANFALL.FALSE and fig.isActive:
                 fig.isActive = False
+                deactivated = True
+
+        return deactivated
 
     def checkGameState(self):
         # Check if any figure is at the top of the grid, if so gameover
@@ -254,11 +259,11 @@ class TetrisGame:
                 self.score.rowCleared()
 
                 self.sleep_time = {
-                    1: .2,
-                    2: .18,
-                    3: .16,
-                    4: .15,
-                    5: .14,
+                    1: .1,
+                    2: .8,
+                    3: .6,
+                    4: .5,
+                    5: .4,
                 }[self.score.level]
 
                 isRowFull = False
@@ -348,6 +353,14 @@ class TetrisGame:
 
     # leftMove method
     def leftMove(self):
+        activeFig = self.getActiveFigure()
+        moveAmount = -1 if activeFig.getLeft() > 0 else activeFig.getLeft()
+        if self.willCollide(fig=activeFig, dx=moveAmount, dy=0):
+            return
+        else:
+            activeFig.setX(activeFig.x+moveAmount)
+
+        return
         for fig in self.figures:
             if fig.isActive and fig.getLeft() >= 0:
                 moveAmount = -1 if fig.getLeft() > 0 else fig.getLeft()
@@ -399,9 +412,10 @@ class TetrisGame:
         """
             Check the new coordinates of the figure, and see if anything other than itself is on the grid at those locations
         """
-        return len(self.getFiguresUnder(fig, dx, dy)) > 0
+        collision = len(self.getFiguresAtNewLocation(fig, dx, dy)) > 0
+        return collision
     
-    def getFiguresUnder(self, fig: Figure, dx, dy):
+    def getFiguresAtNewLocation(self, fig: Figure, dx, dy):
         """
             Check the new coordinates of the figure, and returns anything other than itself on the grid at those locations
         """
@@ -411,7 +425,7 @@ class TetrisGame:
         # Calculate the new coordinates (without actually changing them in the figure)
         newCoordList = [(coord[0]+dx, coord[1]+dy) for coord in fig.coordList]
         # Make sure none of the new coordinates already have shapes in them
-        figuresUnder = set()
+        figuresInNewLocation = set()
         for coord in newCoordList:
             x, y = coord[0], coord[1]
             if x<0 or y<0:
@@ -421,8 +435,8 @@ class TetrisGame:
             thisFigAtCoord = self.grid[y][x] is fig
 
             if shapeAtCoord and not thisFigAtCoord:
-                figuresUnder.add(self.grid[y][x])
-        return figuresUnder
+                figuresInNewLocation.add(self.grid[y][x])
+        return figuresInNewLocation
     
     def display_score(self, screen):
         font = pygame.font.SysFont('Calibri', 25, True, False)
@@ -616,12 +630,14 @@ class TetrisGame:
             
         # game variables
         running = True
-        game_tick_freq = 3
+        # How many ticks before a move
+        game_tick_freq = 5
 
         # rect = pygame.Rect(x, y, width, height)
         # pygame.draw.rect(screen, self.color, rect)
 
         # game loop
+        was_deactivated = False
         while running:
             moved = False
             pieceStoppedMoving = False
@@ -640,15 +656,15 @@ class TetrisGame:
             # call move
             if self.turn % game_tick_freq == 0:
                 # Save image
+                # call deactive 
+                was_deactivated = self.deactivate()
+
                 game_turn = int(self.turn / game_tick_freq)
                 self.save_game_image(screen, game_turn)
                 self.save_game_state(game_turn)
 
                 self.move()
                 moved = True
-
-            # call deactive 
-            self.deactivate()
 
             # call new figures
             if self.getActiveFigure() is None:
@@ -702,6 +718,10 @@ class TetrisGame:
                         self.downMove()
                         moved = True
                     if event.key == K_LEFT:
+                        # Todo: When we move left while at the bottom of screen
+                        # it allows moving in to other figures
+                        # Seems like its becuase the y is negative, so doesn't match
+                        # The actual y of the shape
                         self.leftMove()
                         moved = True
                     if event.key == K_RIGHT:

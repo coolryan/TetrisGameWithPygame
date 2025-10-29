@@ -66,6 +66,9 @@ class TetrisGame:
         # Create figures for each saved figure
         figLookup = {}
         for fig_dict in saved_figures:
+            fig_id = fig_dict["Id"]
+            if fig_id == "6" or fig_id == 6:
+                print("Lets take a look")
             fig = Figure(
                 fig_dict["Id"],
                 fig_dict["x"],
@@ -74,6 +77,8 @@ class TetrisGame:
                 fig_dict["Figure"],
                 fig_dict["active"],
             )
+            # Set coordinates
+            fig.coordList = fig_dict["coordList"]
             loaded_game.figures.append(fig)
             figLookup[fig.id] = fig
         

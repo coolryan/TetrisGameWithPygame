@@ -30,11 +30,13 @@ from src.models.TetrisGame import *
 def main():
     # initialize pygame
     name_or_turn = input("Enter user name for new game, otherwise to load type turn: ")
-    try:
+
+    if type(name_or_turn) == int:
         turn = int(name_or_turn)
-    except:
+    else:
         turn = None
-        player_name = name_or_turn
+
+    player_name = name_or_turn
 
     pygame.init()
     pygame.font.init()

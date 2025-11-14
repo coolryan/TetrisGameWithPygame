@@ -734,6 +734,7 @@ class TetrisGame:
                         game_paused = True
 
             time.sleep(self.sleep_time)
+            print("Turn:", self.turn)
             self.turn += 1
             if moved:
                 self.updateGrid()
